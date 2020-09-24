@@ -63,15 +63,18 @@ public class CommandListener implements Listener {
 
         if (instance.settingsCfg.getBoolean("command-suggestions.clear-all")) {
             event.getCommands().clear();
+            player.updateCommands();
             return; //no need to do any further checks since there are no commands to suggest.
         }
 
         if (instance.settingsCfg.getBoolean("block-colons")) {
             event.getCommands().removeIf(command -> command.contains(":"));
+            player.updateCommands();
         }
 
         if (instance.settingsCfg.getBoolean("command-suggestions.clear-blocked")) {
             event.getCommands().removeIf(command -> isBlocked(player, command));
+            player.updateCommands();
         }
     }
 }

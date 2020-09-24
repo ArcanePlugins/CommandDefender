@@ -21,10 +21,10 @@ public class CDCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
             for (String message : instance.messagesCfg.getStringList("command.main")) {
-                sender.sendMessage(colorize(message
-                        .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix"))
-                                .replace("%version%", instance.getDescription().getVersion())
-                                .replace("%label%", label))));
+                sender.sendMessage(colorize(message)
+                        .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))
+                        .replace("%version%", instance.getDescription().getVersion())
+                        .replace("%label%", label));
             }
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
