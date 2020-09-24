@@ -18,3 +18,7 @@
 
 ### v1.0.5-ALPHA
 * Removed the command suggestion manager.
+
+### v1.0.6
+* Fixed updater resource id.
+* No longer in alpha stage.

@@ -82,8 +82,8 @@ public class CommandDefender extends JavaPlugin {
 
     private void checkForUpdates() {
         if(settingsCfg.getBoolean("check-for-updates")) {
-            final UpdateChecker updateChecker = new UpdateChecker(this, 12345);
-            if(updateChecker.getCurrentVersion() != updateChecker.getLatestVersion()) {
+            final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
+            if (!updateChecker.getCurrentVersion().equals(updateChecker.getLatestVersion())) {
                 logger.log(MicroLogger.LogLevel.WARNING, "&b(NEW UPDATE) &fA new update is available on SpigotMC!");
             }
         }
