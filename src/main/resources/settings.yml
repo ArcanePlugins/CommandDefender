@@ -19,15 +19,6 @@ commands:
 # Block colons (:) in the first argument of commands? e.g. block /bukkit:plugins
 block-colons: true
 
-# Management of command suggestions added by Mojang in 1.13
-command-suggestions:
-
-  # Remove all suggested commands, even if they aren't blocked?
-  clear-all: false
-
-  # Remove all blocked suggested commands?
-  clear-blocked: true
-
 # Run the update checker on startup?
 # Asynchronous (doesn't halt your server startup), will check once, and only send one warning message if an update is found. Otherwise, you won't even notice it's enabled.
 check-for-updates: true

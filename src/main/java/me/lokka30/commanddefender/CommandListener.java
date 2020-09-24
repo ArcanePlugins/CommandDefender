@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerCommandSendEvent;
 
 import java.util.List;
 import java.util.Objects;
@@ -54,27 +53,6 @@ public class CommandListener implements Listener {
             event.setCancelled(true);
             player.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-colon"))
                     .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
-        }
-    }
-
-    @EventHandler
-    public void onCommandSend(final PlayerCommandSendEvent event) {
-        final Player player = event.getPlayer();
-
-        if (instance.settingsCfg.getBoolean("command-suggestions.clear-all")) {
-            event.getCommands().clear();
-            player.updateCommands();
-            return; //no need to do any further checks since there are no commands to suggest.
-        }
-
-        if (instance.settingsCfg.getBoolean("block-colons")) {
-            event.getCommands().removeIf(command -> command.contains(":"));
-            player.updateCommands();
-        }
-
-        if (instance.settingsCfg.getBoolean("command-suggestions.clear-blocked")) {
-            event.getCommands().removeIf(command -> isBlocked(player, command));
-            player.updateCommands();
         }
     }
 }

@@ -15,3 +15,6 @@
 
 ### v1.0.4-ALPHA
 * Fixed command suggestions not being updated.
+
+### v1.0.5-ALPHA
+* Removed the command suggestion manager.
