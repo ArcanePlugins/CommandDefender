@@ -24,15 +24,19 @@ public class CommandListener implements Listener {
     }
 
     public boolean isBlocked(Player player, String command) {
-        final List<String> commandsList = instance.settingsCfg.getStringList("commands.list");
-        switch (Objects.requireNonNull(instance.settingsCfg.getString("commands.mode")).toUpperCase()) {
-            case "WHITELIST":
-                return !player.hasPermission("commanddefender.bypass." + command) && !commandsList.contains(command);
-            case "BLACKLIST":
-                return !player.hasPermission("commanddefender.bypass." + command) && commandsList.contains(command);
-            default:
-                instance.logger.log(MicroLogger.LogLevel.ERROR, "&cERROR: &7You have not specified a valid mode in '&bsettings.yml&7' under '&bcommands.mode&7'! Must be either '&bWHITELIST&7' or '&bBLACKLIST&7'. &fCommandDefender will not block any commands until this is fixed!");
-                return false;
+        if (player.hasPermission("commanddefender.bypass.*") || player.hasPermission("commanddefender.bypass." + command)) {
+            return true;
+        } else {
+            final List<String> commandsList = instance.settingsCfg.getStringList("commands.list");
+            switch (Objects.requireNonNull(instance.settingsCfg.getString("commands.mode")).toUpperCase()) {
+                case "WHITELIST":
+                    return !commandsList.contains(command);
+                case "BLACKLIST":
+                    return commandsList.contains(command);
+                default:
+                    instance.logger.log(MicroLogger.LogLevel.ERROR, "&cERROR: &7You have not specified a valid mode in '&bsettings.yml&7' under '&bcommands.mode&7'! Must be either '&bWHITELIST&7' or '&bBLACKLIST&7'. &fCommandDefender will not block any commands until this is fixed!");
+                    return false;
+            }
         }
     }
 
