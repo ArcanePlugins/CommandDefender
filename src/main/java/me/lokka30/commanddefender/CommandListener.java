@@ -25,7 +25,7 @@ public class CommandListener implements Listener {
 
     public boolean isBlocked(Player player, String command) {
         if (player.hasPermission("commanddefender.bypass.*") || player.hasPermission("commanddefender.bypass." + command)) {
-            return true;
+            return false;
         } else {
             final List<String> commandsList = instance.settingsCfg.getStringList("commands.list");
             switch (Objects.requireNonNull(instance.settingsCfg.getString("commands.mode")).toUpperCase()) {
