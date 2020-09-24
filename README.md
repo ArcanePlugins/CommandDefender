@@ -10,4 +10,4 @@ A [SpigotMC](htts://www.spigotmc.org) plugin which prevents users from running c
 Need assistance, or want to have a chat? Join the [ArcanePlugins Discord Server](https://discord.io/arcaneplugins)! :)
 
 ## License
-Licensed under [GNU AGPL v3.0](). By downloading this software, you agree to this license.
+Licensed under [GNU AGPL v3.0](https://github.com/lokka30/CommandDefender/blob/master/src/main/resources/license.txt). By downloading this software, you agree to this license.
