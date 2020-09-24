@@ -1,0 +1,29 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+author: lokka30
+main: me.lokka30.commanddefender.CommandDefender
+
+commands:
+  commanddefender:
+    aliases: [cd, cmddefender]
+    description: View information about CommandDefender or manage the resource.
+    usage: /<command> [reload/backup]
+
+permissions:
+  commanddefender.*:
+    description: Access to all of the plugin's permissions.
+    default: op
+    children:
+      commanddefender.bypass.*: true
+      commanddefender.reload: true
+      commanddefender.backup: true
+  commanddefender.bypass.*:
+    description: Bypass all blocked commands.
+    default: op
+  commanddefender.reload:
+    description: Reload the plugin's configuration files.
+    default: op
+  commanddefender.backup:
+    description: Backup the plugin's configuration files.
+    default: op

@@ -1,0 +1,26 @@
+cancelled-blocked: '%prefix% You are not allowed to use ''&b%command%&7''!'
+cancelled-colon: '%prefix% You are not allowed to use the colon character &8(&7''&b:&7''&8) &7in the first argument of your commands.'
+command:
+  backup:
+    start: '%prefix% Backup started ...'
+    complete: '%prefix% ... Backup complete, check the ''&b/plugins/CommandDefender/backups/&7'' folder.'
+  main:
+    - ' '
+    - '&f&nAbout'
+    - '&8 &m->&7 Running &b&lCommandDefender &bv%version%&7 by lokka30'
+    - ' '
+    - '&f&nAvailable Commands'
+    - '&8 &m->&b /%label% reload &8(&7reload configuration files&8)'
+    - '&8 &m->&b /%label% backup &8(&7backup configuration files&8)'
+    - ' '
+  no-permission: '%prefix% You don''t have access to that.'
+  reload:
+    start: '%prefix% Reload started ...'
+    complete: '%prefix% ... Reload complete.'
+  usage: '%prefix% Usage: &b/%label% [reload/backup]'
+prefix: '&b&lCommandDefender:&7'
+
+# Do not touch these values unless you are fully aware with what you are doing!
+advanced:
+  file-version: 1
+  generated-with: '${project.version}'

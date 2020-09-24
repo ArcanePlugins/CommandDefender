@@ -1,0 +1,38 @@
+# List of commands which will be handled by CommandDefender.
+commands:
+
+  # You can use 'WHITELIST' or 'BLACKLIST'.
+  # WHITELIST = commands in the list below will be unblocked but all other commands will be blocked.
+  # BLACKLIST = commands in the list below will be blocked but all other commands will be unblocked.
+  mode: BLACKLIST
+
+  list:
+    - '/plugins'
+    - '/pl'
+    - '/version'
+    - '/ver'
+    - '/icanhasbukkit'
+    - '/about'
+    - '/?'
+    - '/help'
+
+# Block colons (:) in the first argument of commands? e.g. block /bukkit:plugins
+block-colons: true
+
+# Management of command suggestions added by Mojang in 1.13
+command-suggestions:
+
+  # Remove all suggested commands, even if they aren't blocked?
+  clear-all: false
+
+  # Remove all blocked suggested commands?
+  clear-blocked: true
+
+# Run the update checker on startup?
+# Asynchronous (doesn't halt your server startup), will check once, and only send one warning message if an update is found. Otherwise, you won't even notice it's enabled.
+check-for-updates: true
+
+# Do not touch these values unless you are fully aware with what you are doing!
+advanced:
+  file-version: 1
+  generated-with: '${project.version}'
