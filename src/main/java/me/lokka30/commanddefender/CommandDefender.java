@@ -20,25 +20,20 @@ public class CommandDefender extends JavaPlugin {
     public void onEnable() {
         long startTime = System.currentTimeMillis();
 
-        logger.log(MicroLogger.LogLevel.INFO, "&8&m+----------------------------------------+");
-        logger.log(MicroLogger.LogLevel.INFO, "&b&lCommandDefender &fv" + getDescription().getVersion() + "&7 by lokka30");
-        logger.log(MicroLogger.LogLevel.INFO, "&f(Loading Plugin)");
-        logger.log(MicroLogger.LogLevel.INFO, "&8&m+----------------------------------------+");
-
-        logger.log(MicroLogger.LogLevel.INFO, "Loading files");
+        logger.info("Loading files");
         loadFiles();
 
-        logger.log(MicroLogger.LogLevel.INFO, "Registering events");
+        logger.info("Registering events");
         registerEvents();
 
-        logger.log(MicroLogger.LogLevel.INFO, "Registering commands");
+        logger.info("Registering commands");
         registerCommands();
 
-        logger.log(MicroLogger.LogLevel.INFO, "Starting bStats metrics");
+        logger.info("Starting bStats metrics");
         startMetrics();
 
         long duration = System.currentTimeMillis() - startTime;
-        logger.log(MicroLogger.LogLevel.INFO, "&fLoading complete! &8(&7Took &b" + duration + "ms&8)");
+        logger.info("&fLoading complete! &8(&7Took &b" + duration + "ms&8)");
 
         checkForUpdates();
     }
@@ -57,14 +52,14 @@ public class CommandDefender extends JavaPlugin {
 
     private void createIfNotExists(File file, String fileName) {
         if (!file.exists()) {
-            logger.log(MicroLogger.LogLevel.INFO, "File '&b" + fileName + "&7' didn't exist, creating it.");
+            logger.info("File '&b" + fileName + "&7' didn't exist, creating it...");
             saveResource(fileName, false);
         }
     }
 
     private void checkFileVersion(YamlConfiguration cfg, String cfgName, @SuppressWarnings("SameParameterValue") int recommendedVersion) {
         if (cfg.getInt("advanced.file-version") != recommendedVersion) {
-            logger.log(MicroLogger.LogLevel.WARNING, "Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are likely to happen!");
+            logger.warning("Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are likely to happen!");
         }
     }
 
@@ -84,7 +79,7 @@ public class CommandDefender extends JavaPlugin {
         if(settingsCfg.getBoolean("check-for-updates")) {
             final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
             if (!updateChecker.getCurrentVersion().equals(updateChecker.getLatestVersion())) {
-                logger.log(MicroLogger.LogLevel.WARNING, "&b(NEW UPDATE) &fA new update is available on SpigotMC!");
+                logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
             }
         }
     }

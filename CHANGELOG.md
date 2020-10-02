@@ -22,3 +22,9 @@
 ### v1.0.6
 * Fixed updater resource id.
 * No longer in alpha stage.
+
+### v1.1.0
+* **You no longer need MicroLib in your plugins folder to run this plugin.** It is embedded inside the .jar file now. **You must uninstall MicroLib v1 from your plugins folder, or errors will occur.**
+* Updated MicroLib dependency to v2.0.0.
+* Removed the startup banner from your console logs :)
+* Few code improvements revolving around the dependency update.

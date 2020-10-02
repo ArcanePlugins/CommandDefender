@@ -1,6 +1,6 @@
 package me.lokka30.commanddefender;
 
-import org.bukkit.ChatColor;
+import me.lokka30.microlib.MicroUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -21,7 +21,7 @@ public class CDCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
             for (String message : instance.messagesCfg.getStringList("command.main")) {
-                sender.sendMessage(colorize(message)
+                sender.sendMessage(MicroUtils.colorize(message)
                         .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))
                         .replace("%version%", instance.getDescription().getVersion())
                         .replace("%label%", label));
@@ -29,33 +29,33 @@ public class CDCommand implements TabExecutor {
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("commanddefender.reload")) {
-                    sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.start"))
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.start"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                     instance.loadFiles();
-                    sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.complete"))
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.complete"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                 } else {
-                    sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.no-permission"))
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.no-permission"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                 }
             } else if (args[0].equalsIgnoreCase("backup")) {
                 if (sender.hasPermission("commanddefender.backup")) {
-                    sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.backup.start"))
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.backup.start"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                     sender.sendMessage("&c&oThis feature is not yet implemented.");
-                    sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.backup.complete"))
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.backup.complete"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                 } else {
-                    sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.no-permission"))
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.no-permission"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                 }
             } else {
-                sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.usage"))
+                sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.usage"))
                         .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix"))
                                 .replace("%label%", label))));
             }
         } else {
-            sender.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.usage"))
+            sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.usage"))
                     .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix"))
                             .replace("%label%", label))));
         }
@@ -72,9 +72,5 @@ public class CDCommand implements TabExecutor {
         }
 
         return suggestions;
-    }
-
-    private String colorize(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }
