@@ -1,6 +1,5 @@
 package me.lokka30.commanddefender;
 
-import me.lokka30.microlib.MicroLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +32,7 @@ public class CommandListener implements Listener {
                 case "BLACKLIST":
                     return commandsList.contains(command);
                 default:
-                    instance.logger.log(MicroLogger.LogLevel.ERROR, "&cERROR: &7You have not specified a valid mode in '&bsettings.yml&7' under '&bcommands.mode&7'! Must be either '&bWHITELIST&7' or '&bBLACKLIST&7'. &fCommandDefender will not block any commands until this is fixed!");
+                    instance.logger.error("&cERROR: &7You have not specified a valid mode in '&bsettings.yml&7' under '&bcommands.mode&7'! Must be either '&bWHITELIST&7' or '&bBLACKLIST&7'. &fCommandDefender will not block any commands until this is fixed!");
                     return false;
             }
         }
