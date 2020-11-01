@@ -1,5 +1,5 @@
 cancelled-blocked: '%prefix% You are not allowed to use ''&b%command%&7''!'
-cancelled-colon: '%prefix% You are not allowed to use the colon character &8(&7''&b:&7''&8) &7in the first argument of your commands.'
+cancelled-colon: '%prefix% You are not allowed to use the colon character &8(&b:&8) &7in the first argument of your commands.'
 command:
   backup:
     start: '%prefix% Backup started ...'

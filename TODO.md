@@ -1,3 +1,4 @@
 # CommandDefender To-do List
-From first to-do to last to-do:
+In order:
 * Add functionality to backup command
+* BungeeCord plugin

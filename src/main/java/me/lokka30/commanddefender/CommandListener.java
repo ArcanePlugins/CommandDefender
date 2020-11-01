@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,6 +53,17 @@ public class CommandListener implements Listener {
             event.setCancelled(true);
             player.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-colon"))
                     .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+        }
+    }
+
+    @EventHandler
+    public void onCommandSend(final PlayerCommandSendEvent event) {
+        // Remove blocked commands from the suggestions list.
+        event.getCommands().removeIf(command -> isBlocked(event.getPlayer(), "/" + command));
+
+        // Remove commands with colons, if enabled, such as /bukkit:help.
+        if (instance.settingsCfg.getBoolean("block-colons")) {
+            event.getCommands().removeIf(command -> command.contains(":"));
         }
     }
 }

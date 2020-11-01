@@ -28,3 +28,8 @@
 * Updated MicroLib dependency to v2.0.0.
 * Removed the startup banner from your console logs :)
 * Few code improvements revolving around the dependency update.
+
+### v1.2.0
+* Now filters 1.13+'s command suggestion system.
+  * Removes blocked commands from the suggestions list.
+  * If enabled, removes commands with colons from the suggestions list (e.g. `/bukkit:help`)

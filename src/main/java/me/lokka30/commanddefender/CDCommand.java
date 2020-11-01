@@ -1,9 +1,11 @@
 package me.lokka30.commanddefender;
 
 import me.lokka30.microlib.MicroUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class CDCommand implements TabExecutor {
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.start"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                     instance.loadFiles();
+                    Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.complete"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
                 } else {
