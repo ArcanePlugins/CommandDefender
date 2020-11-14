@@ -7,6 +7,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 public class CommandDefender extends JavaPlugin {
@@ -15,6 +17,7 @@ public class CommandDefender extends JavaPlugin {
     public final File settingsFile = new File(getDataFolder(), "settings.yml");
     public final File messagesFile = new File(getDataFolder(), "messages.yml");
     public YamlConfiguration settingsCfg, messagesCfg;
+    public List<String> commandsList;
 
     @Override
     public void onEnable() {
@@ -42,6 +45,8 @@ public class CommandDefender extends JavaPlugin {
         createIfNotExists(settingsFile, "settings.yml");
         settingsCfg = YamlConfiguration.loadConfiguration(settingsFile);
         checkFileVersion(settingsCfg, "settings.yml", 1);
+
+        loadCommandsList();
 
         createIfNotExists(messagesFile, "messages.yml");
         messagesCfg = YamlConfiguration.loadConfiguration(messagesFile);
@@ -76,11 +81,25 @@ public class CommandDefender extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if(settingsCfg.getBoolean("check-for-updates")) {
+        if (settingsCfg.getBoolean("check-for-updates")) {
             final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
-            if (!updateChecker.getCurrentVersion().equals(updateChecker.getLatestVersion())) {
-                logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
-            }
+            updateChecker.getLatestVersion(version -> {
+                if (!version.equals(updateChecker.getCurrentVersion())) {
+                    logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
+                }
+            });
+        }
+    }
+
+    private void loadCommandsList() {
+        // Retrieve the list.
+        commandsList = settingsCfg.getStringList("commands.list");
+
+        // Convert to lower case.
+        // By to Matthew T. Staebler on StackOverflow.
+        ListIterator<String> iterator = commandsList.listIterator();
+        while (iterator.hasNext()) {
+            iterator.set(iterator.next().toLowerCase());
         }
     }
 }

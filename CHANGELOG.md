@@ -33,3 +33,10 @@
 * Now filters 1.13+'s command suggestion system.
   * Removes blocked commands from the suggestions list.
   * If enabled, removes commands with colons from the suggestions list (e.g. `/bukkit:help`)
+  
+### v1.2.1
+* Added `api-version` to inbuilt `plugin.yml`, which fixes a startup warning.
+* Fixed individual bypass permissions requiring `/` in command labels.
+* Fixed case sensitivity.
+* Updated dependencies (MicroLib 2.0.0 -> 2.1.1, Spigot API 1.16.3 -> 1.16.4).
+* Fixed update checker.

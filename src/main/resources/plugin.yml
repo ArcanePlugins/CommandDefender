@@ -1,8 +1,9 @@
-name: ${project.name}
+name: 'CommandDefender'
 version: ${project.version}
 description: ${project.description}
 author: lokka30
 main: me.lokka30.commanddefender.CommandDefender
+api-version: '1.13'
 
 commands:
   commanddefender:

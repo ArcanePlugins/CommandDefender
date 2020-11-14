@@ -6,7 +6,7 @@
 
     <groupId>me.lokka30</groupId>
     <artifactId>CommandDefender</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 
     <name>CommandDefender</name>
     <description>A SpigotMC plugin which prevents users from running configurable commands.</description>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.github.lokka30</groupId>
             <artifactId>MicroLib</artifactId>
-            <version>af1a8eac3a</version>
+            <version>7960ce46</version>
         </dependency>
     </dependencies>
 

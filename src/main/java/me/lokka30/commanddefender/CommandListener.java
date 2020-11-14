@@ -1,13 +1,12 @@
 package me.lokka30.commanddefender;
 
-import org.bukkit.ChatColor;
+import me.lokka30.microlib.MicroUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 
-import java.util.List;
 import java.util.Objects;
 
 public class CommandListener implements Listener {
@@ -18,20 +17,17 @@ public class CommandListener implements Listener {
         this.instance = instance;
     }
 
-    private String colorize(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
+    public boolean isBlocked(final Player player, String command) {
+        command = command.toLowerCase();
 
-    public boolean isBlocked(Player player, String command) {
-        if (player.hasPermission("commanddefender.bypass.*") || player.hasPermission("commanddefender.bypass." + command)) {
+        if (player.hasPermission("commanddefender.bypass.*") || player.hasPermission("commanddefender.bypass." + command.replaceFirst("/", ""))) {
             return false;
         } else {
-            final List<String> commandsList = instance.settingsCfg.getStringList("commands.list");
             switch (Objects.requireNonNull(instance.settingsCfg.getString("commands.mode")).toUpperCase()) {
                 case "WHITELIST":
-                    return !commandsList.contains(command);
+                    return !instance.commandsList.contains(command);
                 case "BLACKLIST":
-                    return commandsList.contains(command);
+                    return instance.commandsList.contains(command);
                 default:
                     instance.logger.error("&cERROR: &7You have not specified a valid mode in '&bsettings.yml&7' under '&bcommands.mode&7'! Must be either '&bWHITELIST&7' or '&bBLACKLIST&7'. &fCommandDefender will not block any commands until this is fixed!");
                     return false;
@@ -46,12 +42,12 @@ public class CommandListener implements Listener {
 
         if (isBlocked(player, command)) {
             event.setCancelled(true);
-            player.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-blocked"))
+            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-blocked"))
                     .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))
                     .replace("%command%", command)));
         } else if (command.contains(":") && instance.settingsCfg.getBoolean("block-colons")) {
             event.setCancelled(true);
-            player.sendMessage(colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-colon"))
+            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-colon"))
                     .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
         }
     }
