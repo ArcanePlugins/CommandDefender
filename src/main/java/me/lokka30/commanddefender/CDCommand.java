@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +34,11 @@ public class CDCommand implements TabExecutor {
                 if (sender.hasPermission("commanddefender.reload")) {
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.start"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
-                    instance.loadFiles();
+                    try {
+                        instance.loadFiles();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
                     Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.complete"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
