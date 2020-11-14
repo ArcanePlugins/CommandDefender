@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -25,7 +26,11 @@ public class CommandDefender extends JavaPlugin {
         timer.start();
 
         logger.info("Loading files");
-        loadFiles();
+        try {
+            loadFiles();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
 
         logger.info("Registering events");
         registerEvents();
@@ -41,12 +46,14 @@ public class CommandDefender extends JavaPlugin {
         checkForUpdates();
     }
 
-    public void loadFiles() {
+    public void loadFiles() throws IOException {
         settingsFile = new YamlConfigFile(this, new File(getDataFolder(), "settings.yml"));
+        settingsFile.load();
         checkFileVersion(settingsFile.getConfig(), "settings.yml", 1);
         loadCommandsList();
 
         messagesFile = new YamlConfigFile(this, new File(getDataFolder(), "messages.yml"));
+        messagesFile.load();
         checkFileVersion(messagesFile.getConfig(), "messages.yml", 1);
 
         createIfNotExists(new File(getDataFolder(), "license.txt"));

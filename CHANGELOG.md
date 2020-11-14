@@ -45,3 +45,6 @@
 * Note: Not Tested!
 * Now utilising QuickTimer from MicroLib
 * Now utilising YamlConfigFile from MicroLib
+
+### v1.2.3
+* Fixed startup error, thanks to person in discussions section for reporting it
