@@ -1,7 +1,9 @@
 package me.lokka30.commanddefender;
 
 import me.lokka30.microlib.MicroLogger;
+import me.lokka30.microlib.QuickTimer;
 import me.lokka30.microlib.UpdateChecker;
+import me.lokka30.microlib.YamlConfigFile;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,14 +16,13 @@ import java.util.Objects;
 public class CommandDefender extends JavaPlugin {
 
     public final MicroLogger logger = new MicroLogger("&b&lCommandDefender: &7");
-    public final File settingsFile = new File(getDataFolder(), "settings.yml");
-    public final File messagesFile = new File(getDataFolder(), "messages.yml");
-    public YamlConfiguration settingsCfg, messagesCfg;
+    public YamlConfigFile settingsFile, messagesFile;
     public List<String> commandsList;
 
     @Override
     public void onEnable() {
-        long startTime = System.currentTimeMillis();
+        QuickTimer timer = new QuickTimer();
+        timer.start();
 
         logger.info("Loading files");
         loadFiles();
@@ -35,30 +36,25 @@ public class CommandDefender extends JavaPlugin {
         logger.info("Starting bStats metrics");
         startMetrics();
 
-        long duration = System.currentTimeMillis() - startTime;
-        logger.info("&fLoading complete! &8(&7Took &b" + duration + "ms&8)");
+        logger.info("&fLoading complete! &8(&7Took &b" + timer.getTimer() + "ms&8)");
 
         checkForUpdates();
     }
 
     public void loadFiles() {
-        createIfNotExists(settingsFile, "settings.yml");
-        settingsCfg = YamlConfiguration.loadConfiguration(settingsFile);
-        checkFileVersion(settingsCfg, "settings.yml", 1);
-
+        settingsFile = new YamlConfigFile(this, new File(getDataFolder(), "settings.yml"));
+        checkFileVersion(settingsFile.getConfig(), "settings.yml", 1);
         loadCommandsList();
 
-        createIfNotExists(messagesFile, "messages.yml");
-        messagesCfg = YamlConfiguration.loadConfiguration(messagesFile);
-        checkFileVersion(messagesCfg, "messages.yml", 1);
+        messagesFile = new YamlConfigFile(this, new File(getDataFolder(), "messages.yml"));
+        checkFileVersion(messagesFile.getConfig(), "messages.yml", 1);
 
-        createIfNotExists(new File(getDataFolder(), "license.txt"), "license.txt");
+        createIfNotExists(new File(getDataFolder(), "license.txt"));
     }
 
-    private void createIfNotExists(File file, String fileName) {
+    private void createIfNotExists(File file) {
         if (!file.exists()) {
-            logger.info("File '&b" + fileName + "&7' didn't exist, creating it...");
-            saveResource(fileName, false);
+            saveResource(file.getName(), false);
         }
     }
 
@@ -81,7 +77,7 @@ public class CommandDefender extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if (settingsCfg.getBoolean("check-for-updates")) {
+        if (settingsFile.getConfig().getBoolean("check-for-updates")) {
             final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
             updateChecker.getLatestVersion(version -> {
                 if (!version.equals(updateChecker.getCurrentVersion())) {
@@ -93,7 +89,7 @@ public class CommandDefender extends JavaPlugin {
 
     private void loadCommandsList() {
         // Retrieve the list.
-        commandsList = settingsCfg.getStringList("commands.list");
+        commandsList = settingsFile.getConfig().getStringList("commands.list");
 
         // Convert to lower case.
         // By to Matthew T. Staebler on StackOverflow.

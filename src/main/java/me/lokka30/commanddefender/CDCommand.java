@@ -22,44 +22,44 @@ public class CDCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            for (String message : instance.messagesCfg.getStringList("command.main")) {
+            for (String message : instance.messagesFile.getConfig().getStringList("command.main")) {
                 sender.sendMessage(MicroUtils.colorize(message)
-                        .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))
+                        .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))
                         .replace("%version%", instance.getDescription().getVersion())
                         .replace("%label%", label));
             }
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("commanddefender.reload")) {
-                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.start"))
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.start"))
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                     instance.loadFiles();
                     Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.reload.complete"))
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.complete"))
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                 } else {
-                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.no-permission"))
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.no-permission"))
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                 }
             } else if (args[0].equalsIgnoreCase("backup")) {
                 if (sender.hasPermission("commanddefender.backup")) {
-                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.backup.start"))
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.backup.start"))
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                     sender.sendMessage("&c&oThis feature is not yet implemented.");
-                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.backup.complete"))
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.backup.complete"))
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                 } else {
-                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.no-permission"))
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+                    sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.no-permission"))
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                 }
             } else {
-                sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.usage"))
-                        .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix"))
+                sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.usage"))
+                        .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix"))
                                 .replace("%label%", label))));
             }
         } else {
-            sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("command.usage"))
-                    .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix"))
+            sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.usage"))
+                    .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix"))
                             .replace("%label%", label))));
         }
         return true;

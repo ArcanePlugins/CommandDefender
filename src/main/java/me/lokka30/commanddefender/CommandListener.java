@@ -23,7 +23,7 @@ public class CommandListener implements Listener {
         if (player.hasPermission("commanddefender.bypass.*") || player.hasPermission("commanddefender.bypass." + command.replaceFirst("/", ""))) {
             return false;
         } else {
-            switch (Objects.requireNonNull(instance.settingsCfg.getString("commands.mode")).toUpperCase()) {
+            switch (Objects.requireNonNull(instance.settingsFile.getConfig().getString("commands.mode")).toUpperCase()) {
                 case "WHITELIST":
                     return !instance.commandsList.contains(command);
                 case "BLACKLIST":
@@ -42,13 +42,13 @@ public class CommandListener implements Listener {
 
         if (isBlocked(player, command)) {
             event.setCancelled(true);
-            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-blocked"))
-                    .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))
+            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("cancelled-blocked"))
+                    .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))
                     .replace("%command%", command)));
-        } else if (command.contains(":") && instance.settingsCfg.getBoolean("block-colons")) {
+        } else if (command.contains(":") && instance.settingsFile.getConfig().getBoolean("block-colons")) {
             event.setCancelled(true);
-            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesCfg.getString("cancelled-colon"))
-                    .replace("%prefix%", Objects.requireNonNull(instance.messagesCfg.getString("prefix")))));
+            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("cancelled-colon"))
+                    .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
         }
     }
 
@@ -58,7 +58,7 @@ public class CommandListener implements Listener {
         event.getCommands().removeIf(command -> isBlocked(event.getPlayer(), "/" + command));
 
         // Remove commands with colons, if enabled, such as /bukkit:help.
-        if (instance.settingsCfg.getBoolean("block-colons")) {
+        if (instance.settingsFile.getConfig().getBoolean("block-colons")) {
             event.getCommands().removeIf(command -> command.contains(":"));
         }
     }

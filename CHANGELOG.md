@@ -40,3 +40,8 @@
 * Fixed case sensitivity.
 * Updated dependencies (MicroLib 2.0.0 -> 2.1.1, Spigot API 1.16.3 -> 1.16.4).
 * Fixed update checker.
+
+### v1.2.2
+* Note: Not Tested!
+* Now utilising QuickTimer from MicroLib
+* Now utilising YamlConfigFile from MicroLib
