@@ -39,7 +39,12 @@ public class CDCommand implements TabExecutor {
                     } catch (IOException exception) {
                         exception.printStackTrace();
                     }
-                    Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+
+                    try {
+                        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+                    } catch (NoSuchMethodError ignored) {
+                    }
+
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.complete"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
                 } else {

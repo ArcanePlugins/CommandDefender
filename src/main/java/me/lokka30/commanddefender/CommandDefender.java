@@ -85,12 +85,16 @@ public class CommandDefender extends JavaPlugin {
 
     private void checkForUpdates() {
         if (settingsFile.getConfig().getBoolean("check-for-updates")) {
-            final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
-            updateChecker.getLatestVersion(version -> {
-                if (!version.equals(updateChecker.getCurrentVersion())) {
-                    logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
-                }
-            });
+            try {
+                final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
+                updateChecker.getLatestVersion(version -> {
+                    if (!version.equals(updateChecker.getCurrentVersion())) {
+                        logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
+                    }
+                });
+            } catch (NoClassDefFoundError error) {
+                logger.warning("The update checker does not work on Minecraft servers older than &b1.11&7. Please disable it in your configuration.");
+            }
         }
     }
 

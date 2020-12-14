@@ -48,3 +48,12 @@
 
 ### v1.2.3
 * Fixed startup error, thanks to person in discussions section for reporting it
+
+### v1.2.4
+Notes:
+* This update was **not tested**.
+* A big thank you to PoZiomeK and Hugo5551 for their excellent communication and assistance for these issues :)
+
+Changelog:
+* Attempted to warn user that the update checker doesn't work in <1.11 servers rather than spit errors
+* Attempted to suppress error that occurs with <1.13 servers when running the reload subcommand.
