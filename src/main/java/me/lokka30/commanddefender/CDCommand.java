@@ -34,6 +34,7 @@ public class CDCommand implements TabExecutor {
                 if (sender.hasPermission("commanddefender.reload")) {
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.start"))
                             .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
+
                     try {
                         instance.loadFiles();
                     } catch (IOException exception) {
@@ -42,7 +43,7 @@ public class CDCommand implements TabExecutor {
 
                     try {
                         Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-                    } catch (NoSuchMethodError ignored) {
+                    } catch (Exception ignored) {
                     }
 
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.complete"))

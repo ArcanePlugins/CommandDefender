@@ -92,8 +92,8 @@ public class CommandDefender extends JavaPlugin {
                         logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
                     }
                 });
-            } catch (NoClassDefFoundError error) {
-                logger.warning("The update checker does not work on Minecraft servers older than &b1.11&7. Please disable it in your configuration.");
+            } catch (Exception exception) {
+                logger.warning("An issue occured whilst attempting to check for updates. In case you have a server older than &b1.11&7, then you must disable the update checker in CommandDefender's configuration.");
             }
         }
     }
