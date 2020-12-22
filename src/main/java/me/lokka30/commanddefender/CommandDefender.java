@@ -25,25 +25,24 @@ public class CommandDefender extends JavaPlugin {
         QuickTimer timer = new QuickTimer();
         timer.start();
 
-        logger.info("Loading files");
+        logger.info("Loading files...");
         try {
             loadFiles();
         } catch (IOException exception) {
             exception.printStackTrace();
         }
 
-        logger.info("Registering events");
-        registerEvents();
+        logger.info("Registering listeners...");
+        new CommandListeners(this).registerListeners();
 
-        logger.info("Registering commands");
+        logger.info("Registering commands...");
         registerCommands();
 
-        logger.info("Starting bStats metrics");
+        logger.info("Running misc methods...");
         startMetrics();
+        checkForUpdates();
 
         logger.info("&fLoading complete! &8(&7Took &b" + timer.getTimer() + "ms&8)");
-
-        checkForUpdates();
     }
 
     public void loadFiles() throws IOException {
@@ -69,10 +68,6 @@ public class CommandDefender extends JavaPlugin {
         if (cfg.getInt("advanced.file-version") != recommendedVersion) {
             logger.warning("Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are likely to happen!");
         }
-    }
-
-    private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new CommandListener(this), this);
     }
 
     private void registerCommands() {
