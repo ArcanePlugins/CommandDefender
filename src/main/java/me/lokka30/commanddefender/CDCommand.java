@@ -41,9 +41,8 @@ public class CDCommand implements TabExecutor {
                         exception.printStackTrace();
                     }
 
-                    try {
+                    if (instance.isOneThirteen()) {
                         Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-                    } catch (Exception ignored) {
                     }
 
                     sender.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("command.reload.complete"))

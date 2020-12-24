@@ -22,18 +22,9 @@ public class CommandListeners implements Listener {
         Bukkit.getPluginManager().registerEvents(this, instance);
 
         //Check if Minecraft 1.13+ is installed.
-        if (isOneThirteen()) {
+        if (instance.isOneThirteen()) {
             Bukkit.getPluginManager().registerEvents(new NewCommandListeners(), instance);
         }
-    }
-
-    private boolean isOneThirteen() {
-        try {
-            Class.forName("org.bukkit.event.player.PlayerCommandSendEvent");
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-        return true;
     }
 
     public boolean isBlocked(final Player player, String command) {

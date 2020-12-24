@@ -104,4 +104,13 @@ public class CommandDefender extends JavaPlugin {
             iterator.set(iterator.next().toLowerCase());
         }
     }
+
+    public boolean isOneThirteen() {
+        try {
+            Class.forName("org.bukkit.event.player.PlayerCommandSendEvent");
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -103,3 +103,12 @@ Changelog:
 * Changes to the code here and there
 
 
+
+## v1.2.7
+### Notes:
+* This update was not tested.
+* No file changes this update.
+
+### Changelog
+* Fixed reload subcommand not working on <1.13 servers.
+* Minor code changes.
