@@ -6,7 +6,7 @@ command:
     complete: '%prefix% ... Backup complete, check the ''&b/plugins/CommandDefender/backups/&7'' folder.'
   main:
     - ' '
-    - '&b&lCommandDefender &bv%version%&7 by lokka30'
+    - '&b&lCommandDefender &fv%version%&7 by lokka30'
     - ' '
     - '&f&nAvailable Commands'
     - '&8 &m->&b /%label% reload &8(&7reload configuration files&8)'

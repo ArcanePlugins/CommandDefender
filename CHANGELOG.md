@@ -109,6 +109,17 @@ Changelog:
 * This update was not tested.
 * No file changes this update.
 
-### Changelog
+### Changelog:
 * Fixed reload subcommand not working on <1.13 servers.
 * Minor code changes.
+
+
+
+## v1.2.8
+### Notes:
+* This update was not tested.
+* No file changes this update.
+
+### Changelog:
+* Hopefully fixed the update checker throwing an error on <1.11 servers, instead it should show a warning to disable it.
+* Very minor change to a message in messages.yml, no reset necessary.
