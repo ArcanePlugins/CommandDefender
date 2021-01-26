@@ -123,3 +123,19 @@ Changelog:
 ### Changelog:
 * Hopefully fixed the update checker throwing an error on <1.11 servers, instead it should show a warning to disable it.
 * Very minor change to a message in messages.yml, no reset necessary.
+
+***
+
+## v1.3.0
+### Notes:
+* **WARNING** This update was not tested thoroughly. If you have security concerns then I would advise you run your own testing or stick with the previous version (unsupported as of now). I apologise for this as I am currently very limited on time.
+* No file changes this update. The settings file has new functionality although no changes are needed.
+
+### Changelog:
+**Blockable Command Arguments!**
+* Perhaps the most requested feature of this plugin is the ability to block certain arguments of commands (e.g. 'base' in '/home base').
+* This system has been designed to fit as many use cases as possible. Check out the Wiki to see its possibilities!
+* This system is a little tricky to use so please [contact me on my Discord](https://discord.io/arcaneplugins) if you have any queries or issues.
+
+**Bug Fixes**
+* Fixed the command message being colorized in the deny message.

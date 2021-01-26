@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CDCommand implements TabExecutor {
+public class CommandDefenderCommand implements TabExecutor {
 
     private final CommandDefender instance;
 
-    public CDCommand(CommandDefender instance) {
+    public CommandDefenderCommand(CommandDefender instance) {
         this.instance = instance;
     }
 

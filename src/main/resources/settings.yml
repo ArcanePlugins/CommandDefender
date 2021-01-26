@@ -6,6 +6,9 @@ commands:
   # BLACKLIST = commands in the list below will be blocked but all other commands will be unblocked.
   mode: BLACKLIST
 
+  # Specify the commands you want to block here.
+  # Check the Wiki to view how to block command arguments such as 'home' in '/f home'. :)
+  # https://github.com/lokka30/CommandDefender/wiki/3.-Command-Blocking
   list:
     - '/plugins'
     - '/pl'

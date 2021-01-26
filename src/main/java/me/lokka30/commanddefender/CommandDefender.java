@@ -10,15 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 
 public class CommandDefender extends JavaPlugin {
 
     public final MicroLogger logger = new MicroLogger("&b&lCommandDefender: &7");
     public YamlConfigFile settingsFile, messagesFile;
-    public List<String> commandsList;
+    public final CommandManager commandManager = new CommandManager(this);
 
     @Override
     public void onEnable() {
@@ -49,7 +47,7 @@ public class CommandDefender extends JavaPlugin {
         settingsFile = new YamlConfigFile(this, new File(getDataFolder(), "settings.yml"));
         settingsFile.load();
         checkFileVersion(settingsFile.getConfig(), "settings.yml", 1);
-        loadCommandsList();
+        commandManager.load();
 
         messagesFile = new YamlConfigFile(this, new File(getDataFolder(), "messages.yml"));
         messagesFile.load();
@@ -71,7 +69,7 @@ public class CommandDefender extends JavaPlugin {
     }
 
     private void registerCommands() {
-        Objects.requireNonNull(getCommand("commanddefender")).setExecutor(new CDCommand(this));
+        Objects.requireNonNull(getCommand("commanddefender")).setExecutor(new CommandDefenderCommand(this));
     }
 
     private void startMetrics() {
@@ -90,18 +88,6 @@ public class CommandDefender extends JavaPlugin {
             } catch (NoClassDefFoundError error) {
                 logger.warning("The update checker only works for servers running &fMinecraft 1.11.x and older&7. Please &fdisable the update checker in the configuration&7 as it seems your server is older than what the update checker supports.");
             }
-        }
-    }
-
-    private void loadCommandsList() {
-        // Retrieve the list.
-        commandsList = settingsFile.getConfig().getStringList("commands.list");
-
-        // Convert to lower case.
-        // By to Matthew T. Staebler on StackOverflow.
-        ListIterator<String> iterator = commandsList.listIterator();
-        while (iterator.hasNext()) {
-            iterator.set(iterator.next().toLowerCase());
         }
     }
 
