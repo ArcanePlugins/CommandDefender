@@ -139,3 +139,18 @@ Changelog:
 
 **Bug Fixes**
 * Fixed the command message being colorized in the deny message.
+
+***
+
+## v1.4.0
+### Notes:
+* This update was not tested.
+* A recommended yet optional file change has occured to settings.yml although the same file version remains. I understand people have already invested lots of time into their configs so I don't want to make you all reset it :)
+
+### Changelog:
+**Overrideable Commands**
+* You can now force-block commands such as `/island* *` whilst in whitelist mode.
+* Thanks to keith for reporting this lacking feature to me. :)
+
+***
+

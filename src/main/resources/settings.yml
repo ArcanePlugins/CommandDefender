@@ -19,6 +19,11 @@ commands:
     - '/?'
     - '/help'
 
+  # The following commands will be *force-blocked* regardless if they are listed above or not.
+  # Useful if you have a command whitelist but want to block arguments being specified in commands such as '/island'.
+  overrides:
+    - '/xyz789 * secondArg* thirdArg* thisIsAnExample'
+
 # Block colons (:) in the first argument of commands? e.g. block /bukkit:plugins
 block-colons: true
 
