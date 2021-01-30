@@ -1,9 +1,10 @@
 # List of commands which will be handled by CommandDefender.
 commands:
 
-  # You can use 'WHITELIST' or 'BLACKLIST'.
+  # You can use 'WHITELIST', 'BLACKLIST' or 'ALL'.
   # WHITELIST = commands in the list below will be unblocked but all other commands will be blocked.
   # BLACKLIST = commands in the list below will be blocked but all other commands will be unblocked.
+  # ALL = all commands will be blocked, regardless if they are listed below or not.
   mode: BLACKLIST
 
   # Specify the commands you want to block here.
@@ -22,7 +23,8 @@ commands:
   # The following commands will be *force-blocked* regardless if they are listed above or not.
   # Useful if you have a command whitelist but want to block arguments being specified in commands such as '/island'.
   overrides:
-    - '/xyz789 * secondArg* thirdArg* thisIsAnExample'
+    - '/xyz789 * secondArg thirdArg thisIsAnExample' # doesn't allow the combination of these args to be ran
+    - '/exampleCommand123 *' # only allows the base command /exampleCommand to be ran without args
 
 # Block colons (:) in the first argument of commands? e.g. block /bukkit:plugins
 block-colons: true

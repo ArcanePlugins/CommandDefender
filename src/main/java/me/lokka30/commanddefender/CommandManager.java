@@ -44,19 +44,11 @@ public class CommandManager {
                     continue;
                 }
 
-                if (listedCommandCurrent.equals("*")) {
-                    continue;
+                if (listedCommandCurrent.equals("*") || ranCommandCurrent.equals(listedCommandCurrent.replace("\\*", "*"))) {
+                    if (i == listedCommand.length - 1) {
+                        return true;
+                    }
                 }
-
-                if (listedCommandCurrent.equals(ranCommandCurrent + "*")) {
-                    continue;
-                }
-
-                if (ranCommandCurrent.equals(listedCommandCurrent.replace("\\*", "*"))) {
-                    return true;
-                }
-
-                break;
             }
         }
 
