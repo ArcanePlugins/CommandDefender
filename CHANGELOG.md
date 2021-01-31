@@ -154,3 +154,12 @@ Changelog:
 
 ***
 
+## v1.4.1
+### Notes:
+* This update was tested.
+* If you are running the subcommands system, remove any `*` characters suffixing any args you have listed. e.g. change `/command notch*` to `/command notch`.
+* I apologise for the frequent updates, this should be the last for a while :)
+
+### Changelog:
+* Removed the necessity to have `*` after each argument in a command that you want to list. CommandDefender now only counts the last argument you have listed.
+* Decent changes to the 'isListed' code making it run as intended.
