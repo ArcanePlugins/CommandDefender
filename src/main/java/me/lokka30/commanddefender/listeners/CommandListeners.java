@@ -40,7 +40,7 @@ public class CommandListeners implements Listener {
 
             List<String> denyMessage;
 
-            if (blockedStatus.denyMessage == null) {
+            if (blockedStatus.denyMessage == null || blockedStatus.denyMessage.isEmpty()) {
                 denyMessage = instance.messagesFile.getConfig().getStringList("cancelled-blocked");
             } else {
                 denyMessage = blockedStatus.denyMessage;
@@ -54,7 +54,7 @@ public class CommandListeners implements Listener {
         } else if (command.contains(":") && instance.settingsFile.getConfig().getBoolean("block-colons")) {
             event.setCancelled(true);
 
-            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
+            instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
                     .replace("%prefix%", instance.getPrefix())
             )));
         }

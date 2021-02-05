@@ -21,7 +21,7 @@ public class CommandManager {
     private static class PrioritisedList {
         ListMode listMode;
         final HashSet<String[]> listedCommands;
-        final List<String> denyMessage;
+        List<String> denyMessage;
 
         public PrioritisedList(ListMode listMode, HashSet<String[]> listedCommands, List<String> denyMessage) {
             this.listMode = listMode;
