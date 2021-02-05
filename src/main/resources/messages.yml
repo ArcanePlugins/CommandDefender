@@ -1,25 +1,57 @@
-cancelled-blocked: '%prefix% You are not allowed to use ''&b%command%&7''!'
-cancelled-colon: '%prefix% You are not allowed to use the colon character &8(&b:&8) &7in the first argument of your commands.'
+#   ___                                                _ .___          ,__                     _
+# .'   \   __.  , _ , _   , _ , _     ___  , __     ___/ /   `    ___  /  `   ___  , __     ___/   ___  .___
+# |      .'   \ |' `|' `. |' `|' `.  /   ` |'  `.  /   | |    | .'   ` |__  .'   ` |'  `.  /   | .'   ` /   \
+# |      |    | |   |   | |   |   | |    | |    | ,'   | |    | |----' |    |----' |    | ,'   | |----' |   '
+# `.__,  `._.' /   '   / /   '   / `.__/| /    | `___,' /---/  `.___, |    `.___, /    | `___,' `.___, /
+# Welcome to CommandDefender's second configuration file - messages.yml! Here, you can customise almost every
+# chat message sent by the plugin with color code support, multi-line support and placeholders!
+# Note: %placeholders% are case-sensitive. Please keep them in the same case that they were originally.
+
+cancelled-blocked:
+  - '%prefix% You are not allowed to use ''&b%command%&7''!'
+
+cancelled-colon:
+  - '%prefix% You are not allowed to use the colon character &8(&b:&8) &7in the first argument of your commands.'
+
 command:
   backup:
-    start: '%prefix% Backup started ...'
-    complete: '%prefix% ... Backup complete, check the ''&b/plugins/CommandDefender/backups/&7'' folder.'
+    start:
+      - '%prefix% Backup started ...'
+
+    complete:
+      - '%prefix% ... Backup complete, check the ''&b/plugins/CommandDefender/backups/&7'' folder.'
+
   main:
-    - ' '
-    - '&b&lCommandDefender &fv%version%&7 by lokka30'
-    - ' '
-    - '&f&nAvailable Commands'
-    - '&8 &m->&b /%label% reload &8(&7reload configuration files&8)'
-    - '&8 &m->&b /%label% backup &8(&7backup configuration files&8)'
-    - ' '
-  no-permission: '%prefix% You don''t have access to that.'
+    - '%prefix% Available commands:'
+    - '&8 &m->&b /%label% reload &8- &7reload config files'
+    - '&8 &m->&b /%label% backup &8- &7backup config files'
+    - '&8 &m->&b /%label% info &8- &7view info about the plugin'
+
+  no-permission:
+    - '%prefix% You don''t have access to that.'
+
   reload:
-    start: '%prefix% Reload started ...'
-    complete: '%prefix% ... Reload complete.'
-  usage: '%prefix% Usage: &b/%label% [reload/backup]'
+    start:
+      - '%prefix% Reload started ...'
+
+    complete:
+      - '%prefix% ... Reload complete.'
+
+  info:
+    - ' '
+    - '&7Running &bCommandDefender v%version% &7by &flokka30'
+    - '&7''%description%'''
+    - ' '
+    - '&7Contributors: &f%contributors%&7.'
+    - '&7Supported Versions: &fMC %supportedVersions%&7.'
+    - ' '
+
+  usage:
+    - '%prefix% Usage: &b/%label% [reload/backup/info]'
+
+  joiner: '&7, &f'
+
 prefix: '&b&lCommandDefender:&7'
 
-# Do not touch these values unless you are fully aware with what you are doing!
-advanced:
-  file-version: 1
-  generated-with: '${project.version}'
+# Do not touch this value unless you are fully aware with what you are doing!
+file-version: 2

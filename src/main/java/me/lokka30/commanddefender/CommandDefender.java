@@ -1,6 +1,9 @@
 package me.lokka30.commanddefender;
 
-import me.lokka30.microlib.MicroLogger;
+import me.lokka30.commanddefender.commands.CommandDefenderCommand;
+import me.lokka30.commanddefender.listeners.CommandListeners;
+import me.lokka30.commanddefender.managers.CommandManager;
+import me.lokka30.commanddefender.utils.Utils;
 import me.lokka30.microlib.QuickTimer;
 import me.lokka30.microlib.UpdateChecker;
 import me.lokka30.microlib.YamlConfigFile;
@@ -14,46 +17,44 @@ import java.util.Objects;
 
 public class CommandDefender extends JavaPlugin {
 
-    public final MicroLogger logger = new MicroLogger("&b&lCommandDefender: &7");
     public YamlConfigFile settingsFile, messagesFile;
     public final CommandManager commandManager = new CommandManager(this);
 
     @Override
     public void onEnable() {
+        Utils.logger.info("&f~ Initiating start-up procedure ~");
         QuickTimer timer = new QuickTimer();
         timer.start();
 
-        logger.info("Loading files...");
-        try {
-            loadFiles();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-
-        logger.info("Registering listeners...");
-        new CommandListeners(this).registerListeners();
-
-        logger.info("Registering commands...");
+        loadFiles();
+        registerListeners();
         registerCommands();
 
-        logger.info("Running misc methods...");
+        Utils.logger.info("&fStart-up: &7Running misc procedures...");
         startMetrics();
         checkForUpdates();
 
-        logger.info("&fLoading complete! &8(&7Took &b" + timer.getTimer() + "ms&8)");
+        Utils.logger.info("&f~ Start-up complete, took &b" + timer.getTimer() + "ms&f ~");
     }
 
-    public void loadFiles() throws IOException {
-        settingsFile = new YamlConfigFile(this, new File(getDataFolder(), "settings.yml"));
-        settingsFile.load();
-        checkFileVersion(settingsFile.getConfig(), "settings.yml", 1);
-        commandManager.load();
+    public void loadFiles() {
+        Utils.logger.info("&fFile Loader: &7Loading files...");
 
-        messagesFile = new YamlConfigFile(this, new File(getDataFolder(), "messages.yml"));
-        messagesFile.load();
-        checkFileVersion(messagesFile.getConfig(), "messages.yml", 1);
+        try {
+            settingsFile = new YamlConfigFile(this, new File(getDataFolder(), "settings.yml"));
+            settingsFile.load();
+            checkFileVersion(settingsFile.getConfig(), "settings.yml", 2);
+            commandManager.load();
 
-        createIfNotExists(new File(getDataFolder(), "license.txt"));
+            messagesFile = new YamlConfigFile(this, new File(getDataFolder(), "messages.yml"));
+            messagesFile.load();
+            checkFileVersion(messagesFile.getConfig(), "messages.yml", 2);
+
+            createIfNotExists(new File(getDataFolder(), "license.txt"));
+        } catch (IOException ex) {
+            Utils.logger.error("&fFile Loader: &7An error occured whilst attempting to load files. Stack trace:");
+            ex.printStackTrace();
+        }
     }
 
     private void createIfNotExists(File file) {
@@ -63,12 +64,19 @@ public class CommandDefender extends JavaPlugin {
     }
 
     private void checkFileVersion(YamlConfiguration cfg, String cfgName, @SuppressWarnings("SameParameterValue") int recommendedVersion) {
-        if (cfg.getInt("advanced.file-version") != recommendedVersion) {
-            logger.warning("Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are likely to happen!");
+        if (cfg.getInt("file-version") != recommendedVersion) {
+            Utils.logger.error("Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are highly likely to occur!");
         }
     }
 
+    private void registerListeners() {
+        Utils.logger.info("&fStart-up: &7Registering listeners...");
+
+        new CommandListeners(this).registerListeners();
+    }
+
     private void registerCommands() {
+        Utils.logger.info("&fStart-up: &7Registering commands...");
         Objects.requireNonNull(getCommand("commanddefender")).setExecutor(new CommandDefenderCommand(this));
     }
 
@@ -80,23 +88,18 @@ public class CommandDefender extends JavaPlugin {
         if (settingsFile.getConfig().getBoolean("check-for-updates")) {
             try {
                 final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
-                updateChecker.getLatestVersion(version -> {
-                    if (!version.equals(updateChecker.getCurrentVersion())) {
-                        logger.warning("&b(NEW UPDATE) &fA new update is available on SpigotMC!");
+                updateChecker.getLatestVersion(latestVersion -> {
+                    if (!latestVersion.equals(updateChecker.getCurrentVersion())) {
+                        Utils.logger.warning("&fUpdate Checker: &7A new update is available on SpigotMC! &8(&7You are running &bv" + updateChecker.getCurrentVersion() + "&7 but the latest version is &bv" + latestVersion + "&8)");
                     }
                 });
             } catch (NoClassDefFoundError error) {
-                logger.warning("The update checker only works for servers running &fMinecraft 1.11.x and older&7. Please &fdisable the update checker in the configuration&7 as it seems your server is older than what the update checker supports.");
+                Utils.logger.warning("Due to a technical limitation, the &fupdate checker&7 only works for servers running &fMinecraft 1.11.x and newer&7. Please &fdisable the update checker in the configuration&7 as it seems your server is older than what the update checker supports.");
             }
         }
     }
 
-    public boolean isOneThirteen() {
-        try {
-            Class.forName("org.bukkit.event.player.PlayerCommandSendEvent");
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-        return true;
+    public String getPrefix() {
+        return messagesFile.getConfig().getString("prefix");
     }
 }

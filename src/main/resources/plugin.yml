@@ -7,24 +7,52 @@ api-version: '1.13'
 
 commands:
   commanddefender:
-    aliases: [cd, cmddefender]
-    description: View information about CommandDefender or manage the resource.
-    usage: /<command> [reload/backup]
+    aliases: [ cd, cmddefender ]
+    description: Manage CommandDefender.
+    usage: /<command> [reload/backup/info]
 
 permissions:
   commanddefender.*:
     description: Access to all of the plugin's permissions.
     default: op
     children:
-      commanddefender.bypass.*: true
-      commanddefender.reload: true
-      commanddefender.backup: true
-  commanddefender.bypass.*:
-    description: Bypass all blocked commands.
+      commanddefender.allow.*: true
+      commanddefender.command.*: true
+      commanddefender.bypass-colon-blocker: true
+
+  commanddefender.allow.*:
+    description: Overrides all blocked commands, allowing the player to run them.
     default: op
-  commanddefender.reload:
+
+  commanddefender.deny.*:
+    description: Overrides all allowed commands, denying the player from running them.
+    default: false
+
+  commanddefender.command.*:
+    description: Access to all CommandDefender subcommands.
+    default: op
+    children:
+      commanddefender.command: true
+      commanddefender.command.reload: true
+      commanddefender.command.backup: true
+      commanddefender.command.info: true
+
+  commanddefender.command:
+    description: Access to the base command, /commanddefender.
+    default: true
+
+  commanddefender.command.reload:
     description: Reload the plugin's configuration files.
     default: op
-  commanddefender.backup:
+
+  commanddefender.command.backup:
     description: Backup the plugin's configuration files.
+    default: op
+
+  commanddefender.command.info:
+    description: View info about the plugin.
+    default: true
+
+  commanddefender.bypass-colon-blocker:
+    description: Allows the user to bypass the 'block-colons' setting.
     default: op

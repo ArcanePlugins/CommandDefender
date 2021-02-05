@@ -1,14 +1,16 @@
-package me.lokka30.commanddefender;
+package me.lokka30.commanddefender.listeners;
 
+import me.lokka30.commanddefender.CommandDefender;
+import me.lokka30.commanddefender.managers.CommandManager;
+import me.lokka30.commanddefender.utils.Utils;
 import me.lokka30.microlib.MicroUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 
-import java.util.Objects;
+import java.util.List;
 
 public class CommandListeners implements Listener {
 
@@ -22,35 +24,39 @@ public class CommandListeners implements Listener {
         Bukkit.getPluginManager().registerEvents(this, instance);
 
         //Check if Minecraft 1.13+ is installed.
-        if (instance.isOneThirteen()) {
+        if (Utils.isOneThirteen()) {
             Bukkit.getPluginManager().registerEvents(new NewCommandListeners(), instance);
-        }
-    }
-
-    public boolean isBlocked(final Player player, String command) {
-        command = command.toLowerCase();
-
-        if (player.hasPermission("commanddefender.bypass.*") || player.hasPermission("commanddefender.bypass." + command.replaceFirst("/", ""))) {
-            return false;
-        } else {
-            return instance.commandManager.isBlocked(command);
         }
     }
 
     @EventHandler
     public void onCommand(final PlayerCommandPreprocessEvent event) {
-        final Player player = event.getPlayer();
         final String command = event.getMessage();
 
-        if (isBlocked(player, command)) {
+        final CommandManager.BlockedStatus blockedStatus = instance.commandManager.getBlockedStatus(event.getPlayer(), command.split(" "));
+
+        if (blockedStatus.isBlocked) {
             event.setCancelled(true);
-            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("cancelled-blocked"))
-                    .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix"))))
-                    .replace("%command%", command));
+
+            List<String> denyMessage;
+
+            if (blockedStatus.denyMessage == null) {
+                denyMessage = instance.messagesFile.getConfig().getStringList("cancelled-blocked");
+            } else {
+                denyMessage = blockedStatus.denyMessage;
+            }
+
+            denyMessage.forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
+                    .replace("%prefix%", instance.getPrefix())
+                    .replace("%command%", command)
+            )));
+
         } else if (command.contains(":") && instance.settingsFile.getConfig().getBoolean("block-colons")) {
             event.setCancelled(true);
-            player.sendMessage(MicroUtils.colorize(Objects.requireNonNull(instance.messagesFile.getConfig().getString("cancelled-colon"))
-                    .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))));
+
+            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
+                    .replace("%prefix%", instance.getPrefix())
+            )));
         }
     }
 
@@ -58,7 +64,7 @@ public class CommandListeners implements Listener {
         @EventHandler
         public void onCommandSend(final PlayerCommandSendEvent event) {
             // Remove blocked commands from the suggestions list.
-            event.getCommands().removeIf(command -> isBlocked(event.getPlayer(), "/" + command));
+            event.getCommands().removeIf(command -> instance.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);
 
             // Remove commands with colons, if enabled, such as /bukkit:help.
             if (instance.settingsFile.getConfig().getBoolean("block-colons")) {

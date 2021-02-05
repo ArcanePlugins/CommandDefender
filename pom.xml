@@ -6,10 +6,10 @@
 
     <groupId>me.lokka30</groupId>
     <artifactId>CommandDefender</artifactId>
-    <version>1.4.1</version>
+    <version>b15 indev</version>
 
     <name>CommandDefender</name>
-    <description>A SpigotMC plugin which prevents users from running configurable commands.</description>
+    <description>A SpigotMC plugin which specialises in blocking users from running configured commands.</description>
 
     <properties>
         <java.version>1.8</java.version>

@@ -1,5 +1,5 @@
-CommandDefender: A SpigotMC plugin which prevents users from running configurable commands.
-Copyright (C) 2020  Lachlan Adamson
+CommandDefender: A SpigotMC plugin for Minecraft
+Copyright (C) 2020  lokka30
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
