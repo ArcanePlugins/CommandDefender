@@ -77,8 +77,10 @@ public class CommandManager {
         int priority = 1;
         while (instance.settingsFile.getConfig().contains("priorities." + priority)) {
 
+            final String listModeStr = instance.settingsFile.getConfig().getString("priorities." + priority + ".mode");
+
             PrioritisedList prioritisedList = new PrioritisedList(
-                    ListMode.fromString(instance.settingsFile.getConfig().getString("priorities." + priority + ".mode")),
+                    listModeStr == null || listModeStr.isEmpty() ? null : ListMode.fromString(listModeStr),
                     getSplitCommandSetFromList(instance.settingsFile.getConfig().getStringList("priorities." + priority + ".list")),
                     instance.settingsFile.getConfig().getStringList("priorities." + priority + ".deny-message")
             );
@@ -109,6 +111,8 @@ public class CommandManager {
 
     public BlockedStatus getBlockedStatus(Player player, String[] ranCommand) {
 
+        final ListMode defaultListMode = ListMode.fromString(instance.settingsFile.getConfig().getString("priorities.unlisted"));
+
         if (instance.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
             if (player.hasPermission("commanddefender.allow." + ranCommand[0].toLowerCase()))
                 return new BlockedStatus(false, null);
@@ -121,6 +125,10 @@ public class CommandManager {
 
             PrioritisedList prioritisedList = prioritisedListMap.get(priority);
             final List<String> blockMessage = prioritisedList.denyMessage;
+
+            if (prioritisedList.listMode == null) {
+                prioritisedList.listMode = defaultListMode;
+            }
 
             // Check for permissions that override the list mode in the setting.
             if (player.hasPermission("commanddefender.allow." + priority)) prioritisedList.listMode = ListMode.ALLOW;
@@ -150,6 +158,6 @@ public class CommandManager {
         }
 
         // command is not allowed/blocked in any prioritised list so return default.
-        return new BlockedStatus(ListMode.fromString(instance.settingsFile.getConfig().getString("priorities.unlisted")) == ListMode.DENY, null);
+        return new BlockedStatus(defaultListMode == ListMode.DENY, null);
     }
 }

@@ -13,7 +13,7 @@
 
 # Create a list of allowed/denied commands ordered by priority.
 # Please check the Wiki on how to use this if you are not already familiar. The Wiki URL is linked at the top.
-priorites:
+priorities:
 
   # Setting this to 'false' disables CommandDefender from checking the lists below and thus will not block any commands
   # with exception of the 'block-colons' setting below and also the permissions to block commands which can also be
