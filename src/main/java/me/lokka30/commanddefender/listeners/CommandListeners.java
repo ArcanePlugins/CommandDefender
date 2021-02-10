@@ -29,7 +29,7 @@ public class CommandListeners implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final String command = event.getMessage();
 
@@ -61,7 +61,7 @@ public class CommandListeners implements Listener {
     }
 
     private class NewCommandListeners implements Listener {
-        @EventHandler
+        @EventHandler(ignoreCancelled = true)
         public void onCommandSend(final PlayerCommandSendEvent event) {
             // Remove blocked commands from the suggestions list.
             event.getCommands().removeIf(command -> instance.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);

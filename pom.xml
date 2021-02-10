@@ -6,7 +6,7 @@
 
     <groupId>me.lokka30</groupId>
     <artifactId>CommandDefender</artifactId>
-    <version>b20 indev</version>
+    <version>b21 indev</version>
 
     <name>CommandDefender</name>
     <description>A SpigotMC plugin which specialises in blocking users from running configured commands.</description>
