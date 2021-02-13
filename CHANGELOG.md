@@ -155,11 +155,53 @@ Changelog:
 ***
 
 ## v1.4.1
+
 ### Notes:
+
 * This update was tested.
-* If you are running the subcommands system, remove any `*` characters suffixing any args you have listed. e.g. change `/command notch*` to `/command notch`.
+* If you are running the subcommands system, remove any `*` characters suffixing any args you have listed. e.g.
+  change `/command notch*` to `/command notch`.
 * I apologise for the frequent updates, this should be the last for a while :)
 
 ### Changelog:
-* Removed the necessity to have `*` after each argument in a command that you want to list. CommandDefender now only counts the last argument you have listed.
+
+* Removed the necessity to have `*` after each argument in a command that you want to list. CommandDefender now only
+  counts the last argument you have listed.
 * Decent changes to the 'isListed' code making it run as intended.
+
+***
+
+## v2.0.0 (b22)
+
+### Notes:
+
+* **Significant changes were made to `settings.yml` and `messages.yml`. You MUST update these files, or you will be
+  GUARANTEED to be slammed with the plugin almost completely malfunctioning.**
+* This update was partly tested. I do not have enough time to fully test it. If you are sceptical about your commands'
+  security, I would recommend you test this version before you deploy it.
+
+### Changelog:
+
+#### Now priority-list based! (lokka30)
+
+* *Finally*, you can simultaneously allow and block commands by using priority-based lists!
+* As suggested by @DozerCraft, you can also specify deny messages for each group if you wish to override the default
+  one.
+* This system has overhauled a lot of the code previously in CommandDefender, which is why
+
+#### Multi-line messages! (lokka30)
+
+* All messages now have multi-line support!
+
+#### Force-block and force-allow permissions! (lokka30)
+
+* For those who wanted to block and allow commands based on permissions, that's now possible!
+
+#### And more...
+
+* I am testing a new versioning system. I will use 'build' versioning whilst coding (hence b22), and 'x.x.x' versioning
+  for releases to make it easy for server owners.
+* Unfortunately I didn't write a changelog whilst developing this update, so a bunch of minor things were done to the
+  plugin but I didn't note them down.
+
+***
