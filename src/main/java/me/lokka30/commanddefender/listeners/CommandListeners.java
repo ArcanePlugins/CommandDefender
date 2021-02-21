@@ -51,7 +51,7 @@ public class CommandListeners implements Listener {
                     .replace("%command%", command)
             )));
 
-        } else if (command.contains(":") && instance.settingsFile.getConfig().getBoolean("block-colons")) {
+        } else if (instance.settingsFile.getConfig().getBoolean("block-colons") && command.split(" ")[0].contains(":")) {
             event.setCancelled(true);
 
             instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
