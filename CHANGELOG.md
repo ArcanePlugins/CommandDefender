@@ -205,3 +205,15 @@ Changelog:
   plugin but I didn't note them down.
 
 ***
+
+## v2.0.1-b23
+
+### Notes:
+
+* This update was **tested**.
+* File changes: **none**
+
+### Changelog:
+
+* Fixed a bug where 'block-colons' also blocked colons in arguments of a command rather than only the actual command
+  itself
