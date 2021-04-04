@@ -3,7 +3,7 @@ package me.lokka30.commanddefender.listeners;
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.managers.CommandManager;
 import me.lokka30.commanddefender.utils.Utils;
-import me.lokka30.microlib.MicroUtils;
+import me.lokka30.microlib.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,7 +46,7 @@ public class CommandListeners implements Listener {
                 denyMessage = blockedStatus.denyMessage;
             }
 
-            denyMessage.forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
+            denyMessage.forEach(message -> event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
                     .replace("%prefix%", instance.getPrefix())
                     .replace("%command%", command)
             )));
@@ -54,7 +54,7 @@ public class CommandListeners implements Listener {
         } else if (instance.settingsFile.getConfig().getBoolean("block-colons") && command.split(" ")[0].contains(":")) {
             event.setCancelled(true);
 
-            instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MicroUtils.colorize(message
+            instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
                     .replace("%prefix%", instance.getPrefix())
             )));
         }

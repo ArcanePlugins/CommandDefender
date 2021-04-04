@@ -23,8 +23,7 @@ public class CommandDefender extends JavaPlugin {
     @Override
     public void onEnable() {
         Utils.logger.info("&f~ Initiating start-up procedure ~");
-        QuickTimer timer = new QuickTimer();
-        timer.start();
+        final QuickTimer timer = new QuickTimer();
 
         loadFiles();
         registerListeners();
@@ -88,9 +87,10 @@ public class CommandDefender extends JavaPlugin {
         if (settingsFile.getConfig().getBoolean("check-for-updates")) {
             try {
                 final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
+                final String currentVersion = updateChecker.getCurrentVersion().split(" ")[0];
                 updateChecker.getLatestVersion(latestVersion -> {
-                    if (!latestVersion.equals(updateChecker.getCurrentVersion())) {
-                        Utils.logger.warning("&fUpdate Checker: &7A new update is available on SpigotMC! &8(&7You are running &bv" + updateChecker.getCurrentVersion() + "&7 but the latest version is &bv" + latestVersion + "&8)");
+                    if (!latestVersion.equals(currentVersion)) {
+                        Utils.logger.warning("&fUpdate Checker: &7A new update is available on SpigotMC! &8(&7You are running &bv" + currentVersion + "&7 but the latest version is &bv" + latestVersion + "&8)");
                     }
                 });
             } catch (NoClassDefFoundError error) {

@@ -2,7 +2,7 @@ package me.lokka30.commanddefender.commands;
 
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.utils.Utils;
-import me.lokka30.microlib.MicroUtils;
+import me.lokka30.microlib.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,6 +10,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,14 +25,14 @@ public class CommandDefenderCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!sender.hasPermission("commanddefender.command")) {
-            instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+            instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                     .replace("%prefix%", instance.getPrefix())
             )));
             return true;
         }
 
         if (args.length == 0) {
-            instance.messagesFile.getConfig().getStringList("command.main").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+            instance.messagesFile.getConfig().getStringList("command.main").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                     .replace("%prefix%", instance.getPrefix())
                     .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))
                     .replace("%version%", instance.getDescription().getVersion())
@@ -41,7 +42,7 @@ public class CommandDefenderCommand implements TabExecutor {
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("commanddefender.command.reload")) {
-                    instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
 
@@ -51,27 +52,27 @@ public class CommandDefenderCommand implements TabExecutor {
                         Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
                     }
 
-                    instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
                 } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
                 }
             } else if (args[0].equalsIgnoreCase("backup")) {
                 if (sender.hasPermission("commanddefender.command.backup")) {
-                    instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
 
-                    sender.sendMessage(MicroUtils.colorize("&c&oThis feature is not yet implemented."));
+                    sender.sendMessage(MessageUtils.colorizeAll("&c&oThis feature is not yet implemented."));
 
-                    instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
                 } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
                 }
@@ -83,7 +84,7 @@ public class CommandDefenderCommand implements TabExecutor {
                         assert joiner != null;
                         assert instance.getDescription().getDescription() != null;
 
-                        sender.sendMessage(MicroUtils.colorize(message
+                        sender.sendMessage(MessageUtils.colorizeAll(message
                                 .replace("%prefix%", instance.getPrefix())
                                 .replace("%version%", instance.getDescription().getVersion())
                                 .replace("%description%", instance.getDescription().getDescription())
@@ -93,18 +94,18 @@ public class CommandDefenderCommand implements TabExecutor {
                     });
 
                 } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                             .replace("%prefix%", instance.getPrefix())
                     )));
                 }
             } else {
-                instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+                instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                         .replace("%prefix%", instance.getPrefix())
                         .replace("%label%", label)
                 )));
             }
         } else {
-            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> sender.sendMessage(MicroUtils.colorize(message
+            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                     .replace("%prefix%", instance.getPrefix())
                     .replace("%label%", label)
             )));
@@ -114,9 +115,9 @@ public class CommandDefenderCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
             return Arrays.asList("reload", "info", "backup");
         }
-        return null;
+        return Collections.singletonList("");
     }
 }

@@ -217,3 +217,21 @@ Changelog:
 
 * Fixed a bug where 'block-colons' also blocked colons in arguments of a command rather than only the actual command
   itself
+
+***
+
+## v2.1.0 b24
+
+### Notes:
+
+* This update was **not tested**.
+* File changes: **none**.
+
+### Changelog:
+
+* Fixed tab complete index for CommandDefender command (stumper66)
+* Updated MicroLib dep (lokka30)
+  * Added support for 1.16+ hex colors!
+  * Updated QuickTimer usage
+* Improved return for tab complete for CommandDefender command where no tab completions are available. (stumper66)
+* Attempted fix update checker possible error (lokka30)
