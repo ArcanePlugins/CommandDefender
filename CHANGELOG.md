@@ -220,7 +220,7 @@ Changelog:
 
 ***
 
-## v2.1.0 b24
+## v2.1.0 (Build 24)
 
 ### Notes:
 
