@@ -1,4 +1,11 @@
-# CommandDefender Changelog
+# Update Changelog
+
+## v3.0.0
+* ...
+
+***
+
+# Old Changelog
 
 ## v1.0.0-ALPHA
 * Initial version.

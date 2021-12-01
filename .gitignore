@@ -1,2 +1,6 @@
-/target/
-/.idea/workspace.xml
+# IntelliJ IDEA
+.idea
+CommandDefender.iml
+
+# Maven
+target
