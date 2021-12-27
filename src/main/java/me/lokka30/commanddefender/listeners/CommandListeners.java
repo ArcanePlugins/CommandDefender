@@ -52,7 +52,7 @@ public class CommandListeners implements Listener {
 
         } else if (instance.settingsFile.getConfig().getBoolean("block-colons", true)) {
             // check if colon is present in the first arg
-            if(!command.split(" ")[0].contains(":")) {
+            if(command.split(" ")[0].contains(":")) {
 
                 // check bypass permission: return.
                 if(event.getPlayer().hasPermission("commanddefender.bypass-colon-blocker")) return;
