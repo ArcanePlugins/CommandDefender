@@ -246,7 +246,7 @@ Announcement: CommandDefender 3 is work-in-progress! :)
 
 ***
 
-## v2.2.2 (Build 26)
+## v2.1.2 (Build 26)
 * Fixed a single exclamation mark causing the colon blocker to go rogue.
 
 If you didn't see the previous changelog then please [click here](https://www.spigotmc.org/resources/commanddefender-for-1-7-x-1-17-x.84167/update?update=437546)!
