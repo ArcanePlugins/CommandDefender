@@ -39,7 +39,6 @@ public class CommandListeners implements Listener {
             event.setCancelled(true);
 
             List<String> denyMessage;
-
             if (blockedStatus.denyMessage == null || blockedStatus.denyMessage.isEmpty()) {
                 denyMessage = instance.messagesFile.getConfig().getStringList("cancelled-blocked");
             } else {
@@ -51,18 +50,28 @@ public class CommandListeners implements Listener {
                     .replace("%command%", command)
             )));
 
-        } else if (instance.settingsFile.getConfig().getBoolean("block-colons") && command.split(" ")[0].contains(":")) {
-            event.setCancelled(true);
+        } else if (instance.settingsFile.getConfig().getBoolean("block-colons", true)) {
+            // check if colon is present in the first arg
+            if(!command.split(" ")[0].contains(":")) {
 
-            instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
-                    .replace("%prefix%", instance.getPrefix())
-            )));
+                // check bypass permission: return.
+                if(event.getPlayer().hasPermission("commanddefender.bypass-colon-blocker")) return;
+
+                event.setCancelled(true);
+
+                instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
+                        .replace("%prefix%", instance.getPrefix())
+                )));
+            }
         }
     }
 
     private class NewCommandListeners implements Listener {
         @EventHandler(ignoreCancelled = true)
         public void onCommandSend(final PlayerCommandSendEvent event) {
+            // Make sure filter tab completion is enabled
+            if(!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-suggestion-filtering", true)) return;
+
             // Remove blocked commands from the suggestions list.
             event.getCommands().removeIf(command -> instance.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);
 

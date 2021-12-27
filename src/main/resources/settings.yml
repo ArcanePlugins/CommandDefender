@@ -20,6 +20,10 @@ priorities:
   # toggled below, see 'enable-allow-deny-permissions'.
   enable-command-blocking: true
 
+  # Setting this to 'false' makes CommandDefender not filter through the command suggestions system in 1.13+ servers.
+  # For 1.7-1.12 servers this option does not do anything because 1.13 added such system.
+  enable-command-suggestion-filtering: true
+
   1:
     mode: DENY
 

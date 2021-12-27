@@ -235,3 +235,11 @@ Changelog:
   * Updated QuickTimer usage
 * Improved return for tab complete for CommandDefender command where no tab completions are available. (stumper66)
 * Attempted fix update checker possible error (lokka30)
+
+***
+
+## v2.1.1 (Build 25)
+Announcement: CommandDefender 3 is work-in-progress! :)
+
+* Fixes colon blocking permission (reported by TheJoshua)
+* Adds setting for tab suggestion filtering (suggested by TheJoshua)
