@@ -1,6 +1,9 @@
 # IntelliJ IDEA
-.idea
-CommandDefender.iml
+.idea/
+*.iml
 
 # Maven
-target
+target/
+
+# OS X
+._.git

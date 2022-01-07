@@ -1,4 +1,0 @@
-name: 'CommandDefender'
-version: '${project.version}'
-
-main: 'me.lokka30.commanddefender.bukkit.BukkitMain'
