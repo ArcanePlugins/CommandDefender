@@ -1,0 +1,61 @@
+#################################
+#           WARNING!            #
+#      ADVANCED USERS ONLY      #
+#################################
+# This file contains settings   #
+# which we do not recommend     #
+# you change at all. You should #
+# only do so if you are very    #
+# advanced at using the plugin. #
+# The default advanced settings #
+# are the recommended ones.     #
+#################################
+
+# Configure the update checker here.
+update-checker:
+
+  # Should the update checker run?
+  enabled: true
+
+  # When should the update checker run?
+  run:
+
+    # Should the update checker run on startup?
+    startup: true
+
+    # At what repeating interval should the update
+    # checker run? By default, this is daily. Very
+    # useful if you don't restart your server often.
+    # Set to 0 to disable the automated update checking.
+    on-interval: 1440 # 1 day / 24 hours / 1440 minutes
+
+  # Who should be notified if an update is detected?
+  notify:
+
+    # If enabled, it will send a message to all online
+    # players who have the update check receive permission
+    # from CommandDefender.
+    online-players-with-permission: true
+
+    # If enabled, it will send a message to console.
+    console: true
+
+# Should server operators bypass all CommandDefender
+# processing entirely?
+operator-status-bypasses-processing: false
+
+# If a command has been cancelled by another plugin,
+# should CommandDefender *not* process it?
+cancellation-bypasses-processing: true
+
+# Should commands that CommandDefender considers 'allowed' for
+# a player force-override other plugins so that the command
+# will still run and not be cancelled?
+allowed-commands-override-cancellation: false
+
+# *** Do NOT modify this section! ***
+# Extra data of this file
+# for compat, migration, etc.
+# *** Do NOT modify this section! ***
+file-metadata:
+  version: 123456789

@@ -1,0 +1,144 @@
+
+command-sets:
+
+  # Name of this command set. can be whatever you want so long it is valid in YAML.
+  # Do not use spaces, periods/full stops, or non-standard characters e.g. from other languages.
+  block-plugin-viewing-commands:
+
+    # Should this command set be processed?
+    enabled: true
+
+    # ALLOW or DENY commands that fall under this set?
+    # ALLOW = CommandDefender will stop searching to see if this command is blocked,
+    #         and just let the user run it
+    # DENY = CommandDefender will block the command from being ran.
+    type: "DENY"
+
+    # To actually block the command and run the other actions, these conditions must be met
+    conditions:
+
+      # What percentage (0 to 100) of the total conditions must be met
+      # in order for command set to function?
+      # 0.0   = if at least ONE of the conditions are met, then proceed
+      # 12.34 = if 12.34% of the conditions are met, then proceed
+      # 56.78 = if 56.78% of the conditions are met, then proceed
+      # 100.0 = if ALL of the conditions are met, then proceed
+      percentage-required: 0.0
+
+      # Configure the command list here.
+      list:
+
+        # What matching
+        # EQUALS
+        # !EQUALS
+        # STARSTWITH
+        # !STARTSWITH
+        # CONTAINS
+        # !CONTAINS
+        matching-mode: "CONTAINS"
+
+        # Should the list and commands all be treated as if they were in lower case,
+        # effectively removing the CAPITAL LETTER differences?
+        # e.g. "/PLUGINS" is listed, but the user runs "/plugins". If ignore-case is
+        # enabled then "/plugins" will still be blocked.
+        ignore-case: true
+
+        # The actual contents of the list.
+        # Remember to use the starting slash (this
+        # can be disabled in advanced-settings.yml).
+        contents:
+          - "plugins"
+          - "pl"
+          - "version"
+          - "ver"
+          - "about"
+          - "icanhasbukkit"
+          - "?"
+          - "help"
+          - "ehelp"
+
+    # Aside from blocking the command, what things should run when the condition(s) are met?
+    actions:
+
+      # Send a message to the sender.
+      send-message:
+        - "%prefix% You don't have access to that."
+
+      # Play a sound to the sender.
+      play-sound:
+
+        # If you are using a server with an older MC version especially,
+        # make sure you check & change this sound ID. <<< 1.7/1.8 users! :)
+        id: "ENTITY_VILLAGER_NO"
+        volume: 0.5
+        pitch: 0.7
+
+    options:
+      bypass-permission: "commanddefender.bypass.block-plugin-viewing-commands"
+
+  block-colons-in-first-arg:
+    # e.g. this blocks `/bukkit:version` and other commands that have a `:` in the first argument.
+    # Enabling this prevents a big loophole in command blocking :)
+    enabled: true
+    type: "DENY"
+    conditions:
+      percentage-required: 0.0
+      has-colon-in-first-arg: true
+    actions:
+      send-message:
+        - "%prefix% You can't use the colon character &8(&b:&8)&7 in the first argument of commands."
+      play-sound:
+        id: "ENTITY_VILLAGER_NO"
+        volume: 0.5
+        pitch: 0.7
+    options:
+      bypass-permission: "commanddefender.bypass.block-colons-in-first-arg"
+
+  example-block-commands:
+    enabled: false
+    type: "DENY"
+    conditions:
+      percentage-required: 33.33
+      list:
+        matching-mode: "EQUALS"
+        ignore-case: false
+        contents:
+          - "SomeCommandWithSpecificCapitalLetters * ThirdArgument"
+    actions:
+      send-message: ['%prefix% Hello there!']
+      play-sound:
+        id: "ENTITY_ENDERMAN_TELEPORT"
+        volume: 1.0
+        pitch: 0.0
+    options:
+      bypass-permission: "example.permission.here"
+
+  example-regex-block-commands:
+    enabled: false
+    type: "DENY"
+    conditions:
+      percentage-required: 0.0
+      regex-list:
+        contents:
+          - "PutRegexExpressionHere"
+        actions:
+          send-message: ['%prefix% Blocked thru regex example']
+
+  example-allow-commands:
+    enabled: false
+    type: "ALLOW"
+    conditions:
+      percentage-required: 0.0
+      list:
+        matching-mode: 'CONTAINS'
+        ignore-case: true
+        contents:
+          - "jeff"
+
+
+# *** Do NOT modify this section! ***
+# Extra data of this file
+# for compat, migration, etc.
+# *** Do NOT modify this section! ***
+file-metadata:
+  version: 123456789
