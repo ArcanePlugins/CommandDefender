@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.corebukkit.logging;
+package me.lokka30.commanddefender.corebukkit.log;
 
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.log.Logger;

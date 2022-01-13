@@ -4,7 +4,7 @@ import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.log.Logger;
-import me.lokka30.commanddefender.corebukkit.logging.BukkitLogger;
+import me.lokka30.commanddefender.corebukkit.log.BukkitLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
