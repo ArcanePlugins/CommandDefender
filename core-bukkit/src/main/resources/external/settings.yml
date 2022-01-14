@@ -30,12 +30,20 @@ command-sets:
 
         # What matching
         # EQUALS
-        # !EQUALS
         # STARSTWITH
-        # !STARTSWITH
         # CONTAINS
-        # !CONTAINS
         matching-mode: "CONTAINS"
+
+        # Effectively inverts the matching mode, and therefore,
+        # the output of this condition.
+        #
+        # For example, if this condition returns 'true', and inverse
+        # is enabled, then CommandDefender will see it as 'false'.
+        #
+        # Elaboration: If enabled in the default settings file with
+        # no changes, this will make it so all commands *except*
+        # /plugins, /pl, etc are blocked.
+        inverse: false
 
         # Should the list and commands all be treated as if they were in lower case,
         # effectively removing the CAPITAL LETTER differences?
@@ -94,6 +102,9 @@ command-sets:
     options:
       bypass-permission: "commanddefender.bypass.block-colons-in-first-arg"
 
+  # Example command set
+  # Disabled by default
+  # Remains for demonstration purposes only
   example-block-commands:
     enabled: false
     type: "DENY"
@@ -113,17 +124,24 @@ command-sets:
     options:
       bypass-permission: "example.permission.here"
 
+  # Example command set
+  # Disabled by default
+  # Remains for demonstration purposes only
   example-regex-block-commands:
     enabled: false
     type: "DENY"
     conditions:
       percentage-required: 0.0
       regex-list:
+        inverse: true
         contents:
           - "PutRegexExpressionHere"
         actions:
           send-message: ['%prefix% Blocked thru regex example']
 
+  # Example command set
+  # Disabled by default
+  # Remains for demonstration purposes only
   example-allow-commands:
     enabled: false
     type: "ALLOW"
