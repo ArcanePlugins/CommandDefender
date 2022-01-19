@@ -1,11 +1,10 @@
 package me.lokka30.commanddefender.corebukkit.util;
 
-import me.lokka30.commanddefender.core.util.Colorizer;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitColorizer implements Colorizer {
+public class BukkitColorizer {
 
-    @Override @NotNull
+    @NotNull
     public String colorize(final @NotNull String msg) {
         if(msg.isEmpty()) return msg;
 
