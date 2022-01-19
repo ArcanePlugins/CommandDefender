@@ -8,4 +8,5 @@ public interface Core {
     @NotNull Logger logger();
 
     @NotNull String colorize(final @NotNull String msg);
+
 }
