@@ -3,6 +3,7 @@ package me.lokka30.commanddefender.corebukkit.log;
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.log.Logger;
 import me.lokka30.commanddefender.core.util.Constants;
+import me.lokka30.commanddefender.corebukkit.BukkitCore;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -26,12 +27,12 @@ public class BukkitLogger implements Logger {
 
     @NotNull
     private String simpleColorize(final @NotNull String msg) {
-        return BukkitUtils.getColorizer().colorize(Constants.DEFAULT_PREFIX + msg);
+        return BukkitCore.getInstance().colorize(Constants.DEFAULT_PREFIX + msg);
     }
 
     @Override
     public void debug(final @NotNull DebugCategory category, final @NotNull String msg) {
-        Bukkit.getLogger().info(BukkitUtils.getColorizer().colorize(
+        Bukkit.getLogger().info(BukkitCore.getInstance().colorize(
                 String.format(
                         Constants.DEBUG_LOGGING_PREFIX,
                         BukkitUtils.formatEnumConstant(category.toString())
