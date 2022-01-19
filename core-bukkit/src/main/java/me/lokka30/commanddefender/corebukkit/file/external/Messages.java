@@ -6,11 +6,12 @@ import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.DataType;
 import de.leonhard.storage.internal.settings.ReloadSettings;
 import me.lokka30.commanddefender.corebukkit.BukkitCore;
+import me.lokka30.commanddefender.corebukkit.file.external.type.YamlVersionedExternalFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class SettingsFile implements YamlExternalFile {
+public class Messages implements YamlVersionedExternalFile {
 
     private Yaml data;
     @Override
@@ -20,7 +21,7 @@ public class SettingsFile implements YamlExternalFile {
 
     @Override
     public @NotNull String nameWithoutExtension() {
-        return "settings";
+        return "messages";
     }
 
     @Override
