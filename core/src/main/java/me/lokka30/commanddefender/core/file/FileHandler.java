@@ -9,15 +9,20 @@ public class FileHandler {
     public FileHandler(@NotNull final Core core) { this.core = core; }
 
     public void loadFiles() {
-        //TODO
+        loadInternalFiles();
+        loadExternalFiles();
     }
 
     void loadInternalFiles() {
-        //TODO
+        /*
+        core.logger().info("Loading internal files...");
+        core.logger().info("Loaded internal files.");
+         */
     }
 
     void loadExternalFiles() {
-        //TODO
+        core.logger().info("Loading external files...");
+        core.logger().info("Loaded external files.");
     }
 
 }

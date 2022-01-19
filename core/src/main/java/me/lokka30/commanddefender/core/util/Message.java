@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core.util;
 
+import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.UniversalCommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,16 +25,16 @@ public class Message {
         public String getReplacement() { return replacement; }
     }
 
-    private final Colorizer colorizer;
+    private final Core core;
     private final List<String> messages;
     private final Set<Placeholder> placeholders;
     private List<String> finalMessages;
     public Message(
-            @NotNull final Colorizer colorizer,
+            @NotNull final Core core,
             @NotNull final List<String> messages,
             @NotNull final Set<Placeholder> placeholders
     ) {
-        this.colorizer = colorizer;
+        this.core = core;
         this.messages = messages;
         this.placeholders = placeholders;
         this.finalMessages = this.messages;
@@ -56,7 +57,7 @@ public class Message {
         for(String msg : finalMessages) {
             for(Placeholder placeholder : placeholders) {
                 newFinalMessages.add(
-                        colorizer.colorize(
+                        core.colorize(
                                 msg.replace(placeholder.getId(), placeholder.getReplacement())
                         )
                 );

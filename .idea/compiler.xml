@@ -6,9 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="commanddefender-core" />
         <module name="core-velocity" />
         <module name="core-bukkit" />
+        <module name="commanddefender-core-velocity" />
+        <module name="commanddefender-core" />
+        <module name="commanddefender-core-bukkit" />
       </profile>
     </annotationProcessing>
   </component>

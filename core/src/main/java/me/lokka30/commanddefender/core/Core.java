@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Core {
 
-    @NotNull FileHandler getFileHandler();
-    @NotNull Logger getCoreLogger();
-    @NotNull DebugHandler getDebugHandler();
+    @NotNull Logger logger();
+    @NotNull FileHandler fileHandler();
+    @NotNull DebugHandler debugHandler();
+
+    @NotNull String colorize(final @NotNull String msg);
 }
