@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.corebukkit.conversion;
+package me.lokka30.commanddefender.corebukkit.converter;
 
 import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.UniversalCommandSender;

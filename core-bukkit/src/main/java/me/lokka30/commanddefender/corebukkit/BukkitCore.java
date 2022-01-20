@@ -4,7 +4,7 @@ import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.log.Logger;
-import me.lokka30.commanddefender.corebukkit.conversion.BukkitConverter;
+import me.lokka30.commanddefender.corebukkit.converter.BukkitConverter;
 import me.lokka30.commanddefender.corebukkit.file.FileHandler;
 import me.lokka30.commanddefender.corebukkit.listener.ListenerInfo;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;

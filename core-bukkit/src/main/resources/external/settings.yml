@@ -30,7 +30,7 @@ command-sets:
 
         # What matching
         # EQUALS
-        # STARSTWITH
+        # STARTS_WITH
         # CONTAINS
         matching-mode: "CONTAINS"
 
@@ -155,6 +155,12 @@ command-sets:
         contents:
           - "jeff"
 
+# For any commands that were not covered
+# by the command sets above, should
+# CommandDefender ALLOW or DENY such
+# leftover commands? This allows you to
+# create command whitelists. :)
+default-command-status: "ALLOW"
 
 # *** Do NOT modify this section! ***
 # Extra data of this file

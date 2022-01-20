@@ -18,21 +18,21 @@ public final class FileHandler {
     // ... misc ...
 
     @NotNull
-    public License getLicense() { return license; }
+    public License license() { return license; }
     private final License license = new License();
 
     // ... root ...
 
     @NotNull
-    public AdvancedSettings getAdvancedSettings() { return advancedSettings; }
+    public AdvancedSettings advancedSettings() { return advancedSettings; }
     private final AdvancedSettings advancedSettings = new AdvancedSettings();
 
     @NotNull
-    public Messages getMessages() { return messages; }
+    public Messages messages() { return messages; }
     private final Messages messages = new Messages();
 
     @NotNull
-    public Settings getSettings() { return settings; }
+    public Settings settings() { return settings; }
     private final Settings settings = new Settings();
 
     private final HashSet<ExternalFile> allExternalFiles = new HashSet<>(Arrays.asList(

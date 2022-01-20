@@ -44,15 +44,6 @@ update-checker:
 # processing entirely?
 operator-status-bypasses-processing: false
 
-# If a command has been cancelled by another plugin,
-# should CommandDefender *not* process it?
-cancellation-bypasses-processing: true
-
-# Should commands that CommandDefender considers 'allowed' for
-# a player force-override other plugins so that the command
-# will still run and not be cancelled?
-allowed-commands-override-cancellation: false
-
 # *** Do NOT modify this section! ***
 # Extra data of this file
 # for compat, migration, etc.
