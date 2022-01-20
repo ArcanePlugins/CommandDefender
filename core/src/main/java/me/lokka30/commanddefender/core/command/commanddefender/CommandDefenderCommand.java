@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.corebukkit.command.commanddefender;
+package me.lokka30.commanddefender.core.command.commanddefender;
 
 import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.UniversalCommandSender;
