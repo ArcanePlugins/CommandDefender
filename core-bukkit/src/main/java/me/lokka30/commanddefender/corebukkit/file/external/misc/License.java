@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.corebukkit.file.external.misc;
 
+import me.lokka30.commanddefender.corebukkit.BukkitCore;
 import me.lokka30.commanddefender.corebukkit.file.external.type.TxtExternalFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +20,8 @@ public class License implements TxtExternalFile {
 
     @Override
     public void load(boolean fromReload) {
+        BukkitCore.getInstance().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         replaceWithDefault();
+        BukkitCore.getInstance().logger().info("Loaded file.");
     }
 }

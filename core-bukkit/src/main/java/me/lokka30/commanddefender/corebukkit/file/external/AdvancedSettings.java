@@ -31,6 +31,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
 
     @Override
     public void load(boolean fromReload) {
+        BukkitCore.getInstance().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         if (fromReload) {
             data.forceReload();
         } else {
@@ -41,8 +42,8 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
                     .setDataType(DataType.SORTED)
                     .createYaml();
         }
-
         migrate();
+        BukkitCore.getInstance().logger().info("Loaded file.");
     }
 
     @Override

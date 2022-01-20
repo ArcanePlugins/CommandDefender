@@ -14,7 +14,7 @@ import java.util.List;
 public class BukkitConverter {
 
     @NotNull
-    public static TabExecutor universalCommandToBukkit(UniversalCommand universalCommand) {
+    public static TabExecutor universalCommandToBukkit(final @NotNull UniversalCommand universalCommand) {
         return new TabExecutor() {
             @Override
             public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command cmd, final @NotNull String label, final @NotNull String[] args) {
@@ -36,7 +36,7 @@ public class BukkitConverter {
     }
 
     @NotNull
-    public static UniversalCommandSender bukkitCommandSenderToUniversal(final CommandSender bukkitSender) {
+    public static UniversalCommandSender bukkitCommandSenderToUniversal(final @NotNull CommandSender bukkitSender) {
         return new UniversalCommandSender() {
             @Override
             public @NotNull String name() {
@@ -56,7 +56,7 @@ public class BukkitConverter {
     }
 
     @NotNull
-    public static String[] bukkitCommandArgsToUniversal(final String label, final String[] bukkitArgs) {
+    public static String[] bukkitCommandArgsToUniversal(final @NotNull String label, final @NotNull String[] bukkitArgs) {
         final LinkedList<String> args = new LinkedList<>();
         args.add(label);
         Collections.addAll(args, bukkitArgs);
