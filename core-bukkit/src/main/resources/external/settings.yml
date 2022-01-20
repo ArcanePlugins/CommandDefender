@@ -123,6 +123,7 @@ command-sets:
         pitch: 0.0
     options:
       bypass-permission: "example.permission.here"
+      skip-to: "example.set.id"
 
   # Example command set
   # Disabled by default
