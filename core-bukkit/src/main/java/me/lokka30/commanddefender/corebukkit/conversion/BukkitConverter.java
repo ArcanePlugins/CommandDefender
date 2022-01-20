@@ -11,24 +11,32 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CommandConverter {
+public class BukkitConverter {
 
-    public static TabExecutor toBukkitCommand(UniversalCommand universalCommand) {
+    @NotNull
+    public static TabExecutor universalCommandToBukkit(UniversalCommand universalCommand) {
         return new TabExecutor() {
             @Override
             public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command cmd, final @NotNull String label, final @NotNull String[] args) {
-                universalCommand.run(toUniversalSender(sender), toUniversalArgs(label, args));
+                universalCommand.run(
+                        bukkitCommandSenderToUniversal(sender),
+                        bukkitCommandArgsToUniversal(label, args)
+                );
                 return true;
             }
 
             @Override @NotNull
             public List<String> onTabComplete(final @NotNull CommandSender sender, final @NotNull Command cmd, final @NotNull String label, final @NotNull String[] args) {
-                return universalCommand.generateTabSuggestions(toUniversalSender(sender), toUniversalArgs(label, args));
+                return universalCommand.generateTabSuggestions(
+                        bukkitCommandSenderToUniversal(sender),
+                        bukkitCommandArgsToUniversal(label, args)
+                );
             }
         };
     }
 
-    public static UniversalCommandSender toUniversalSender(final CommandSender bukkitSender) {
+    @NotNull
+    public static UniversalCommandSender bukkitCommandSenderToUniversal(final CommandSender bukkitSender) {
         return new UniversalCommandSender() {
             @Override
             public @NotNull String name() {
@@ -47,7 +55,8 @@ public class CommandConverter {
         };
     }
 
-    public static String[] toUniversalArgs(final String label, final String[] bukkitArgs) {
+    @NotNull
+    public static String[] bukkitCommandArgsToUniversal(final String label, final String[] bukkitArgs) {
         final LinkedList<String> args = new LinkedList<>();
         args.add(label);
         Collections.addAll(args, bukkitArgs);

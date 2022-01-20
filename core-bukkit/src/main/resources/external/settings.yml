@@ -115,8 +115,9 @@ command-sets:
         ignore-case: false
         contents:
           - "SomeCommandWithSpecificCapitalLetters * ThirdArgument"
+      from-plugins: ["WorldEdit"]
     actions:
-      send-message: ['%prefix% Hello there!']
+      send-message: ["%prefix% Hello there!"]
       play-sound:
         id: "ENTITY_ENDERMAN_TELEPORT"
         volume: 1.0
@@ -138,7 +139,7 @@ command-sets:
         contents:
           - "PutRegexExpressionHere"
         actions:
-          send-message: ['%prefix% Blocked thru regex example']
+          send-message: ["%prefix% Blocked thru regex example"]
 
   # Example command set
   # Disabled by default

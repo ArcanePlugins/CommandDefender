@@ -4,7 +4,7 @@ import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.log.Logger;
-import me.lokka30.commanddefender.corebukkit.conversion.CommandConverter;
+import me.lokka30.commanddefender.corebukkit.conversion.BukkitConverter;
 import me.lokka30.commanddefender.corebukkit.file.FileHandler;
 import me.lokka30.commanddefender.corebukkit.listener.ListenerInfo;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
@@ -88,7 +88,7 @@ public class BukkitCore extends JavaPlugin implements Core {
                 logger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
                         "Please inform CommandDefender developers.");
             } else {
-                pluginCommand.setExecutor(CommandConverter.toBukkitCommand(command));
+                pluginCommand.setExecutor(BukkitConverter.universalCommandToBukkit(command));
             }
         });
         logger().info("Registered commands.");
