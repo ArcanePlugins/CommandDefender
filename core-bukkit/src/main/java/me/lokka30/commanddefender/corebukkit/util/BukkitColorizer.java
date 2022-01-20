@@ -8,7 +8,7 @@ public class BukkitColorizer {
     public String colorize(final @NotNull String msg) {
         if(msg.isEmpty()) return msg;
 
-        if(useSpigotMethod()) {
+        if(BukkitUtils.serverHasBungeeChatColorAPI()) {
             return colorizeSpigot(msg);
         } else {
             return colorizeBukkit(msg);
@@ -23,22 +23,5 @@ public class BukkitColorizer {
     @NotNull
     private String colorizeSpigot(final @NotNull String msg) {
         return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
-    private boolean knowsWhetherToUseSpigotMethodOrNot = false;
-    private boolean useSpigotMethod;
-
-    private boolean useSpigotMethod() {
-        if(knowsWhetherToUseSpigotMethodOrNot) return useSpigotMethod;
-        knowsWhetherToUseSpigotMethodOrNot = true;
-
-        try {
-            Class.forName("net.md_5.bungee.api.ChatColor");
-        } catch(ClassNotFoundException ex) {
-            useSpigotMethod = false;
-            return false;
-        }
-        useSpigotMethod = true;
-        return true;
     }
 }

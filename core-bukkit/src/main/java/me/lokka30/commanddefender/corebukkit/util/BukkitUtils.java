@@ -12,7 +12,7 @@ public class BukkitUtils {
         return WordUtils.capitalizeFully(str.replace("_", " "));
     }
 
-    // can be replaced with an optional<boolean> later on.
+    // would use Optional, but we're targeting Java 8 :sob:. This will suffice.
     private static byte serverHasPlayerCommandSendEvent = 0;
     public static boolean serverHasPlayerCommandSendEvent() {
         switch(serverHasPlayerCommandSendEvent) {
@@ -31,6 +31,28 @@ public class BukkitUtils {
                 return false;
             default:
                 throw new IllegalStateException("Unexpected value: " + serverHasPlayerCommandSendEvent);
+        }
+    }
+
+    // would use Optional, but we're targeting Java 8 :sob:. This will suffice.
+    private static byte serverHasBungeeChatColorAPI = 0;
+    public static boolean serverHasBungeeChatColorAPI() {
+        switch(serverHasBungeeChatColorAPI) {
+            case 0:
+                try {
+                    Class.forName("net.md_5.bungee.api.ChatColor");
+                } catch (ClassNotFoundException e) {
+                    serverHasBungeeChatColorAPI = 2;
+                    return false;
+                }
+                serverHasBungeeChatColorAPI = 1;
+                return true;
+            case 1:
+                return true;
+            case 2:
+                return false;
+            default:
+                throw new IllegalStateException("Unexpected value: " + serverHasBungeeChatColorAPI);
         }
     }
 
