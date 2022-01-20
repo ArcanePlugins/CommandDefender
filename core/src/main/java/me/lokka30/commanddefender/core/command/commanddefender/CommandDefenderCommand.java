@@ -19,8 +19,8 @@ public class CommandDefenderCommand implements UniversalCommand {
     @Override
     public void run(@NotNull UniversalCommandSender sender, @NotNull String[] args) {
         if(args.length == 1) {
-            sender.sendMessage("Invalid usage: subcommand not specified.");
-            sender.sendMessage("For a list of subcommands, run '/" + args[0] + " help'.");
+            sender.sendChatMessage("Invalid usage: subcommand not specified.");
+            sender.sendChatMessage("For a list of subcommands, run '/" + args[0] + " help'.");
         } else {
             switch(args[1].toUpperCase(Locale.ROOT)) {
                 case "HELP":
@@ -28,8 +28,8 @@ public class CommandDefenderCommand implements UniversalCommand {
                 case "INFO":
                 case "DEBUG":
                 default:
-                    sender.sendMessage("Invalid usage: '" + args[1] + "' is not a valid subcommand.");
-                    sender.sendMessage("For a list of subcommands, run '/" + args[0] + " help'.");
+                    sender.sendChatMessage("Invalid usage: '" + args[1] + "' is not a valid subcommand.");
+                    sender.sendChatMessage("For a list of subcommands, run '/" + args[0] + " help'.");
                     break;
             }
         }

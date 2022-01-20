@@ -11,6 +11,7 @@ import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessLis
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.log.BukkitLogger;
 import me.lokka30.commanddefender.corebukkit.util.BukkitColorizer;
+import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -100,7 +101,7 @@ public class BukkitCore extends JavaPlugin implements Core {
 
     @Override @NotNull
     public String colorize(@NotNull String msg) {
-        return colorizer.colorize(msg);
+        return BukkitUtils.colorize(msg);
     }
     private final BukkitColorizer colorizer = new BukkitColorizer();
 

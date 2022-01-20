@@ -44,7 +44,7 @@ public class BukkitConverter {
             }
 
             @Override
-            public void sendMessage(@NotNull String msg) {
+            public void sendChatMessage(@NotNull String msg) {
                 bukkitSender.sendMessage(msg);
             }
 

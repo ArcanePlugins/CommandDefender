@@ -1,3 +1,23 @@
+# generic plugin data
 name: 'CommandDefender'
 version: '${project.version}'
+authors: ['lokka30']
+website: 'https://github.com/lokka30/CommandDefender'
+
+# bukkit plugin data
 main: 'me.lokka30.commanddefender.corebukkit.BukkitCore'
+api-version: '1.13' # do not change this.
+prefix: 'CommandDefender'
+
+# commands
+commands:
+  'commanddefender':
+    description: 'Used to manage the CommandDefender plugin.'
+    aliases: ['cd', 'cmddef']
+    usage: '/<command> help'
+
+# permissions
+permissions:
+  to-do-list-them-here:
+    description: 'TO-DO'
+  #TODO list them here

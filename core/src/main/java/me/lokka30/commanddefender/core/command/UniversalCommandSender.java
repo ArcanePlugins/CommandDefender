@@ -7,7 +7,7 @@ public interface UniversalCommandSender {
     @NotNull
     String name();
 
-    void sendMessage(final @NotNull String msg);
+    void sendChatMessage(final @NotNull String msg);
 
     boolean hasPermission(final @NotNull String permission);
 
