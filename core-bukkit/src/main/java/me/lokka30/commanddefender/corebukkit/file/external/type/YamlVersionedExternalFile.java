@@ -8,7 +8,7 @@ public interface YamlVersionedExternalFile extends VersionedExternalFile {
     // Don't add @NotNull to data() - must be null before the file starts
     // loading, as instantiating Yaml will cause it to load - we want it
     // to load only when we tell it to.
-    Yaml data();
+    Yaml getData();
 
     @NotNull @Override
     default String nameWithExtension() {
@@ -17,6 +17,6 @@ public interface YamlVersionedExternalFile extends VersionedExternalFile {
 
     @Override
     default int getInstalledVersion() {
-        return data().get("file-metadata.version", -1);
+        return getData().get("file-metadata.version", -1);
     }
 }

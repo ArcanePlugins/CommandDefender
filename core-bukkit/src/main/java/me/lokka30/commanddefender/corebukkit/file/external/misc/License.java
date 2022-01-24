@@ -20,8 +20,8 @@ public class License implements TxtExternalFile {
 
     @Override
     public void load(boolean fromReload) {
-        BukkitCore.getInstance().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        BukkitCore.getInstance().getLogger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         replaceWithDefault();
-        BukkitCore.getInstance().logger().info("Loaded file.");
+        BukkitCore.getInstance().getLogger().info("Loaded file.");
     }
 }

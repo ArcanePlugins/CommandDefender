@@ -39,7 +39,7 @@ public class BukkitCore extends JavaPlugin implements Core {
         final long startTime = System.currentTimeMillis();
 
         // llad files
-        fileHandler().load(false);
+        getFileHandler().load(false);
 
         // register listeners
         registerListeners();
@@ -49,7 +49,7 @@ public class BukkitCore extends JavaPlugin implements Core {
 
         // print total time taken
         final long duration = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
-        logger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
+        this.getLogger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
     }
 
     @Override
@@ -60,43 +60,43 @@ public class BukkitCore extends JavaPlugin implements Core {
             new PlayerCommandSendListener()
     ));
     void registerListeners() {
-        logger().info("Registering listeners...");
+        this.getLogger().info("Registering listeners...");
         allListeners.forEach(listener -> {
-            logger().info("Registering listener '&b" + listener.getClass().getSimpleName() + "&7'...");
+            this.getLogger().info("Registering listener '&b" + listener.getClass().getSimpleName() + "&7'...");
             if(listener instanceof ListenerInfo) {
                 if(((ListenerInfo) listener).compatibleWithServer()) {
                     getServer().getPluginManager().registerEvents(listener, this);
-                    logger().info("Registed listener.");
+                    this.getLogger().info("Registed listener.");
                 } else {
-                    logger().info("Listener was not registered - incompatible server. This can be safely ignored.");
+                    this.getLogger().info("Listener was not registered - incompatible server. This can be safely ignored.");
                 }
             } else {
                 getServer().getPluginManager().registerEvents(listener, this);
-                logger().info("Registered listener.");
+                this.getLogger().info("Registered listener.");
             }
         });
-        logger().info("Registered listeners.");
+        this.getLogger().info("Registered listeners.");
     }
 
     private final HashSet<UniversalCommand> allCommands = new HashSet<>(Collections.singletonList(
             new CommandDefenderCommand()
     ));
     void registerCommands() {
-        logger().info("Registering commands...");
+        this.getLogger().info("Registering commands...");
         allCommands.forEach(command -> {
             final PluginCommand pluginCommand = getCommand(command.labels()[0]);
             if(pluginCommand == null) {
-                logger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
+                this.getCoreLogger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
                         "Please inform CommandDefender developers.");
             } else {
                 pluginCommand.setExecutor(BukkitConverter.universalCommandToBukkit(command));
             }
         });
-        logger().info("Registered commands.");
+        this.getLogger().info("Registered commands.");
     }
 
     @Override @NotNull
-    public Logger logger() { return logger; }
+    public Logger getCoreLogger() { return logger; }
     private final Logger logger = new BukkitLogger();
 
     @Override @NotNull
@@ -106,7 +106,7 @@ public class BukkitCore extends JavaPlugin implements Core {
     private final BukkitColorizer colorizer = new BukkitColorizer();
 
     @NotNull
-    public FileHandler fileHandler() { return fileHandler; }
+    public FileHandler getFileHandler() { return fileHandler; }
     private final FileHandler fileHandler = new FileHandler();
 
 }

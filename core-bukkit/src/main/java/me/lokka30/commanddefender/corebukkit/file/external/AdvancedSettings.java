@@ -15,7 +15,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
 
     private Yaml data;
     @Override
-    public Yaml data() {
+    public Yaml getData() {
         return data;
     }
 
@@ -31,7 +31,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
 
     @Override
     public void load(boolean fromReload) {
-        BukkitCore.getInstance().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        BukkitCore.getInstance().getLogger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         if (fromReload) {
             data.forceReload();
         } else {
@@ -43,7 +43,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
                     .createYaml();
         }
         migrate();
-        BukkitCore.getInstance().logger().info("Loaded file.");
+        BukkitCore.getInstance().getLogger().info("Loaded file.");
     }
 
     @Override
@@ -51,17 +51,17 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
         if(getInstalledVersion() == getCurrentVersion()) return;
 
         for(int i = getInstalledVersion(); i < getCurrentVersion(); i++) {
-            BukkitCore.getInstance().logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + getInstalledVersion() + "&7 to &b" + i + "&7...");
+            BukkitCore.getInstance().getLogger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + getInstalledVersion() + "&7 to &b" + i + "&7...");
             switch(getInstalledVersion()) {
                 case 1:
                     break;
                 default:
-                    BukkitCore.getInstance().logger().error(
+                    BukkitCore.getInstance().getLogger().error(
                             "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
                                     "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
             }
-            BukkitCore.getInstance().logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
+            BukkitCore.getInstance().getLogger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
         }
     }
 

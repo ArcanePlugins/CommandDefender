@@ -15,7 +15,7 @@ public class Messages implements YamlVersionedExternalFile {
 
     private Yaml data;
     @Override
-    public Yaml data() {
+    public Yaml getData() {
         return data;
     }
 
@@ -31,7 +31,7 @@ public class Messages implements YamlVersionedExternalFile {
 
     @Override
     public void load(boolean fromReload) {
-        BukkitCore.getInstance().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        BukkitCore.getInstance().getLogger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         if (fromReload) {
             data.forceReload();
         } else {
@@ -43,7 +43,7 @@ public class Messages implements YamlVersionedExternalFile {
                     .createYaml();
         }
         migrate();
-        BukkitCore.getInstance().logger().info("Loaded file.");
+        BukkitCore.getInstance().getLogger().info("Loaded file.");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Messages implements YamlVersionedExternalFile {
         if(getInstalledVersion() == getCurrentVersion()) return;
 
         if(getInstalledVersion() < 12345) {
-            BukkitCore.getInstance().logger().warning(
+            BukkitCore.getInstance().getLogger().warning(
                     "Your '&b" + nameWithExtension() + "&7' file is too old to be migrated. It has been " +
                             "backed up. CommandDefender is now using the default latest file instead. " +
                             "Edit this file with any of the changes you wish ASAP.");
@@ -61,17 +61,17 @@ public class Messages implements YamlVersionedExternalFile {
         }
 
         for(int i = getInstalledVersion(); i < getCurrentVersion(); i++) {
-            BukkitCore.getInstance().logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + getInstalledVersion() + "&7 to &b" + i + "&7...");
+            BukkitCore.getInstance().getLogger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + getInstalledVersion() + "&7 to &b" + i + "&7...");
             switch(getInstalledVersion()) {
                 case 999: //TODO
                     break;
                 default:
-                    BukkitCore.getInstance().logger().error(
+                    BukkitCore.getInstance().getLogger().error(
                             "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
                                     "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
             }
-            BukkitCore.getInstance().logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
+            BukkitCore.getInstance().getLogger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
         }
     }
 

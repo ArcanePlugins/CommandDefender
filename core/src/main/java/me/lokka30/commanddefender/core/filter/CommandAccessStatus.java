@@ -1,7 +1,15 @@
 package me.lokka30.commanddefender.core.filter;
 
 public enum CommandAccessStatus {
-    DENIED,
+
+    // a command set has decided to block the command
+    DENY,
+
+    // a command set does not care about the command
+    // due to not matching enough of its configured
+    // conditions.
     UNKNOWN,
-    ALLOWED
+
+    // a command set has decided to allow the command.
+    ALLOW
 }
