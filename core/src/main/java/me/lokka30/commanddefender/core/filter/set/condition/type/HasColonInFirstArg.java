@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class FromPlugins implements ConditionHandler {
+public class HasColonInFirstArg implements ConditionHandler {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "from-plugins";
+        return "has-colon-in-first-arg";
     }
 
     @Override
@@ -21,14 +21,14 @@ public class FromPlugins implements ConditionHandler {
         return Optional.empty();
     }
 
-    public record FromPluginsCondition(
-            @NotNull String[] plugins,
+    public record HasColonInFirstArgCondition(
             boolean inverse
     ) implements Condition {
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            return false != inverse(); //TODO need to figure out how to implement this.
+            return args[0].contains(":") == !inverse();
         }
     }
+
 
 }

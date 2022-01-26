@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class FromPlugins implements ConditionHandler {
+public class RegexList implements ConditionHandler {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "from-plugins";
+        return "regex-list";
     }
 
     @Override
@@ -21,14 +21,16 @@ public class FromPlugins implements ConditionHandler {
         return Optional.empty();
     }
 
-    public record FromPluginsCondition(
-            @NotNull String[] plugins,
+    public record RegexListCondition(
+            @NotNull String[] contents,
             boolean inverse
     ) implements Condition {
+
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            return false != inverse(); //TODO need to figure out how to implement this.
+            //TODO
+            return false != inverse();
         }
-    }
 
+    }
 }
