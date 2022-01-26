@@ -18,7 +18,7 @@ public class List implements ConditionHandler {
     }
 
     @Override
-    public @NotNull Optional<Condition> parse(FlatFileSection section) {
+    public @NotNull Optional<Condition> parse(@NotNull FlatFileSection section) {
         //TODO
         return Optional.empty();
     }
