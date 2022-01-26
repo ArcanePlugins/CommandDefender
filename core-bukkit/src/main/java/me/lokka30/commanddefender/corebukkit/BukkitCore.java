@@ -59,6 +59,7 @@ public class BukkitCore extends JavaPlugin implements Core {
             new PlayerCommandPreprocessListener(),
             new PlayerCommandSendListener()
     ));
+
     void registerListeners() {
         this.getLogger().info("Registering listeners...");
         allListeners.forEach(listener -> {
@@ -103,6 +104,22 @@ public class BukkitCore extends JavaPlugin implements Core {
     public String colorize(@NotNull String msg) {
         return BukkitUtils.colorize(msg);
     }
+
+    @Override
+    public @NotNull HashSet<String> getRegisteredConditions() {
+        return null;
+    }
+
+    @Override
+    public @NotNull HashSet<String> getRegisteredActions() {
+        return null;
+    }
+
+    @Override
+    public @NotNull HashSet<String> getRegisteredOptions() {
+        return null;
+    }
+
     private final BukkitColorizer colorizer = new BukkitColorizer();
 
     @NotNull
