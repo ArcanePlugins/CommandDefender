@@ -25,6 +25,11 @@ command-sets:
       # 100.0 = if ALL of the conditions are met, then proceed
       percentage-required: 0.0
 
+      # CommandDefender will use its algorithm to find any aliases of the
+      # commands which are specified in this command set, and the command
+      # set will act as if these aliases were specified in it.
+      include-aliases: true
+
       # Configure the command list here.
       list:
 
@@ -84,8 +89,10 @@ command-sets:
     options:
       bypass-permission: "commanddefender.bypass.block-plugin-viewing-commands"
 
+  # This command set blocks the usage and visibility of the
+  # colon character (`:`) in the first argument of commands,
+  # e.g. `/bukkit:version` and `/essentials:help`.
   block-colons-in-first-arg:
-    # e.g. this blocks `/bukkit:version` and other commands that have a `:` in the first argument.
     # Enabling this prevents a big loophole in command blocking :)
     enabled: true
     type: "DENY"
@@ -136,6 +143,7 @@ command-sets:
       percentage-required: 0.0
       regex-list:
         inverse: true
+        include-aliases: true
         contents:
           - "PutRegexExpressionHere"
         actions:
