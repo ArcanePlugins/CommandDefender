@@ -1,16 +1,10 @@
 package me.lokka30.commanddefender.corebukkit.util;
 
-import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class BukkitUtils {
 
     private BukkitUtils() { throw new UnsupportedOperationException(); }
-
-    @NotNull
-    public static String formatEnumConstant(final @NotNull String str) {
-        return WordUtils.capitalizeFully(str.replace("_", " "));
-    }
 
     // would use Optional, but we're targeting Java 8 :sob:. This will suffice.
     private static byte serverHasPlayerCommandSendEvent = 0;

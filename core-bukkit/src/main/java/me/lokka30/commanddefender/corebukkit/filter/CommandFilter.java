@@ -1,22 +1,30 @@
 package me.lokka30.commanddefender.corebukkit.filter;
 
 import de.leonhard.storage.Yaml;
+import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.filter.CommandAccessStatus;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
+import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
+import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
+import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
+import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import me.lokka30.commanddefender.core.player.UniversalPlayer;
 import me.lokka30.commanddefender.corebukkit.BukkitCore;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Optional;
 
 public class CommandFilter {
 
@@ -25,7 +33,7 @@ public class CommandFilter {
 
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
-    public boolean canAccess(final UniversalPlayer player, final String[] args) {
+    public boolean canAccess(final @NotNull UniversalPlayer player, @NotNull final String[] args) {
         for(final CommandSet set : commandSets) {
             final CommandAccessStatus status = set.getAccessStatus(player, args);
             if(status != CommandAccessStatus.UNKNOWN) {
@@ -59,76 +67,92 @@ public class CommandFilter {
                 .forEach(this::parseCommandSet);
     }
 
-    private void parseCommandSet(final String identifier) {
+    private void parseCommandSet(final @NotNull String identifier) {
         final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
         final HashSet<Condition> conditions;
         final HashSet<Action> actions;
-        final HashSet<Option> options;
+        final HashSet<PreProcessOption> preProcessOptions = new HashSet<>();
+        final HashSet<PostProcessOption> postProcessOptions = new HashSet<>();
         final double conditionsPercentageRequired = settings.get(path + ".conditions.percentage-required", 0.0);
 
-        switch(settings.get(path + ".type", "DENY").toUpperCase(Locale.ROOT)) {
-            case "DENY":
+        switch (settings.get(path + ".type", "DENY").toUpperCase(Locale.ROOT)) {
+            case "DENY" -> type = CommandAccessStatus.DENY;
+            case "ALLOW" -> type = CommandAccessStatus.ALLOW;
+            default -> {
                 type = CommandAccessStatus.DENY;
-                break;
-            case "ALLOW":
-                type = CommandAccessStatus.ALLOW;
-                break;
-            default:
-                type = CommandAccessStatus.DENY;
-                BukkitCore.getInstance().getCoreLogger().error(
+                BukkitCore.getInstance().logger().error(
                         "Command set '&b" + identifier + "&7' has an invalid &btype&7 specified, expecting '&b" +
                                 "ALLOW&7' or '&bDENY&7'. CommandDefender will assume this set is in &bDENY&7 mode. " +
                                 "Fix this ASAP.");
-                break;
+            }
         }
 
         conditions = parseCommandSetConditions(identifier);
         actions = parseCommandSetActions(identifier);
-        options = parseCommandSetOptions(identifier);
+
+        parseCommandSetOptions(identifier).forEach(option -> {
+            if(option instanceof PreProcessOption) {
+                preProcessOptions.add((PreProcessOption) option);
+            } else if(option instanceof PostProcessOption) {
+                postProcessOptions.add((PostProcessOption) option);
+            } else {
+                throw new IllegalStateException(option.toString());
+            }
+        });
 
         commandSets.add(new CommandSet(
                 identifier,
                 type,
                 conditions,
+                conditionsPercentageRequired,
                 actions,
-                options,
-                conditionsPercentageRequired
+                preProcessOptions,
+                postProcessOptions
         ));
     }
 
-    private HashSet<Condition> parseCommandSetConditions(final String identifier) {
+    private HashSet<Condition> parseCommandSetConditions(final @NotNull String identifier) {
         final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
         final String path = "command-sets." + identifier + ".conditions";
+        final FlatFileSection section = settings.getSection(path);
+
         final HashSet<Condition> conditions = new HashSet<>();
-
-        for(String conditionId : core.getRegisteredConditions()) {
+        for(ConditionHandler conditionHandler : core.conditionHandlers()) {
+            final Optional<Condition> condition = conditionHandler.parse(section);
+            if(condition.isEmpty()) continue;
+            conditions.add(condition.get());
         }
-
         return conditions;
     }
 
-    private HashSet<Action> parseCommandSetActions(final String identifier) {
+    private HashSet<Action> parseCommandSetActions(final @NotNull String identifier) {
         final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
         final String path = "command-sets." + identifier + ".actions";
+        final FlatFileSection section = settings.getSection(path);
+
         final HashSet<Action> actions = new HashSet<>();
-
-        for(String actionId : core.getRegisteredActions()) {
+        for(ActionHandler actionHandler : core.actionHandlers()) {
+            final Optional<Action> action = actionHandler.parse(section);
+            if(action.isEmpty()) continue;
+            actions.add(action.get());
         }
-
         return actions;
     }
 
-    private HashSet<Option> parseCommandSetOptions(final String identifier) {
+    private HashSet<Option> parseCommandSetOptions(final @NotNull String identifier) {
         final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
         final String path = "command-sets." + identifier + ".options";
+        final FlatFileSection section = settings.getSection(path);
+
         final HashSet<Option> options = new HashSet<>();
-
-        for(String optionId : core.getRegisteredOptions()) {
+        for(OptionHandler optionHandler : core.optionHandlers()) {
+            final Optional<Option> option = optionHandler.parse(settings.getSection(path));
+            if(option.isEmpty()) continue;
+            options.add(option.get());
         }
-
         return options;
     }
 

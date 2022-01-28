@@ -3,6 +3,9 @@ package me.lokka30.commanddefender.corebukkit;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
+import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
+import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
+import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.log.Logger;
 import me.lokka30.commanddefender.corebukkit.converter.BukkitConverter;
 import me.lokka30.commanddefender.corebukkit.file.FileHandler;
@@ -10,7 +13,6 @@ import me.lokka30.commanddefender.corebukkit.listener.ListenerInfo;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.log.BukkitLogger;
-import me.lokka30.commanddefender.corebukkit.util.BukkitColorizer;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
@@ -87,7 +89,7 @@ public class BukkitCore extends JavaPlugin implements Core {
         allCommands.forEach(command -> {
             final PluginCommand pluginCommand = getCommand(command.labels()[0]);
             if(pluginCommand == null) {
-                this.getCoreLogger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
+                this.logger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
                         "Please inform CommandDefender developers.");
             } else {
                 pluginCommand.setExecutor(BukkitConverter.universalCommandToBukkit(command));
@@ -97,7 +99,7 @@ public class BukkitCore extends JavaPlugin implements Core {
     }
 
     @Override @NotNull
-    public Logger getCoreLogger() { return logger; }
+    public Logger logger() { return logger; }
     private final Logger logger = new BukkitLogger();
 
     @Override @NotNull
@@ -106,21 +108,22 @@ public class BukkitCore extends JavaPlugin implements Core {
     }
 
     @Override
-    public @NotNull HashSet<String> getRegisteredConditions() {
-        return null;
+    public @NotNull HashSet<ConditionHandler> conditionHandlers() {
+        return conditionHandlers;
     }
+    private final HashSet<ConditionHandler> conditionHandlers = new HashSet<>();
 
     @Override
-    public @NotNull HashSet<String> getRegisteredActions() {
-        return null;
+    public @NotNull HashSet<ActionHandler> actionHandlers() {
+        return actionHandlers;
     }
+    private final HashSet<ActionHandler> actionHandlers = new HashSet<>();
 
     @Override
-    public @NotNull HashSet<String> getRegisteredOptions() {
-        return null;
+    public @NotNull HashSet<OptionHandler> optionHandlers() {
+        return optionHandlers;
     }
-
-    private final BukkitColorizer colorizer = new BukkitColorizer();
+    private final HashSet<OptionHandler> optionHandlers = new HashSet<>();
 
     @NotNull
     public FileHandler getFileHandler() { return fileHandler; }

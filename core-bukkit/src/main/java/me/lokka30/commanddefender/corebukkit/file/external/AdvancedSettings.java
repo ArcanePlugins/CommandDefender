@@ -56,7 +56,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
                 case 1:
                     break;
                 default:
-                    BukkitCore.getInstance().getLogger().error(
+                    BukkitCore.getInstance().logger().error(
                             "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
                                     "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
