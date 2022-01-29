@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 
-public class PlayerCommandSendListener implements Listener, ListenerInfo {
+public class PlayerCommandSendListener implements Listener, CDListener {
 
     @Override
     public boolean compatibleWithServer() {

@@ -33,4 +33,5 @@ public class BukkitLogger implements Logger {
     public void debug(final @NotNull DebugCategory category, final @NotNull String msg) {
         Bukkit.getLogger().info(colorizeAndPrefix(Constants.DEBUG_LOGGING_PREFIX + msg));
     }
+
 }

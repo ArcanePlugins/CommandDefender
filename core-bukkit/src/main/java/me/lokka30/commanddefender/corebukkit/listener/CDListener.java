@@ -1,6 +1,8 @@
 package me.lokka30.commanddefender.corebukkit.listener;
 
-public interface ListenerInfo {
+import org.bukkit.event.Listener;
+
+public interface CDListener extends Listener {
 
     boolean compatibleWithServer();
 

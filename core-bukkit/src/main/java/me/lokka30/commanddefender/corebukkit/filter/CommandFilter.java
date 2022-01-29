@@ -41,7 +41,7 @@ public class CommandFilter {
             }
         }
         // command sets don't specify the command -> return default status:
-        return BukkitCore.getInstance().getFileHandler().getSettings().getData().get("default-command-status", true);
+        return BukkitCore.instance().fileHandler().settings().getData().get("default-command-status", true);
     }
 
     public void load() {
@@ -55,7 +55,7 @@ public class CommandFilter {
 
     private void parseCommandSets() {
         // reference to the settings data for cleaner code
-        final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
 
         // iterate thru all command sets in the settings file
         settings.getSection("command-sets").singleLayerKeySet().stream()
@@ -68,7 +68,7 @@ public class CommandFilter {
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
@@ -83,7 +83,7 @@ public class CommandFilter {
             case "ALLOW" -> type = CommandAccessStatus.ALLOW;
             default -> {
                 type = CommandAccessStatus.DENY;
-                BukkitCore.getInstance().logger().error(
+                BukkitCore.instance().logger().error(
                         "Command set '&b" + identifier + "&7' has an invalid &btype&7 specified, expecting '&b" +
                                 "ALLOW&7' or '&bDENY&7'. CommandDefender will assume this set is in &bDENY&7 mode. " +
                                 "Fix this ASAP.");
@@ -115,7 +115,7 @@ public class CommandFilter {
     }
 
     private HashSet<Condition> parseCommandSetConditions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
         final String path = "command-sets." + identifier + ".conditions";
         final FlatFileSection section = settings.getSection(path);
 
@@ -129,7 +129,7 @@ public class CommandFilter {
     }
 
     private HashSet<Action> parseCommandSetActions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
         final String path = "command-sets." + identifier + ".actions";
         final FlatFileSection section = settings.getSection(path);
 
@@ -143,7 +143,7 @@ public class CommandFilter {
     }
 
     private HashSet<Option> parseCommandSetOptions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.getInstance().getFileHandler().getSettings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
         final String path = "command-sets." + identifier + ".options";
         final FlatFileSection section = settings.getSection(path);
 
@@ -173,7 +173,7 @@ public class CommandFilter {
                 players.get(index[0]).updateCommands();
                 index[0]++;
             }
-        }.runTaskTimer(BukkitCore.getInstance(), 1L, 5L);
+        }.runTaskTimer(BukkitCore.instance(), 1L, 5L);
         // every quarter of a second, CD will update each player's tab completion commands list.
     }
 }

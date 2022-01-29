@@ -18,7 +18,7 @@ public interface ExternalFile {
     @NotNull String resourcePath();
 
     @NotNull default String fullPath() {
-        return BukkitCore.getInstance().getDataFolder() + File.separator + resourcePath();
+        return BukkitCore.instance().getDataFolder() + File.separator + resourcePath();
     }
 
     /* LOADING */

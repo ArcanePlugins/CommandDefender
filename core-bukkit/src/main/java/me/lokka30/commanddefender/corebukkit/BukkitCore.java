@@ -9,24 +9,22 @@ import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.log.Logger;
 import me.lokka30.commanddefender.corebukkit.converter.BukkitConverter;
 import me.lokka30.commanddefender.corebukkit.file.FileHandler;
-import me.lokka30.commanddefender.corebukkit.listener.ListenerInfo;
+import me.lokka30.commanddefender.corebukkit.listener.CDListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.log.BukkitLogger;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class BukkitCore extends JavaPlugin implements Core {
 
-    public static BukkitCore getInstance() {
+    public static BukkitCore instance() {
         return instance;
     }
     private static BukkitCore instance;
@@ -41,7 +39,7 @@ public class BukkitCore extends JavaPlugin implements Core {
         final long startTime = System.currentTimeMillis();
 
         // llad files
-        getFileHandler().load(false);
+        fileHandler().load(false);
 
         // register listeners
         registerListeners();
@@ -51,41 +49,36 @@ public class BukkitCore extends JavaPlugin implements Core {
 
         // print total time taken
         final long duration = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
-        this.getLogger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
+        logger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
     }
 
     @Override
     public void onDisable() {}
 
-    private final HashSet<Listener> allListeners = new HashSet<>(Arrays.asList(
+    private final Set<CDListener> allListeners = Set.of(
             new PlayerCommandPreprocessListener(),
             new PlayerCommandSendListener()
-    ));
+    );
 
     void registerListeners() {
-        this.getLogger().info("Registering listeners...");
+        logger().info("Registering listeners...");
         allListeners.forEach(listener -> {
-            this.getLogger().info("Registering listener '&b" + listener.getClass().getSimpleName() + "&7'...");
-            if(listener instanceof ListenerInfo) {
-                if(((ListenerInfo) listener).compatibleWithServer()) {
-                    getServer().getPluginManager().registerEvents(listener, this);
-                    this.getLogger().info("Registed listener.");
-                } else {
-                    this.getLogger().info("Listener was not registered - incompatible server. This can be safely ignored.");
-                }
-            } else {
+            logger().info("Registering listener '&b" + listener.getClass().getSimpleName() + "&7'...");
+            if(listener.compatibleWithServer()) {
                 getServer().getPluginManager().registerEvents(listener, this);
-                this.getLogger().info("Registered listener.");
+                logger().info("Registed listener.");
+            } else {
+                logger().info("Listener was not registered: incompatible server. This can be safely ignored.");
             }
         });
-        this.getLogger().info("Registered listeners.");
+        logger.info("Registered listeners.");
     }
 
-    private final HashSet<UniversalCommand> allCommands = new HashSet<>(Collections.singletonList(
+    private final Set<UniversalCommand> allCommands = Set.of(
             new CommandDefenderCommand()
-    ));
+    );
     void registerCommands() {
-        this.getLogger().info("Registering commands...");
+        logger().info("Registering commands...");
         allCommands.forEach(command -> {
             final PluginCommand pluginCommand = getCommand(command.labels()[0]);
             if(pluginCommand == null) {
@@ -95,7 +88,7 @@ public class BukkitCore extends JavaPlugin implements Core {
                 pluginCommand.setExecutor(BukkitConverter.universalCommandToBukkit(command));
             }
         });
-        this.getLogger().info("Registered commands.");
+        logger().info("Registered commands.");
     }
 
     @Override @NotNull
@@ -126,7 +119,7 @@ public class BukkitCore extends JavaPlugin implements Core {
     private final HashSet<OptionHandler> optionHandlers = new HashSet<>();
 
     @NotNull
-    public FileHandler getFileHandler() { return fileHandler; }
+    public FileHandler fileHandler() { return fileHandler; }
     private final FileHandler fileHandler = new FileHandler();
 
 }

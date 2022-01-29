@@ -32,7 +32,7 @@ public final class FileHandler {
     private final Messages messages = new Messages();
 
     @NotNull
-    public Settings getSettings() { return settings; }
+    public Settings settings() { return settings; }
     private final Settings settings = new Settings();
 
     private final HashSet<ExternalFile> allExternalFiles = new HashSet<>(Arrays.asList(
@@ -46,8 +46,8 @@ public final class FileHandler {
     ));
 
     public void load(final boolean fromReload) {
-        BukkitCore.getInstance().getLogger().info("Loading external files...");
+        BukkitCore.instance().getLogger().info("Loading external files...");
         allExternalFiles.forEach(file -> file.load(fromReload));
-        BukkitCore.getInstance().getLogger().info("Loaded external files.");
+        BukkitCore.instance().getLogger().info("Loaded external files.");
     }
 }

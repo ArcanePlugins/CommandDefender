@@ -55,20 +55,10 @@ public class BukkitUtils {
         if(msg.isEmpty()) return msg;
 
         if(BukkitUtils.serverHasBungeeChatColorAPI()) {
-            return colorizeSpigot(msg);
+            return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', msg);
         } else {
-            return colorizeBukkit(msg);
+            return org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
         }
-    }
-
-    @NotNull
-    private static String colorizeBukkit(final @NotNull String msg) {
-        return org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
-    @NotNull
-    private static String colorizeSpigot(final @NotNull String msg) {
-        return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', msg);
     }
 
 }
