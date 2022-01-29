@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.corebukkit.file.external.type;
+package me.lokka30.commanddefender.core.file.external.type;
 
 import org.jetbrains.annotations.NotNull;
 

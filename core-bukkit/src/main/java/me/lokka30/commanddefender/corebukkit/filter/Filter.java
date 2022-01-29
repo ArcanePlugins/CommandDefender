@@ -26,10 +26,10 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
 
-public class CommandFilter {
+public class Filter {
 
     private final Core core;
-    public CommandFilter(final Core core) { this.core = core; }
+    public Filter(final Core core) { this.core = core; }
 
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
@@ -41,7 +41,7 @@ public class CommandFilter {
             }
         }
         // command sets don't specify the command -> return default status:
-        return BukkitCore.instance().fileHandler().settings().getData().get("default-command-status", true);
+        return core.fileHandler().settings().data().get("default-command-status", true);
     }
 
     public void load() {
@@ -55,7 +55,7 @@ public class CommandFilter {
 
     private void parseCommandSets() {
         // reference to the settings data for cleaner code
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
 
         // iterate thru all command sets in the settings file
         settings.getSection("command-sets").singleLayerKeySet().stream()
@@ -68,7 +68,7 @@ public class CommandFilter {
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
@@ -115,7 +115,7 @@ public class CommandFilter {
     }
 
     private HashSet<Condition> parseCommandSetConditions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".conditions";
         final FlatFileSection section = settings.getSection(path);
 
@@ -129,7 +129,7 @@ public class CommandFilter {
     }
 
     private HashSet<Action> parseCommandSetActions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".actions";
         final FlatFileSection section = settings.getSection(path);
 
@@ -143,7 +143,7 @@ public class CommandFilter {
     }
 
     private HashSet<Option> parseCommandSetOptions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().getData();
+        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".options";
         final FlatFileSection section = settings.getSection(path);
 

@@ -1,21 +1,24 @@
-package me.lokka30.commanddefender.corebukkit.file.external;
+package me.lokka30.commanddefender.core.file.external;
 
 import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.DataType;
 import de.leonhard.storage.internal.settings.ReloadSettings;
-import me.lokka30.commanddefender.corebukkit.BukkitCore;
-import me.lokka30.commanddefender.corebukkit.file.external.type.YamlVersionedExternalFile;
+import me.lokka30.commanddefender.core.Core;
+import me.lokka30.commanddefender.core.file.external.type.YamlVersionedExternalFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 public class AdvancedSettings implements YamlVersionedExternalFile {
+    
+    private final Core core;
+    public AdvancedSettings(final @NotNull Core core) { this.core = core; }
 
     private Yaml data;
     @Override
-    public Yaml getData() {
+    public Yaml data() {
         return data;
     }
 
@@ -31,7 +34,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
 
     @Override
     public void load(boolean fromReload) {
-        BukkitCore.instance().getLogger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        core.logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         if (fromReload) {
             data.forceReload();
         } else {
@@ -43,30 +46,30 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
                     .createYaml();
         }
         migrate();
-        BukkitCore.instance().getLogger().info("Loaded file.");
+        core.logger().info("Loaded file.");
     }
 
     @Override
     public void migrate() {
-        if(getInstalledVersion() == getCurrentVersion()) return;
+        if(installedVersion() == currentVersion()) return;
 
-        for(int i = getInstalledVersion(); i < getCurrentVersion(); i++) {
-            BukkitCore.instance().getLogger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + getInstalledVersion() + "&7 to &b" + i + "&7...");
-            switch(getInstalledVersion()) {
+        for(int i = installedVersion(); i < currentVersion(); i++) {
+            core.logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
+            switch(installedVersion()) {
                 case 1:
                     break;
                 default:
-                    BukkitCore.instance().logger().error(
+                    core.logger().error(
                             "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
                                     "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
             }
-            BukkitCore.instance().getLogger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
+            core.logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
         }
     }
 
     @Override
-    public int getCurrentVersion() {
+    public int currentVersion() {
         return 1;
     }
 }

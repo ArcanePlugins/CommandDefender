@@ -3,12 +3,13 @@ package me.lokka30.commanddefender.corebukkit;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
+import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.log.Logger;
+import me.lokka30.commanddefender.core.util.Constants;
 import me.lokka30.commanddefender.corebukkit.converter.BukkitConverter;
-import me.lokka30.commanddefender.corebukkit.file.FileHandler;
 import me.lokka30.commanddefender.corebukkit.listener.CDListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
@@ -32,6 +33,8 @@ public class BukkitCore extends JavaPlugin implements Core {
     @Override
     public void onLoad() {
         instance = this;
+
+        Constants.DATA_FOLDER = getDataFolder().getPath();
     }
 
     @Override
@@ -91,12 +94,12 @@ public class BukkitCore extends JavaPlugin implements Core {
         logger().info("Registered commands.");
     }
 
-    @Override @NotNull
-    public Logger logger() { return logger; }
+    @Override
+    public @NotNull Logger logger() { return logger; }
     private final Logger logger = new BukkitLogger();
 
-    @Override @NotNull
-    public String colorize(@NotNull String msg) {
+    @Override
+    public @NotNull String colorize(@NotNull String msg) {
         return BukkitUtils.colorize(msg);
     }
 
@@ -118,8 +121,8 @@ public class BukkitCore extends JavaPlugin implements Core {
     }
     private final HashSet<OptionHandler> optionHandlers = new HashSet<>();
 
-    @NotNull
-    public FileHandler fileHandler() { return fileHandler; }
-    private final FileHandler fileHandler = new FileHandler();
+    @Override
+    public @NotNull FileHandler fileHandler() { return fileHandler; }
+    private final FileHandler fileHandler = new FileHandler(this);
 
 }

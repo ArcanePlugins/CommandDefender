@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.corebukkit.file.external.type;
+package me.lokka30.commanddefender.core.file.external.type;
 
 import de.leonhard.storage.Yaml;
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +8,7 @@ public interface YamlVersionedExternalFile extends VersionedExternalFile {
     // Don't add @NotNull to data() - must be null before the file starts
     // loading, as instantiating Yaml will cause it to load - we want it
     // to load only when we tell it to.
-    Yaml getData();
+    Yaml data();
 
     @NotNull @Override
     default String nameWithExtension() {
@@ -16,7 +16,7 @@ public interface YamlVersionedExternalFile extends VersionedExternalFile {
     }
 
     @Override
-    default int getInstalledVersion() {
-        return getData().get("file-metadata.version", -1);
+    default int installedVersion() {
+        return data().get("file-metadata.version", -1);
     }
 }

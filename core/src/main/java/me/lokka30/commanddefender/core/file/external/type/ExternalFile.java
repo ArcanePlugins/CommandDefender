@@ -1,6 +1,6 @@
-package me.lokka30.commanddefender.corebukkit.file.external.type;
+package me.lokka30.commanddefender.core.file.external.type;
 
-import me.lokka30.commanddefender.corebukkit.BukkitCore;
+import me.lokka30.commanddefender.core.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -18,7 +18,7 @@ public interface ExternalFile {
     @NotNull String resourcePath();
 
     @NotNull default String fullPath() {
-        return BukkitCore.instance().getDataFolder() + File.separator + resourcePath();
+        return Constants.DATA_FOLDER + File.separator + resourcePath();
     }
 
     /* LOADING */
