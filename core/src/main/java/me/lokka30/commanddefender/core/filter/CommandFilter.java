@@ -19,10 +19,10 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class Filter {
+public final class CommandFilter {
 
     private final Core core;
-    public Filter(final Core core) { this.core = core; }
+    public CommandFilter(final Core core) { this.core = core; }
 
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 

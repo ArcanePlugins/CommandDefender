@@ -37,24 +37,7 @@ command-sets:
         # EQUALS
         # STARTS_WITH
         # CONTAINS
-        matching-mode: "CONTAINS"
-
-        # Effectively inverts the matching mode, and therefore,
-        # the output of this condition.
-        #
-        # For example, if this condition returns 'true', and inverse
-        # is enabled, then CommandDefender will see it as 'false'.
-        #
-        # Elaboration: If enabled in the default settings file with
-        # no changes, this will make it so all commands *except*
-        # /plugins, /pl, etc are blocked.
-        inverse: false
-
-        # Should the list and commands all be treated as if they were in lower case,
-        # effectively removing the CAPITAL LETTER differences?
-        # e.g. "/PLUGINS" is listed, but the user runs "/plugins". If ignore-case is
-        # enabled then "/plugins" will still be blocked.
-        ignore-case: true
+        matching-mode: "EQUALS"
 
         # The actual contents of the list.
         # Remember to use the starting slash (this
@@ -107,6 +90,9 @@ command-sets:
         volume: 0.5
         pitch: 0.7
     options:
+      filter:
+        tab-command-suggestions: false
+        command-execution: true
       bypass-permission: "commanddefender.bypass.block-colons-in-first-arg"
 
   # Example command set
@@ -116,12 +102,33 @@ command-sets:
     enabled: false
     type: "DENY"
     conditions:
-      percentage-required: 33.33
+      percentage-required: 0.0
       list:
         matching-mode: "EQUALS"
+
+        # Effectively inverts the matching mode, and therefore,
+        # the output of this condition.
+        #
+        # For example, if this condition returns 'true', and inverse
+        # is enabled, then CommandDefender will see it as 'false'.
+        #
+        # Elaboration: If enabled in the default settings file with
+        # no changes, this will make it so all commands *except*
+        # /plugins, /pl, etc are blocked.
+        #
+        # (This is `false` by default)
+        inverse: false
+
+        # Should the list and commands all be treated as if they were in lower case,
+        # effectively removing the CAPITAL LETTER differences?
+        # e.g. "/PLUGINS" is listed, but the user runs "/plugins". If ignore-case is
+        # enabled then "/plugins" will still be blocked.
+        #
+        # (This is `true` by default)
         ignore-case: false
+
         contents:
-          - "SomeCommandWithSpecificCapitalLetters * ThirdArgument"
+          - "SomeCommandWithSpecificCapitalLetters * third_argument_here \* FIFTH_ARGUMENT"
       from-plugins: ["WorldEdit"]
     actions:
       send-message: ["%prefix% Hello there!"]
