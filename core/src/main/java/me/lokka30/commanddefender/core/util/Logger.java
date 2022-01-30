@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.core.log;
+package me.lokka30.commanddefender.core.util;
 
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import org.jetbrains.annotations.NotNull;

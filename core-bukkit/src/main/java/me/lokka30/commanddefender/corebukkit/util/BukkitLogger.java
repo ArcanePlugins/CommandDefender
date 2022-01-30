@@ -1,9 +1,8 @@
-package me.lokka30.commanddefender.corebukkit.log;
+package me.lokka30.commanddefender.corebukkit.util;
 
 import me.lokka30.commanddefender.core.debug.DebugCategory;
-import me.lokka30.commanddefender.core.log.Logger;
 import me.lokka30.commanddefender.core.util.Constants;
-import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
+import me.lokka30.commanddefender.core.util.Logger;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
