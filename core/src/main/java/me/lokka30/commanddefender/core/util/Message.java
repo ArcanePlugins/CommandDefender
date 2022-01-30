@@ -1,7 +1,7 @@
 package me.lokka30.commanddefender.core.util;
 
 import me.lokka30.commanddefender.core.Core;
-import me.lokka30.commanddefender.core.command.UniversalCommandSender;
+import me.lokka30.commanddefender.core.util.universal.UniversalCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

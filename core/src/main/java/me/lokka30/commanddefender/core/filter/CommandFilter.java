@@ -3,6 +3,7 @@ package me.lokka30.commanddefender.core.filter;
 import de.leonhard.storage.Yaml;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
+import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
@@ -11,19 +12,17 @@ import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
-import me.lokka30.commanddefender.core.player.UniversalPlayer;
+import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 public final class CommandFilter {
 
     private final Core core;
     public CommandFilter(final Core core) { this.core = core; }
 
+    private final LinkedList<CommandSetPreset> presets = new LinkedList<>();
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
     public boolean canAccess(final @NotNull UniversalPlayer player, @NotNull final String[] args) {
@@ -50,7 +49,12 @@ public final class CommandFilter {
         // reference to the settings data for cleaner code
         final Yaml settings = core.fileHandler().settings().data();
 
+        // iterate thru all presets in the settings file
+        presets.clear();
+        settings.getSection("presets").singleLayerKeySet().forEach(this::parsePreset);
+
         // iterate thru all command sets in the settings file
+        commandSets.clear();
         settings.getSection("command-sets").singleLayerKeySet().stream()
 
                 // make sure the command set is enabled
@@ -58,6 +62,12 @@ public final class CommandFilter {
 
                 // feed it to the individual parse method
                 .forEach(this::parseCommandSet);
+    }
+
+    private void parsePreset(final @NotNull String identifier) {
+        final Yaml settings = core.fileHandler().settings().data();
+        final String path = "presets." + identifier;
+        presets.add(new CommandSetPreset(identifier, settings.getSection(path)));
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
@@ -80,20 +90,45 @@ public final class CommandFilter {
         }
 
         final CommandSet commandSet = new CommandSet(
+                /* General */
                 identifier,
                 type,
-                new HashSet<>(),
+                new HashSet<>(), //presets
+
+                /* Conditions */
+                new HashSet<>(), // conditions
                 conditionsPercentageRequired,
-                new HashSet<>(),
-                new HashSet<>(),
-                new HashSet<>()
+
+                /* Actions */
+                new HashSet<>(), // actions
+
+                /* Options */
+                new HashSet<>(), // preProcessOptions
+                new HashSet<>() // postProcessOptions
         );
 
+        parseCommandSetPresets(commandSet, identifier);
         parseCommandSetConditions(commandSet, identifier);
         parseCommandSetActions(commandSet, identifier);
         parseCommandSetOptions(commandSet, identifier);
 
         commandSets.add(commandSet);
+    }
+
+    private void parseCommandSetPresets(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
+        final Yaml settings = core.fileHandler().settings().data();
+        final List<String> presetIds = settings.getStringList("command-sets." + identifier + ".use-presets");
+
+        presets.forEach(preset -> {
+            if(presetIds.contains(preset.identifier())) {
+                if(commandSet.presets().contains(preset)) {
+                    core.logger().error("Duplicate preset '" + preset.identifier() + "' specified for " +
+                            "command set '" + commandSet.identifier() + "'. Remove duplicate entries ASAP.");
+                } else {
+                    commandSet.presets().add(preset);
+                }
+            }
+        });
     }
 
     private void parseCommandSetConditions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {

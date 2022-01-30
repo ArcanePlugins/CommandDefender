@@ -1,7 +1,9 @@
-package me.lokka30.commanddefender.corebukkit.converter;
+package me.lokka30.commanddefender.corebukkit.util.universal;
 
-import me.lokka30.commanddefender.core.command.UniversalCommand;
-import me.lokka30.commanddefender.core.command.UniversalCommandSender;
+import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
+import me.lokka30.commanddefender.core.util.universal.UniversalCommandSender;
+import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -10,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class BukkitConverter {
 
@@ -61,5 +64,10 @@ public class BukkitConverter {
         args.add(label);
         Collections.addAll(args, bukkitArgs);
         return args.toArray(new String[0]);
+    }
+
+    @NotNull
+    public static BukkitPlayer universalPlayerToBukkit(final @NotNull UniversalPlayer player) {
+        return new BukkitPlayer(player.uuid(), Objects.requireNonNull(Bukkit.getPlayer(player.uuid())));
     }
 }

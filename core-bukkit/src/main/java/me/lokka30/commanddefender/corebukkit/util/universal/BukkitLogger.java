@@ -1,12 +1,13 @@
-package me.lokka30.commanddefender.corebukkit.util;
+package me.lokka30.commanddefender.corebukkit.util.universal;
 
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.util.Constants;
-import me.lokka30.commanddefender.core.util.Logger;
+import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
+import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitLogger implements Logger {
+public class BukkitLogger implements UniversalLogger {
 
     @Override
     public void info(final @NotNull String msg) {

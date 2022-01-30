@@ -44,6 +44,12 @@ update-checker:
 # processing entirely?
 operator-status-bypasses-processing: false
 
+# When specifying commands in the command set lists,
+# should they be configured with a starting slash? Example:
+# If below is `true`, then `/plugins` will be configured as `/plugins`.
+# If below is `false`, then `/plugins` will be configured as `plugins`.
+commands-configured-with-starting-slash: true
+
 # *** Do NOT modify this section! ***
 # Extra data of this file
 # for compat, migration, etc.

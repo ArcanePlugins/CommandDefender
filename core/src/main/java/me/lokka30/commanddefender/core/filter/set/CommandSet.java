@@ -5,17 +5,25 @@ import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
-import me.lokka30.commanddefender.core.player.UniversalPlayer;
+import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
 public record CommandSet(
+        /* General */
         @NotNull String identifier,
         @NotNull CommandAccessStatus type,
+        @NotNull HashSet<CommandSetPreset> presets,
+
+        /* Conditions */
         @NotNull HashSet<Condition> conditions,
         double conditionsPercentageRequired,
+
+        /* Actions */
         @NotNull HashSet<Action> actions,
+
+        /* Options */
         @NotNull HashSet<PreProcessOption> preProcessOptions,
         @NotNull HashSet<PostProcessOption> postProcessOptions
 ) {
@@ -37,11 +45,13 @@ public record CommandSet(
 
             // check if % of conditions met / total conditions matches requirement
             if(((double) conditionsMet / (double) totalConditions) >= conditionsPercentageRequired()) {
+                // if enough conditions are met, then return the type, e.g. `"`DENY`.
                 return type();
             }
         }
 
-        // command set doesn't want to do anything with this command
+        // command set doesn't want to do anything with this command,
+        // so return `UNKNOWN`.
         return CommandAccessStatus.UNKNOWN;
     }
 }

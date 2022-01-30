@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.core.command;
+package me.lokka30.commanddefender.core.util.universal;
 
 import org.jetbrains.annotations.NotNull;
 

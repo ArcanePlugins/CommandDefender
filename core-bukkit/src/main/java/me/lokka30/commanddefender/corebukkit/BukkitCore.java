@@ -1,20 +1,20 @@
 package me.lokka30.commanddefender.corebukkit;
 
 import me.lokka30.commanddefender.core.Core;
-import me.lokka30.commanddefender.core.command.UniversalCommand;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.util.Constants;
-import me.lokka30.commanddefender.core.util.Logger;
-import me.lokka30.commanddefender.corebukkit.converter.BukkitConverter;
+import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
+import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import me.lokka30.commanddefender.corebukkit.listener.CDListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
-import me.lokka30.commanddefender.corebukkit.util.BukkitLogger;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
+import me.lokka30.commanddefender.corebukkit.util.universal.BukkitConverter;
+import me.lokka30.commanddefender.corebukkit.util.universal.BukkitLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -78,7 +78,7 @@ public class BukkitCore extends JavaPlugin implements Core {
                 logger().info("Listener was not registered: incompatible server. This can be safely ignored.");
             }
         });
-        logger.info("Registered listeners.");
+        universalLogger.info("Registered listeners.");
     }
 
     private final Set<UniversalCommand> allCommands = Set.of(
@@ -99,8 +99,8 @@ public class BukkitCore extends JavaPlugin implements Core {
     }
 
     @Override
-    public @NotNull Logger logger() { return logger; }
-    private final Logger logger = new BukkitLogger();
+    public @NotNull UniversalLogger logger() { return universalLogger; }
+    private final UniversalLogger universalLogger = new BukkitLogger();
 
     @Override
     public @NotNull String colorize(@NotNull String msg) {
