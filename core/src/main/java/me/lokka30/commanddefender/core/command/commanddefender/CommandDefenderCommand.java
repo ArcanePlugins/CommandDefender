@@ -26,6 +26,7 @@ public class CommandDefenderCommand implements UniversalCommand {
                 case "HELP":
                 case "RELOAD":
                 case "INFO":
+                case "BACKUP":
                 case "DEBUG":
                     sender.sendChatMessage("Subcommand not implemented yet.");
                     break;
@@ -44,6 +45,7 @@ public class CommandDefenderCommand implements UniversalCommand {
             case "HELP":
             case "RELOAD":
             case "INFO":
+            case "BACKUP":
             case "DEBUG":
                 //TODO
                 return Collections.singletonList("Subcommand tab suggestions not implemented yet.");
