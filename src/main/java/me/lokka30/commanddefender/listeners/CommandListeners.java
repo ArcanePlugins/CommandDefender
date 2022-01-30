@@ -3,7 +3,7 @@ package me.lokka30.commanddefender.listeners;
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.managers.CommandManager;
 import me.lokka30.commanddefender.utils.Utils;
-import me.lokka30.microlib.MessageUtils;
+import me.lokka30.microlib.messaging.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,16 +69,16 @@ public class CommandListeners implements Listener {
     private class NewCommandListeners implements Listener {
         @EventHandler(ignoreCancelled = true)
         public void onCommandSend(final PlayerCommandSendEvent event) {
-            // Make sure filter tab completion is enabled
-            if(!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-suggestion-filtering", true)) return;
-
-            // Remove blocked commands from the suggestions list.
-            event.getCommands().removeIf(command -> instance.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);
-
             // Remove commands with colons, if enabled, such as /bukkit:help.
             if (instance.settingsFile.getConfig().getBoolean("block-colons")) {
                 event.getCommands().removeIf(command -> command.contains(":"));
             }
+
+            // Make sure filter tab completion is enabled to continue with the next operation.
+            if(!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-suggestion-filtering", true)) return;
+
+            // Remove blocked commands from the suggestions list.
+            event.getCommands().removeIf(command -> instance.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);
         }
     }
 }

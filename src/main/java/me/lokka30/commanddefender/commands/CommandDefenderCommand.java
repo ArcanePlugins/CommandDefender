@@ -2,12 +2,13 @@ package me.lokka30.commanddefender.commands;
 
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.utils.Utils;
-import me.lokka30.microlib.MessageUtils;
+import me.lokka30.microlib.messaging.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class CommandDefenderCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("commanddefender.command")) {
             instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
                     .replace("%prefix%", instance.getPrefix())
@@ -114,7 +115,7 @@ public class CommandDefenderCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
             return Arrays.asList("reload", "info", "backup");
         }
