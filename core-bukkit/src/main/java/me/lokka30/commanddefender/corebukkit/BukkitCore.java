@@ -15,11 +15,15 @@ import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessLis
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.log.BukkitLogger;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -119,10 +123,34 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull HashSet<OptionHandler> optionHandlers() {
         return optionHandlers;
     }
+
+    @Override
+    public void updateTabCompletionForAllPlayers() {
+        // We want to do this slowly as to not haul
+        // the server with update requests
+
+        // Make sure the server has the event to begin with.
+        if(!BukkitUtils.serverHasPlayerCommandSendEvent()) return;
+
+        final LinkedList<Player> players = new LinkedList<>(Bukkit.getOnlinePlayers());
+        if(players.size() == 0) return;
+        final int[] index = {0}; // this is necessary due to the inner class below
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                players.get(index[0]).updateCommands();
+                index[0]++;
+            }
+        }.runTaskTimer(BukkitCore.instance(), 1L, 5L);
+        // every quarter of a second, CD will update each player's tab completion commands list.
+    }
+
     private final HashSet<OptionHandler> optionHandlers = new HashSet<>();
 
     @Override
     public @NotNull FileHandler fileHandler() { return fileHandler; }
     private final FileHandler fileHandler = new FileHandler(this);
+
 
 }

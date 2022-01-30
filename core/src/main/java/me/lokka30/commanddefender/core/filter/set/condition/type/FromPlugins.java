@@ -1,6 +1,7 @@
 package me.lokka30.commanddefender.core.filter.set.condition.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.player.UniversalPlayer;
@@ -10,13 +11,20 @@ import java.util.Optional;
 
 public class FromPlugins implements ConditionHandler {
 
+    CommandSet parentSet;
     @Override
-    public @NotNull String getIdentifier() {
+    public @NotNull CommandSet parentSet() {
+        return parentSet;
+    }
+
+    @Override
+    public @NotNull String identifier() {
         return "from-plugins";
     }
 
     @Override
-    public @NotNull Optional<Condition> parse(@NotNull FlatFileSection section) {
+    public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
+        this.parentSet = parentSet;
         //TODO
         return Optional.empty();
     }

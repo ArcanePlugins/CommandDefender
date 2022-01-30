@@ -1,9 +1,7 @@
-package me.lokka30.commanddefender.corebukkit.filter;
+package me.lokka30.commanddefender.core.filter;
 
 import de.leonhard.storage.Yaml;
-import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Core;
-import me.lokka30.commanddefender.core.filter.CommandAccessStatus;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
@@ -14,11 +12,6 @@ import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import me.lokka30.commanddefender.core.player.UniversalPlayer;
-import me.lokka30.commanddefender.corebukkit.BukkitCore;
-import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -26,7 +19,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
 
-public class Filter {
+public final class Filter {
 
     private final Core core;
     public Filter(final Core core) { this.core = core; }
@@ -50,12 +43,12 @@ public class Filter {
 
         // update the tab completion for all online players
         // so that it matches the new command sets
-        updateTabCompletionSlowly();
+        core.updateTabCompletionForAllPlayers();
     }
 
     private void parseCommandSets() {
         // reference to the settings data for cleaner code
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
+        final Yaml settings = core.fileHandler().settings().data();
 
         // iterate thru all command sets in the settings file
         settings.getSection("command-sets").singleLayerKeySet().stream()
@@ -68,14 +61,10 @@ public class Filter {
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
+        final Yaml settings = core.fileHandler().settings().data();
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
-        final HashSet<Condition> conditions;
-        final HashSet<Action> actions;
-        final HashSet<PreProcessOption> preProcessOptions = new HashSet<>();
-        final HashSet<PostProcessOption> postProcessOptions = new HashSet<>();
         final double conditionsPercentageRequired = settings.get(path + ".conditions.percentage-required", 0.0);
 
         switch (settings.get(path + ".type", "DENY").toUpperCase(Locale.ROOT)) {
@@ -83,97 +72,68 @@ public class Filter {
             case "ALLOW" -> type = CommandAccessStatus.ALLOW;
             default -> {
                 type = CommandAccessStatus.DENY;
-                BukkitCore.instance().logger().error(
+                core.logger().error(
                         "Command set '&b" + identifier + "&7' has an invalid &btype&7 specified, expecting '&b" +
                                 "ALLOW&7' or '&bDENY&7'. CommandDefender will assume this set is in &bDENY&7 mode. " +
                                 "Fix this ASAP.");
             }
         }
 
-        conditions = parseCommandSetConditions(identifier);
-        actions = parseCommandSetActions(identifier);
-
-        parseCommandSetOptions(identifier).forEach(option -> {
-            if(option instanceof PreProcessOption) {
-                preProcessOptions.add((PreProcessOption) option);
-            } else if(option instanceof PostProcessOption) {
-                postProcessOptions.add((PostProcessOption) option);
-            } else {
-                throw new IllegalStateException(option.toString());
-            }
-        });
-
-        commandSets.add(new CommandSet(
+        final CommandSet commandSet = new CommandSet(
                 identifier,
                 type,
-                conditions,
+                new HashSet<>(),
                 conditionsPercentageRequired,
-                actions,
-                preProcessOptions,
-                postProcessOptions
-        ));
+                new HashSet<>(),
+                new HashSet<>(),
+                new HashSet<>()
+        );
+
+        parseCommandSetConditions(commandSet, identifier);
+        parseCommandSetActions(commandSet, identifier);
+        parseCommandSetOptions(commandSet, identifier);
+
+        commandSets.add(commandSet);
     }
 
-    private HashSet<Condition> parseCommandSetConditions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
+    private void parseCommandSetConditions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
+        final Yaml settings = core.fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".conditions";
-        final FlatFileSection section = settings.getSection(path);
 
         final HashSet<Condition> conditions = new HashSet<>();
         for(ConditionHandler conditionHandler : core.conditionHandlers()) {
-            final Optional<Condition> condition = conditionHandler.parse(section);
+            final Optional<Condition> condition = conditionHandler.parse(commandSet, settings.getSection(path));
             if(condition.isEmpty()) continue;
-            conditions.add(condition.get());
+            commandSet.conditions().add(condition.get());
         }
-        return conditions;
     }
 
-    private HashSet<Action> parseCommandSetActions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
+    private void parseCommandSetActions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
+        final Yaml settings = core.fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".actions";
-        final FlatFileSection section = settings.getSection(path);
 
         final HashSet<Action> actions = new HashSet<>();
         for(ActionHandler actionHandler : core.actionHandlers()) {
-            final Optional<Action> action = actionHandler.parse(section);
+            final Optional<Action> action = actionHandler.parse(commandSet, settings.getSection(path));
             if(action.isEmpty()) continue;
-            actions.add(action.get());
+            commandSet.actions().add(action.get());
         }
-        return actions;
     }
 
-    private HashSet<Option> parseCommandSetOptions(final @NotNull String identifier) {
-        final Yaml settings = BukkitCore.instance().fileHandler().settings().data();
+    private void parseCommandSetOptions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
+        final Yaml settings = core.fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".options";
-        final FlatFileSection section = settings.getSection(path);
 
-        final HashSet<Option> options = new HashSet<>();
         for(OptionHandler optionHandler : core.optionHandlers()) {
-            final Optional<Option> option = optionHandler.parse(settings.getSection(path));
+            final Optional<Option> option = optionHandler.parse(commandSet, settings.getSection(path));
             if(option.isEmpty()) continue;
-            options.add(option.get());
-        }
-        return options;
-    }
-
-    // TODO Update to universal
-    //
-    // We want to do this slowly as to not haul
-    // the server with update requests
-    private void updateTabCompletionSlowly() {
-        if(!BukkitUtils.serverHasPlayerCommandSendEvent()) return;
-
-        final LinkedList<Player> players = new LinkedList<>(Bukkit.getOnlinePlayers());
-        if(players.size() == 0) return;
-        final int[] index = {0}; // this is necessary due to the inner class below
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                players.get(index[0]).updateCommands();
-                index[0]++;
+            if(option.get() instanceof PreProcessOption) {
+                commandSet.preProcessOptions().add((PreProcessOption) option.get());
+            } else if(option.get() instanceof PostProcessOption) {
+                commandSet.postProcessOptions().add((PostProcessOption) option.get());
+            } else {
+                throw new IllegalStateException(option.toString());
             }
-        }.runTaskTimer(BukkitCore.instance(), 1L, 5L);
-        // every quarter of a second, CD will update each player's tab completion commands list.
+        }
     }
 }

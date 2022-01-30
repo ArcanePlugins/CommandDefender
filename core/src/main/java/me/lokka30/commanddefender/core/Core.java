@@ -21,4 +21,6 @@ public interface Core {
     @NotNull HashSet<ActionHandler> actionHandlers();
     @NotNull HashSet<OptionHandler> optionHandlers();
 
+    void updateTabCompletionForAllPlayers();
+
 }
