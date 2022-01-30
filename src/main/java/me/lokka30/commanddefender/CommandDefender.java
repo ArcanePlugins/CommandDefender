@@ -4,9 +4,9 @@ import me.lokka30.commanddefender.commands.CommandDefenderCommand;
 import me.lokka30.commanddefender.listeners.CommandListeners;
 import me.lokka30.commanddefender.managers.CommandManager;
 import me.lokka30.commanddefender.utils.Utils;
-import me.lokka30.microlib.QuickTimer;
-import me.lokka30.microlib.UpdateChecker;
-import me.lokka30.microlib.YamlConfigFile;
+import me.lokka30.microlib.files.YamlConfigFile;
+import me.lokka30.microlib.maths.QuickTimer;
+import me.lokka30.microlib.other.UpdateChecker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -84,22 +84,18 @@ public class CommandDefender extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if (settingsFile.getConfig().getBoolean("check-for-updates")) {
-            try {
-                final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
-                final String currentVersion = updateChecker.getCurrentVersion().split(" ")[0];
-                updateChecker.getLatestVersion(latestVersion -> {
-                    if (!latestVersion.equals(currentVersion)) {
-                        Utils.logger.warning("&fUpdate Checker: &7A new update is available on SpigotMC! &8(&7You are running &bv" + currentVersion + "&7 but the latest version is &bv" + latestVersion + "&8)");
-                    }
-                });
-            } catch (NoClassDefFoundError error) {
-                Utils.logger.warning("Due to a technical limitation, the &fupdate checker&7 only works for servers running &fMinecraft 1.11.x and newer&7. Please &fdisable the update checker in the configuration&7 as it seems your server is older than what the update checker supports.");
+        if (!settingsFile.getConfig().getBoolean("check-for-updates", true)) { return; }
+
+        final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
+        final String currentVersion = updateChecker.getCurrentVersion().split(" ")[0];
+        updateChecker.getLatestVersion(latestVersion -> {
+            if (!latestVersion.equals(currentVersion)) {
+                Utils.logger.warning("&fUpdate Checker: &7A new update is available on SpigotMC! &8(&7You are running &bv" + currentVersion + "&7, but the latest version is &bv" + latestVersion + "&8)&7.");
             }
-        }
+        });
     }
 
     public String getPrefix() {
-        return messagesFile.getConfig().getString("prefix");
+        return messagesFile.getConfig().getString("prefix", "&b&lCommandDefender:&7 ");
     }
 }

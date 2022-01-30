@@ -59,11 +59,9 @@ public class CommandManager {
         }
 
         private static void warnInvalid(String str) {
-            Utils.logger.error(" ");
             Utils.logger.error("CommandManager encountered an invalid ListMode in your configuration:");
             Utils.logger.error("Invalid ListMode specified somewhere in your settings file. You set '&r" + str + "&7', but was expecting &bALLOW&7 or &bDENY&7. Try CTRL+F the file for it.");
             Utils.logger.error("The plugin will force-deny commands in this list as a safety measure until you fix it. (Please do so as soon as possible!)");
-            Utils.logger.error(" ");
         }
     }
 
@@ -116,7 +114,11 @@ public class CommandManager {
         if (instance.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
             if (player.hasPermission("commanddefender.allow." + ranCommand[0].toLowerCase()))
                 return new BlockedStatus(false, null);
+            if (player.hasPermission("commanddefender.allow.*"))
+                return new BlockedStatus(false, null);
             if (player.hasPermission("commanddefender.deny." + ranCommand[0].toLowerCase()))
+                return new BlockedStatus(true, null);
+            if (player.hasPermission("commanddefender.deny.*"))
                 return new BlockedStatus(true, null);
         }
 

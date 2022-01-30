@@ -250,3 +250,23 @@ Announcement: CommandDefender 3 is work-in-progress! :)
 * Fixed a single exclamation mark causing the colon blocker to go rogue.
 
 If you didn't see the previous changelog then please [click here](https://www.spigotmc.org/resources/commanddefender-for-1-7-x-1-17-x.84167/update?update=437546)!
+
+## v2.1.3 (Build 27)
+
+> Note: CommandDefender v3 is currently work-in-progress!
+If you want to learn more about it, or even suggest some features you'd
+like to see, please [join the Discord server and check
+the #commanddefender channel](https://discord.gg/gmVrZ7vUzq)
+. I'd love to hear your input!
+
+* Fixed the wildcard permissions for allow/deny (e.g.
+`commanddefender.allow.*`), they should work now. (reported by Whiskey)
+* Made the colon blocker filter tab completion regardless of
+the tab completion setting being enabled or not (suggested by Joshua)
+* Minor code improvements
+* Updated MicroLib, bStats, Spigot-API
+* Updated copyright
+
+CommandDefender is a free and open-source plugin,
+fueled by the generosity of its users. Consider leaving a review,
+a star on GitHub or even a donation if you would like to see further development. :)
