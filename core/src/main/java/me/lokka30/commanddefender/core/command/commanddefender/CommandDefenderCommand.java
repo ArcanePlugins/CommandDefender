@@ -27,6 +27,8 @@ public class CommandDefenderCommand implements UniversalCommand {
                 case "RELOAD":
                 case "INFO":
                 case "DEBUG":
+                    sender.sendChatMessage("Subcommand not implemented yet.");
+                    break;
                 default:
                     sender.sendChatMessage("Invalid usage: '" + args[1] + "' is not a valid subcommand.");
                     sender.sendChatMessage("For a list of subcommands, run '/" + args[0] + " help'.");
@@ -44,6 +46,7 @@ public class CommandDefenderCommand implements UniversalCommand {
             case "INFO":
             case "DEBUG":
                 //TODO
+                return Collections.singletonList("Subcommand tab suggestions not implemented yet.");
             default:
                 return Collections.emptyList();
         }
