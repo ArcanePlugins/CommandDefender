@@ -26,6 +26,6 @@ public class VelocityCore {
         this.inbuiltLogger = inbuiltLogger;
         this.dataDirectory = dataDirectory;
 
-        inbuiltLogger.info("It works!");
+        inbuiltLogger.info("It loads!");
     }
 }

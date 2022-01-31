@@ -11,6 +11,7 @@
         <module name="commanddefender-core-velocity" />
         <module name="commanddefender-core" />
         <module name="commanddefender-core-bukkit" />
+        <module name="commanddefender-core-bungee" />
       </profile>
     </annotationProcessing>
   </component>

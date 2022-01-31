@@ -1,0 +1,7 @@
+# generic plugin data
+name: "CommandDefender"
+version: "${project.version}"
+description: "${project.description}"
+author: "lokka30"
+
+main: 'me.lokka30.commanddefender.corebungee.CoreBungee'

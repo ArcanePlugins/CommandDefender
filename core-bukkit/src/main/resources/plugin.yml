@@ -1,7 +1,8 @@
 # generic plugin data
 name: 'CommandDefender'
 version: '${project.version}'
-authors: ['lokka30']
+description: '${project.description}'
+author: 'lokka30'
 website: 'https://github.com/lokka30/CommandDefender'
 
 # bukkit plugin data
