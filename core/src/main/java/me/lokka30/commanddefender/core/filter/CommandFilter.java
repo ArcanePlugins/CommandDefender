@@ -1,6 +1,7 @@
 package me.lokka30.commanddefender.core.filter;
 
 import de.leonhard.storage.Yaml;
+import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
@@ -14,7 +15,6 @@ import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcess
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.FilterContext;
-import me.lokka30.commanddefender.core.util.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 

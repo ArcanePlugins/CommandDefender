@@ -1,6 +1,6 @@
 package me.lokka30.commanddefender.core.file.external.type;
 
-import me.lokka30.commanddefender.core.util.Commons;
+import me.lokka30.commanddefender.core.Commons;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

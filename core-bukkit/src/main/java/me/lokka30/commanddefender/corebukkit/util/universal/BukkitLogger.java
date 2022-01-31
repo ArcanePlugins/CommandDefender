@@ -1,7 +1,7 @@
 package me.lokka30.commanddefender.corebukkit.util.universal;
 
+import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.debug.DebugCategory;
-import me.lokka30.commanddefender.core.util.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;

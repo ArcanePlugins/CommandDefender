@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.core.util;
+package me.lokka30.commanddefender.core;
 
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.filter.set.action.type.PlaySound;
