@@ -3,8 +3,6 @@ package me.lokka30.commanddefender.corebukkit;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.file.FileHandler;
-import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
-import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
@@ -21,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -105,18 +102,6 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull String colorize(@NotNull String msg) {
         return BukkitUtils.colorize(msg);
     }
-
-    @Override
-    public @NotNull HashSet<ConditionHandler> conditionHandlers() {
-        return conditionHandlers;
-    }
-    private final HashSet<ConditionHandler> conditionHandlers = new HashSet<>();
-
-    @Override
-    public @NotNull HashSet<ActionHandler> actionHandlers() {
-        return actionHandlers;
-    }
-    private final HashSet<ActionHandler> actionHandlers = new HashSet<>();
 
     @Override
     public void updateTabCompletionForAllPlayers() {
