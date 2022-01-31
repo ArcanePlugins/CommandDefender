@@ -25,7 +25,7 @@ public class HasColonInFirstArg implements ConditionHandler {
     @Override
     public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
         this.parentSet = parentSet;
-        //TODO
+        //TODO parse from command set and presets
         return Optional.empty();
     }
 

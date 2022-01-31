@@ -5,6 +5,7 @@ import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
+import me.lokka30.commanddefender.core.util.universal.UniversalSound;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -25,19 +26,17 @@ public class PlaySound implements ActionHandler {
     @Override
     public @NotNull Optional<Action> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
         this.parentSet = parentSet;
-        //TODO
+        //TODO parse from command set and presets
         return Optional.empty();
     }
 
     public record PlaySoundAction(
-            @NotNull String soundId,
-            double volume,
-            double pitch
+            @NotNull UniversalSound sound
     ) implements Action {
 
         @Override
         public void run(@NotNull UniversalPlayer player) {
-            //TODO need to figure out how to implement this.
+            player.playSound(sound);
         }
 
     }

@@ -25,7 +25,7 @@ public class RegexList implements ConditionHandler {
     @Override
     public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
         this.parentSet = parentSet;
-        //TODO
+        //TODO parse from command set and presets
         return Optional.empty();
     }
 
@@ -38,7 +38,8 @@ public class RegexList implements ConditionHandler {
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
             //TODO
-            return false != inverse();
+            boolean appliesTo = false;
+            return appliesTo != inverse();
         }
 
     }

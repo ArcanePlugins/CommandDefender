@@ -25,7 +25,7 @@ public class FromPlugins implements ConditionHandler {
     @Override
     public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
         this.parentSet = parentSet;
-        //TODO
+        //TODO parse from command set and presets
         return Optional.empty();
     }
 
@@ -35,7 +35,9 @@ public class FromPlugins implements ConditionHandler {
     ) implements Condition {
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            return false != inverse(); //TODO need to figure out how to implement this.
+            boolean isFromPlugin = false;
+            //TODO
+            return isFromPlugin != inverse();
         }
     }
 

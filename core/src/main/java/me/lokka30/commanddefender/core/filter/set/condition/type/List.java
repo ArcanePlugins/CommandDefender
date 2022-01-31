@@ -27,7 +27,7 @@ public class List implements ConditionHandler {
     @Override
     public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
         this.parentSet = parentSet;
-        //TODO
+        //TODO parse from command set and presets
         return Optional.empty();
     }
 
@@ -35,7 +35,7 @@ public class List implements ConditionHandler {
             @NotNull MatchingMode matchingMode,
             boolean ignoreCase,
             @NotNull String[] contents,
-            boolean includeAliases,
+            boolean includeAliases, //TODO implement
             boolean inverse
     ) implements Condition {
 
@@ -44,8 +44,6 @@ public class List implements ConditionHandler {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-
-            //TODO include aliases
 
             // we don't want to modify the existing args or contents arrays
             // so we generate a copy of them.
