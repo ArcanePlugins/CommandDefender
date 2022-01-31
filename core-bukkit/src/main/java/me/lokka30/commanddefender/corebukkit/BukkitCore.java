@@ -5,8 +5,7 @@ import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCo
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
-import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
-import me.lokka30.commanddefender.core.util.Constants;
+import me.lokka30.commanddefender.core.util.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import me.lokka30.commanddefender.corebukkit.listener.CDListener;
@@ -38,7 +37,7 @@ public class BukkitCore extends JavaPlugin implements Core {
     public void onLoad() {
         instance = this;
 
-        Constants.DATA_FOLDER = getDataFolder().getPath();
+        Commons.dataFolder = getDataFolder().getPath();
     }
 
     @Override
@@ -120,11 +119,6 @@ public class BukkitCore extends JavaPlugin implements Core {
     private final HashSet<ActionHandler> actionHandlers = new HashSet<>();
 
     @Override
-    public @NotNull HashSet<OptionHandler> optionHandlers() {
-        return optionHandlers;
-    }
-
-    @Override
     public void updateTabCompletionForAllPlayers() {
         // We want to do this slowly as to not haul
         // the server with update requests
@@ -146,11 +140,8 @@ public class BukkitCore extends JavaPlugin implements Core {
         // every quarter of a second, CD will update each player's tab completion commands list.
     }
 
-    private final HashSet<OptionHandler> optionHandlers = new HashSet<>();
-
     @Override
     public @NotNull FileHandler fileHandler() { return fileHandler; }
     private final FileHandler fileHandler = new FileHandler(this);
-
 
 }

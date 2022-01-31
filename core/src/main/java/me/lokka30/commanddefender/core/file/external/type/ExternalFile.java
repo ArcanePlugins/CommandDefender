@@ -1,6 +1,6 @@
 package me.lokka30.commanddefender.core.file.external.type;
 
-import me.lokka30.commanddefender.core.util.Constants;
+import me.lokka30.commanddefender.core.util.Commons;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -18,7 +18,7 @@ public interface ExternalFile {
     @NotNull String resourcePath();
 
     @NotNull default String fullPath() {
-        return Constants.DATA_FOLDER + File.separator + resourcePath();
+        return Commons.dataFolder + File.separator + resourcePath();
     }
 
     /* LOADING */

@@ -12,6 +12,9 @@ import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.FilterContext;
+import me.lokka30.commanddefender.core.util.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,8 +28,35 @@ public final class CommandFilter {
     private final LinkedList<CommandSetPreset> presets = new LinkedList<>();
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
-    public boolean canAccess(final @NotNull UniversalPlayer player, @NotNull final String[] args) {
+    public boolean canAccess(final @NotNull FilterContextType contextType, final @NotNull UniversalPlayer player, @NotNull final String[] args) {
+        commandSetIterator:
         for(final CommandSet set : commandSets) {
+
+            // pre process options
+            for(final PreProcessOption option : set.preProcessOptions()) {
+
+                // Bypass Permission
+                if(option instanceof BypassPermission.BypassPermissionOption bpo) {
+                    if(player.hasPermission(bpo.bypassPermission())) {
+                        continue commandSetIterator;
+                    }
+                }
+
+                // Filter
+                if(option instanceof FilterContext.FilterContextOption fco) {
+                    boolean contains = false;
+                    for(FilterContextType contextTypeInArray : fco.contextTypes()) {
+                        if (contextTypeInArray.equals(contextType)) {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if(!contains) {
+                        continue commandSetIterator;
+                    }
+                }
+            }
+
             final CommandAccessStatus status = set.getAccessStatus(player, args);
             if(status != CommandAccessStatus.UNKNOWN) {
                 return (status == CommandAccessStatus.ALLOW);
@@ -136,7 +166,7 @@ public final class CommandFilter {
         final String path = "command-sets." + identifier + ".conditions";
 
         final HashSet<Condition> conditions = new HashSet<>();
-        for(ConditionHandler conditionHandler : core.conditionHandlers()) {
+        for(ConditionHandler conditionHandler : Commons.conditionHandlers) {
             final Optional<Condition> condition = conditionHandler.parse(commandSet, settings.getSection(path));
             if(condition.isEmpty()) continue;
             commandSet.conditions().add(condition.get());
@@ -148,7 +178,7 @@ public final class CommandFilter {
         final String path = "command-sets." + identifier + ".actions";
 
         final HashSet<Action> actions = new HashSet<>();
-        for(ActionHandler actionHandler : core.actionHandlers()) {
+        for(ActionHandler actionHandler : Commons.actionHandlers) {
             final Optional<Action> action = actionHandler.parse(commandSet, settings.getSection(path));
             if(action.isEmpty()) continue;
             commandSet.actions().add(action.get());
@@ -159,7 +189,7 @@ public final class CommandFilter {
         final Yaml settings = core.fileHandler().settings().data();
         final String path = "command-sets." + identifier + ".options";
 
-        for(OptionHandler optionHandler : core.optionHandlers()) {
+        for(OptionHandler optionHandler : Commons.optionHandlers) {
             final Optional<Option> option = optionHandler.parse(commandSet, settings.getSection(path));
             if(option.isEmpty()) continue;
             if(option.get() instanceof PreProcessOption) {

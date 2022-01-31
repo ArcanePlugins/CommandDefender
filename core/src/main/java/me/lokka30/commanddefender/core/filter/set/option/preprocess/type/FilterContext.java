@@ -1,23 +1,22 @@
 package me.lokka30.commanddefender.core.filter.set.option.preprocess.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.filter.FilterContextType;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class Filter implements OptionHandler {
+public class FilterContext implements OptionHandler {
 
     private CommandSet parentSet;
-    @Override
-    public @NotNull CommandSet parentSet() {
+    @Override public @NotNull CommandSet parentSet() {
         return parentSet;
     }
-
-    @Override
-    public @NotNull String identifier() {
+    @Override public @NotNull String identifier() {
         return "filter";
     }
 
@@ -27,4 +26,8 @@ public class Filter implements OptionHandler {
         //TODO
         return Optional.empty();
     }
+
+    public record FilterContextOption(
+            @NotNull FilterContextType[] contextTypes
+    ) implements PreProcessOption {}
 }

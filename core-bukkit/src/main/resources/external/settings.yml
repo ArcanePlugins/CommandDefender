@@ -96,7 +96,7 @@ command-sets:
         pitch: 0.7
     options:
       filter:
-        tab-command-suggestions: false
+        command-suggestion: false
         command-execution: true
       bypass-permission: "commanddefender.bypass.block-colons-in-first-arg"
 

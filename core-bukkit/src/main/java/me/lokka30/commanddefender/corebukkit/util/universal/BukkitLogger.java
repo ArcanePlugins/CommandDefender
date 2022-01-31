@@ -1,7 +1,7 @@
 package me.lokka30.commanddefender.corebukkit.util.universal;
 
 import me.lokka30.commanddefender.core.debug.DebugCategory;
-import me.lokka30.commanddefender.core.util.Constants;
+import me.lokka30.commanddefender.core.util.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import org.bukkit.Bukkit;
@@ -26,12 +26,12 @@ public class BukkitLogger implements UniversalLogger {
 
     @NotNull
     private String colorizeAndPrefix(final @NotNull String msg) {
-        return BukkitUtils.colorize(Constants.DEFAULT_PREFIX + msg);
+        return BukkitUtils.colorize(Commons.DEFAULT_PREFIX + msg);
     }
 
     @Override
     public void debug(final @NotNull DebugCategory category, final @NotNull String msg) {
-        Bukkit.getLogger().info(colorizeAndPrefix(Constants.DEBUG_LOGGING_PREFIX + msg));
+        Bukkit.getLogger().info(colorizeAndPrefix(Commons.DEBUG_LOGGING_PREFIX + msg));
     }
 
 }
