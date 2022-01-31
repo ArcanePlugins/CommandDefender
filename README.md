@@ -31,7 +31,7 @@ GNU GPL v3.0
     ***
 
     The following open source libraries are used in CommandDefender:
-     * Spigot API by md_5
+     * Spigot-API by md_5
      * SimplixStorage by KotlinFactory
      * bStats by BtoBastian
     Thanks to the developers behind these libraries for making
