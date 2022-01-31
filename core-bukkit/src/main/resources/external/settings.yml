@@ -1,4 +1,9 @@
 
+# Presets help remove boilerplate when you have certain conditions or actions
+# used in multiple command sets with the same configuration.
+# By default these are not used as to not make the file look complicated :)
+presets:
+
 command-sets:
 
   # Name of this command set. can be whatever you want so long it is valid in YAML.
@@ -155,6 +160,7 @@ command-sets:
           - "PutRegexExpressionHere"
         actions:
           send-message: ["%prefix% Blocked thru regex example"]
+    use-presets: []
 
   # Example command set
   # Disabled by default
