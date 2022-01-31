@@ -30,8 +30,8 @@ public class RegexList implements ConditionHandler {
     }
 
     public record RegexListCondition(
-            @NotNull String[] contents,
-            boolean includeAliases,
+            @NotNull String[] contents, //TODO implement
+            boolean includeAliases, //TODO implement
             boolean inverse
     ) implements Condition {
 

@@ -45,6 +45,8 @@ public class List implements ConditionHandler {
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
 
+            //TODO include aliases
+
             // we don't want to modify the existing args or contents arrays
             // so we generate a copy of them.
 
