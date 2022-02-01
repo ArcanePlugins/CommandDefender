@@ -55,9 +55,6 @@ public final class CommandFilter {
 
             // processing
             final CommandAccessStatus status = set.getAccessStatus(player, args);
-            if(status != CommandAccessStatus.UNKNOWN) {
-                return (status == CommandAccessStatus.ALLOW);
-            }
 
             // post process options
             for(final PostProcessOption option : set.postProcessOptions()) {
@@ -65,8 +62,21 @@ public final class CommandFilter {
                 Commons.core.logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
             }
 
-            // actions
-            set.actions().forEach(action -> action.run(player));
+            final boolean runActions = (status == CommandAccessStatus.DENY);
+            /*
+            TODO
+                - add post-process option 'run actions with command suggestion filtration'
+                - add post-process option 'run actions if command is allowed'
+             */
+
+            if(runActions) {
+                // actions
+                set.actions().forEach(action -> action.run(player));
+            }
+
+            if(status != CommandAccessStatus.UNKNOWN) {
+                return (status == CommandAccessStatus.ALLOW);
+            }
         }
         // command sets don't specify the command -> return default status:
         return Commons.core.fileHandler().settings().data().get("default-command-status", true);
