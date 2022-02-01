@@ -3,10 +3,9 @@ package me.lokka30.commanddefender.corebukkit.listener;
 import me.lokka30.commanddefender.core.util.CoreUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandSendEvent;
 
-public class PlayerCommandSendListener implements Listener, ListenerMetadata {
+public class PlayerCommandSendListener implements ListenerExt {
 
     @Override
     public boolean compatibleWithServer() {

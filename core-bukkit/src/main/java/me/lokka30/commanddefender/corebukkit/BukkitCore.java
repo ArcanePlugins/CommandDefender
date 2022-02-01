@@ -7,7 +7,6 @@ import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
-import me.lokka30.commanddefender.corebukkit.listener.ListenerMetadata;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
@@ -49,17 +48,12 @@ public class BukkitCore extends JavaPlugin implements Core {
         logger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
     }
 
-    @Override
-    public void onDisable() {}
-
-    private final Set<ListenerMetadata> allListeners = Set.of(
-            new PlayerCommandPreprocessListener(),
-            new PlayerCommandSendListener()
-    );
-
     void registerListeners() {
         logger().info("Registering listeners...");
-        allListeners.forEach(listener -> {
+        Set.of(
+                new PlayerCommandPreprocessListener(),
+                new PlayerCommandSendListener()
+        ).forEach(listener -> {
             logger().info("Registering listener '&b" + listener.getClass().getSimpleName() + "&7'...");
             if(listener.compatibleWithServer()) {
                 getServer().getPluginManager().registerEvents(listener, this);
@@ -99,9 +93,6 @@ public class BukkitCore extends JavaPlugin implements Core {
 
     @Override
     public void updateTabCompletionForAllPlayers() {
-        // We want to do this slowly as to not haul
-        // the server with update requests
-
         final LinkedList<Player> players = new LinkedList<>(Bukkit.getOnlinePlayers());
         if(players.size() == 0) return;
         final int[] index = {0}; // this is necessary due to the inner class below
@@ -119,22 +110,25 @@ public class BukkitCore extends JavaPlugin implements Core {
         }.runTaskTimer(this, 1L, 1L);
         // every tick, CD will update one online player's tab completion commands list. (20 players per secnd)
         // this is done in a timer rather than all at once to prevent crashes just in case there is a
-        // gigantic amount of commands to filter through.
+        // gigantic amount of commands to filter through. even if there are, doing it this way will allow
+        // the main thread to run still and thus not crash the server. of course, this is in a scenario
+        // where a server owner has a stupidly extreme amount of commands on their server and/or equally
+        // stupidly extreme amount of command sets.
     }
 
-    private final FileHandler fileHandler = new FileHandler(this);
     @Override
     public @NotNull FileHandler fileHandler() { return fileHandler; }
+    private final FileHandler fileHandler = new FileHandler();
 
     @Override
     public @NotNull String dataFolder() {
         return getDataFolder().getPath();
     }
 
-    private final BukkitPlatformHandler platformHandler = new BukkitPlatformHandler();
     @Override
     public @NotNull PlatformHandler platformHandler() {
         return platformHandler;
     }
+    private final BukkitPlatformHandler platformHandler = new BukkitPlatformHandler();
 
 }

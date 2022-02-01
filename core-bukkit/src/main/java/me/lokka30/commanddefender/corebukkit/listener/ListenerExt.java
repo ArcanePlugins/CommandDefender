@@ -2,7 +2,10 @@ package me.lokka30.commanddefender.corebukkit.listener;
 
 import org.bukkit.event.Listener;
 
-public interface ListenerMetadata extends Listener {
+// This is just an extension of the Listener interface which
+// offers some more information about a specific listener class
+// e.g. if it is compatible with the server or not.
+public interface ListenerExt extends Listener {
 
     // If this method is intended to be ran more than once for a specific class
     // during runtime then it is recommended to cache this value. Currently CommandDefender
