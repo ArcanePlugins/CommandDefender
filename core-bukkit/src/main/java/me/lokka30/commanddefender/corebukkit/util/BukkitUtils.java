@@ -1,39 +1,22 @@
 package me.lokka30.commanddefender.corebukkit.util;
 
+import me.lokka30.commanddefender.core.util.CoreUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class BukkitUtils {
 
-    private BukkitUtils() { throw new UnsupportedOperationException(); }
+    // This class's methods are static, use them as such.
+    private BukkitUtils() { throw new UnsupportedOperationException("Attempted instantiation of utility-type class"); }
 
-    // would use Optional, but we're targeting Java 8 :sob:. This will suffice.
-    //TODO nope we're using Java 17 now! time to upgrade this!
-    private static byte serverHasBungeeChatColorAPI = 0;
-    public static boolean serverHasBungeeChatColorAPI() {
-        switch(serverHasBungeeChatColorAPI) {
-            case 0:
-                try {
-                    Class.forName("net.md_5.bungee.api.ChatColor");
-                } catch (ClassNotFoundException e) {
-                    serverHasBungeeChatColorAPI = 2;
-                    return false;
-                }
-                serverHasBungeeChatColorAPI = 1;
-                return true;
-            case 1:
-                return true;
-            case 2:
-                return false;
-            default:
-                throw new IllegalStateException("Unexpected value: " + serverHasBungeeChatColorAPI);
-        }
-    }
-
+    // Translate the color codes in a given msg (e.g. `&a` = lime/green).
     @NotNull
     public static String colorize(final @NotNull String msg) {
+        Objects.requireNonNull(msg, "msg");
         if(msg.isEmpty()) return msg;
 
-        if(BukkitUtils.serverHasBungeeChatColorAPI()) {
+        if(CoreUtils.classExists("net.md_5.bungee.api.ChatColor")) {
             return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', msg);
         } else {
             return org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);

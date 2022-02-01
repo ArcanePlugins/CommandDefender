@@ -4,11 +4,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CoreUtils {
 
+    // This class's methods are static, use them as such.
+    private CoreUtils() { throw new UnsupportedOperationException("Attempted instantiation of utility-type class"); }
+
+    // Turns a string that is `FORMATTED_LIKE_THIS` into `Formatted Like This`.
     @NotNull
-    public static String formatEnumConstant(final @NotNull String str) {
+    public static String formatConstantTypeStr(final @NotNull String str) {
+        Objects.requireNonNull(str, "str");
+
         final String[] words = str.replace("_", " ").split(" ");
         for(int i = 0; i < words.length; i++) {
             words[i] = words[i].substring(0, 1).toUpperCase(Locale.ROOT) + words[i].substring(1).toLowerCase(Locale.ROOT);
@@ -16,8 +23,11 @@ public class CoreUtils {
         return String.join(" ", words);
     }
 
+    // Check if a certain class exists. Used for compatibility purposes. Results are cached for performance.
     private static final HashMap<String, Boolean> classExistsCache = new HashMap<>();
     public static boolean classExists(final @NotNull String classpath) {
+        Objects.requireNonNull(classpath, "classpath");
+
         if(classExistsCache.containsKey(classpath)) {
             return classExistsCache.get(classpath);
         }
