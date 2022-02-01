@@ -4,6 +4,7 @@ import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.file.FileHandler;
+import me.lokka30.commanddefender.core.filter.CommandFilter;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
@@ -90,6 +91,12 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull String colorize(@NotNull String msg) {
         return BukkitUtils.colorize(msg);
     }
+
+    @Override
+    public @NotNull CommandFilter commandFilter() {
+        return filter;
+    }
+    private final CommandFilter filter = new CommandFilter();
 
     @Override
     public void updateTabCompletionForAllPlayers() {

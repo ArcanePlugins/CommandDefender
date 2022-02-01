@@ -2,7 +2,6 @@ package me.lokka30.commanddefender.core.filter;
 
 import de.leonhard.storage.Yaml;
 import me.lokka30.commanddefender.core.Commons;
-import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
@@ -22,9 +21,6 @@ import java.util.*;
 
 public final class CommandFilter {
 
-    private final Core core;
-    public CommandFilter(final Core core) { this.core = core; }
-
     private final LinkedList<CommandSetPreset> presets = new LinkedList<>();
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
@@ -35,15 +31,13 @@ public final class CommandFilter {
             // pre process options
             for(final PreProcessOption option : set.preProcessOptions()) {
 
-                // Bypass Permission
                 if(option instanceof BypassPermission.BypassPermissionOption bpo) {
+                    // Check Bypass Permission
                     if(player.hasPermission(bpo.bypassPermission())) {
                         continue commandSetIterator;
                     }
-                }
-
-                // Filter
-                if(option instanceof FilterContext.FilterContextOption fco) {
+                } else if(option instanceof FilterContext.FilterContextOption fco) {
+                    // Check Filter Context Type
                     boolean contains = false;
                     for(FilterContextType contextTypeInArray : fco.contextTypes()) {
                         if (contextTypeInArray.equals(contextType)) {
@@ -54,16 +48,28 @@ public final class CommandFilter {
                     if(!contains) {
                         continue commandSetIterator;
                     }
+                } else {
+                    Commons.core.logger().error("Unexpected pre-process option " + option.getClass().getSimpleName() + "&7'.");
                 }
             }
 
+            // processing
             final CommandAccessStatus status = set.getAccessStatus(player, args);
             if(status != CommandAccessStatus.UNKNOWN) {
                 return (status == CommandAccessStatus.ALLOW);
             }
+
+            // post process options
+            for(final PostProcessOption option : set.postProcessOptions()) {
+                /* Intentionally empty */
+                Commons.core.logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
+            }
+
+            // actions
+            set.actions().forEach(action -> action.run(player));
         }
         // command sets don't specify the command -> return default status:
-        return core.fileHandler().settings().data().get("default-command-status", true);
+        return Commons.core.fileHandler().settings().data().get("default-command-status", true);
     }
 
     public void load() {
@@ -72,12 +78,12 @@ public final class CommandFilter {
 
         // update the tab completion for all online players
         // so that it matches the new command sets
-        core.updateTabCompletionForAllPlayers();
+        Commons.core.updateTabCompletionForAllPlayers();
     }
 
     private void parseCommandSets() {
         // reference to the settings data for cleaner code
-        final Yaml settings = core.fileHandler().settings().data();
+        final Yaml settings = Commons.core.fileHandler().settings().data();
 
         // iterate thru all presets in the settings file
         presets.clear();
@@ -95,13 +101,13 @@ public final class CommandFilter {
     }
 
     private void parsePreset(final @NotNull String identifier) {
-        final Yaml settings = core.fileHandler().settings().data();
+        final Yaml settings = Commons.core.fileHandler().settings().data();
         final String path = "presets." + identifier;
         presets.add(new CommandSetPreset(identifier, settings.getSection(path)));
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
-        final Yaml settings = core.fileHandler().settings().data();
+        final Yaml settings = Commons.core.fileHandler().settings().data();
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
@@ -112,7 +118,7 @@ public final class CommandFilter {
             case "ALLOW" -> type = CommandAccessStatus.ALLOW;
             default -> {
                 type = CommandAccessStatus.DENY;
-                core.logger().error(
+                Commons.core.logger().error(
                         "Command set '&b" + identifier + "&7' has an invalid &btype&7 specified, expecting '&b" +
                                 "ALLOW&7' or '&bDENY&7'. CommandDefender will assume this set is in &bDENY&7 mode. " +
                                 "Fix this ASAP.");
@@ -146,13 +152,13 @@ public final class CommandFilter {
     }
 
     private void parseCommandSetPresets(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = core.fileHandler().settings().data();
+        final Yaml settings = Commons.core.fileHandler().settings().data();
         final List<String> presetIds = settings.getStringList("command-sets." + identifier + ".use-presets");
 
         presets.forEach(preset -> {
             if(presetIds.contains(preset.identifier())) {
                 if(commandSet.presets().contains(preset)) {
-                    core.logger().error("Duplicate preset '" + preset.identifier() + "' specified for " +
+                    Commons.core.logger().error("Duplicate preset '" + preset.identifier() + "' specified for " +
                             "command set '" + commandSet.identifier() + "'. Remove duplicate entries ASAP.");
                 } else {
                     commandSet.presets().add(preset);
@@ -162,35 +168,41 @@ public final class CommandFilter {
     }
 
     private void parseCommandSetConditions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = core.fileHandler().settings().data();
-        final String path = "command-sets." + identifier + ".conditions";
+        final Yaml settings = Commons.core.fileHandler().settings().data();
 
         final HashSet<Condition> conditions = new HashSet<>();
         for(ConditionHandler conditionHandler : Commons.conditionHandlers) {
-            final Optional<Condition> condition = conditionHandler.parse(commandSet, settings.getSection(path));
+            final Optional<Condition> condition = conditionHandler.parse(
+                    commandSet,
+                    settings.getSection("command-sets." + identifier)
+            );
             if(condition.isEmpty()) continue;
             commandSet.conditions().add(condition.get());
         }
     }
 
     private void parseCommandSetActions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = core.fileHandler().settings().data();
-        final String path = "command-sets." + identifier + ".actions";
+        final Yaml settings = Commons.core.fileHandler().settings().data();
 
         final HashSet<Action> actions = new HashSet<>();
         for(ActionHandler actionHandler : Commons.actionHandlers) {
-            final Optional<Action> action = actionHandler.parse(commandSet, settings.getSection(path));
+            final Optional<Action> action = actionHandler.parse(
+                    commandSet,
+                    settings.getSection("command-sets." + identifier)
+            );
             if(action.isEmpty()) continue;
             commandSet.actions().add(action.get());
         }
     }
 
     private void parseCommandSetOptions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = core.fileHandler().settings().data();
-        final String path = "command-sets." + identifier + ".options";
+        final Yaml settings = Commons.core.fileHandler().settings().data();
 
         for(OptionHandler optionHandler : Commons.optionHandlers) {
-            final Optional<Option> option = optionHandler.parse(commandSet, settings.getSection(path));
+            final Optional<Option> option = optionHandler.parse(
+                    commandSet,
+                    settings.getSection("command-sets." + identifier)
+            );
             if(option.isEmpty()) continue;
             if(option.get() instanceof PreProcessOption) {
                 commandSet.preProcessOptions().add((PreProcessOption) option.get());

@@ -5,12 +5,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class BukkitPlatformHandler implements PlatformHandler {
 
@@ -65,8 +63,33 @@ public class BukkitPlatformHandler implements PlatformHandler {
     }
 
     @NotNull
+    public static String[] bukkitCommandMessageToUniversal(final @NotNull String commandMsg) {
+        return commandMsg.split(" ");
+    }
+
+    @NotNull
     public static BukkitPlayer universalPlayerToBukkit(final @NotNull UniversalPlayer player) {
         return new BukkitPlayer(player.uuid(), Objects.requireNonNull(Bukkit.getPlayer(player.uuid())));
+    }
+
+    @NotNull
+    public static UniversalPlayer bukkitPlayerToUniversal(final @NotNull Player player) {
+        return new UniversalPlayer() {
+            @Override
+            public UUID uuid() {
+                return player.getUniqueId();
+            }
+
+            @Override
+            public void sendChatMessage(@NotNull String msg) {
+                player.sendMessage(msg);
+            }
+
+            @Override
+            public boolean hasPermission(@NotNull String permission) {
+                return player.hasPermission(permission);
+            }
+        };
     }
 
     @Override
