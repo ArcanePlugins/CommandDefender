@@ -12,17 +12,12 @@ import java.util.Optional;
 
 public class FilterContext implements OptionHandler {
 
-    private CommandSet parentSet;
-    @Override public @NotNull CommandSet parentSet() {
-        return parentSet;
-    }
     @Override public @NotNull String identifier() {
         return "filter";
     }
 
     @Override
     public @NotNull Optional<Option> parse(@NotNull CommandSet parentSet, @NotNull FlatFileSection section) {
-        this.parentSet = parentSet;
         //TODO
         return Optional.empty();
     }

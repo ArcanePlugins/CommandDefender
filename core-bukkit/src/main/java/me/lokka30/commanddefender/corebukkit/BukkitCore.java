@@ -4,14 +4,15 @@ import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.file.FileHandler;
+import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import me.lokka30.commanddefender.corebukkit.listener.CDListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
-import me.lokka30.commanddefender.corebukkit.util.universal.BukkitConverter;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitLogger;
+import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -25,16 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 public class BukkitCore extends JavaPlugin implements Core {
 
-    public static BukkitCore instance() {
-        return instance;
-    }
-    private static BukkitCore instance;
-
     @Override
     public void onLoad() {
-        instance = this;
-
-        Commons.dataFolder = getDataFolder().getPath();
+        Commons.core = this;
     }
 
     @Override
@@ -88,7 +82,7 @@ public class BukkitCore extends JavaPlugin implements Core {
                 this.logger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
                         "Please inform CommandDefender developers.");
             } else {
-                pluginCommand.setExecutor(BukkitConverter.universalCommandToBukkit(command));
+                pluginCommand.setExecutor(BukkitPlatformHandler.universalCommandToBukkit(command));
             }
         });
         logger().info("Registered commands.");
@@ -121,12 +115,23 @@ public class BukkitCore extends JavaPlugin implements Core {
                 players.get(index[0]).updateCommands();
                 index[0]++;
             }
-        }.runTaskTimer(BukkitCore.instance(), 1L, 5L);
+        }.runTaskTimer(this, 1L, 5L);
         // every quarter of a second, CD will update each player's tab completion commands list.
     }
 
+    private final FileHandler fileHandler = new FileHandler(this);
     @Override
     public @NotNull FileHandler fileHandler() { return fileHandler; }
-    private final FileHandler fileHandler = new FileHandler(this);
+
+    @Override
+    public @NotNull String dataFolder() {
+        return getDataFolder().getPath();
+    }
+
+    private final BukkitPlatformHandler platformHandler = new BukkitPlatformHandler();
+    @Override
+    public @NotNull PlatformHandler platformHandler() {
+        return platformHandler;
+    }
 
 }

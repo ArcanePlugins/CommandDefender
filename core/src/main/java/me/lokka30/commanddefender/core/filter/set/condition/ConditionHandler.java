@@ -9,9 +9,6 @@ import java.util.Optional;
 public interface ConditionHandler {
 
     @NotNull
-    CommandSet parentSet();
-
-    @NotNull
     String identifier();
 
     @NotNull

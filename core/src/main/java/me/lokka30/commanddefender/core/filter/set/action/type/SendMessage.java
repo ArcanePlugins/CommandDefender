@@ -11,12 +11,6 @@ import java.util.Optional;
 
 public class SendMessage implements ActionHandler {
 
-    CommandSet parentSet;
-    @Override
-    public @NotNull CommandSet parentSet() {
-        return parentSet;
-    }
-
     @Override
     public @NotNull String identifier() {
         return "send-message";
@@ -24,7 +18,6 @@ public class SendMessage implements ActionHandler {
 
     @Override
     public @NotNull Optional<Action> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
-        this.parentSet = parentSet;
         //TODO parse from command set and presets
         return Optional.empty();
     }

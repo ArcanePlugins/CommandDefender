@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class Commons {
 
-    public static String dataFolder = null;
+    public static Core core;
 
     public static final HashSet<ConditionHandler> conditionHandlers = new HashSet<>(Set.of(
             new FromPlugins(),

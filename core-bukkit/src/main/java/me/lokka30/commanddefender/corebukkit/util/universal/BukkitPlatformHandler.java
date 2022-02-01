@@ -1,8 +1,6 @@
 package me.lokka30.commanddefender.corebukkit.util.universal;
 
-import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
-import me.lokka30.commanddefender.core.util.universal.UniversalCommandSender;
-import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
+import me.lokka30.commanddefender.core.util.universal.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class BukkitConverter {
+public class BukkitPlatformHandler implements PlatformHandler {
 
     @NotNull
     public static TabExecutor universalCommandToBukkit(final @NotNull UniversalCommand universalCommand) {
@@ -69,5 +67,10 @@ public class BukkitConverter {
     @NotNull
     public static BukkitPlayer universalPlayerToBukkit(final @NotNull UniversalPlayer player) {
         return new BukkitPlayer(player.uuid(), Objects.requireNonNull(Bukkit.getPlayer(player.uuid())));
+    }
+
+    @Override
+    public UniversalSound buildPlatformSpecificSound(@NotNull String identifier, double volume, double pitch) {
+        return new BukkitSound(identifier, volume, pitch);
     }
 }

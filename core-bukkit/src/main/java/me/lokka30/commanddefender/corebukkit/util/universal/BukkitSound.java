@@ -12,8 +12,8 @@ public record BukkitSound(
 ) implements UniversalSound {
 
     @Override
-    public void play(final @NotNull UniversalPlayer player) {
-        final BukkitPlayer bukkitPlayer = BukkitConverter.universalPlayerToBukkit(player);
+    public void play(@NotNull UniversalPlayer universalPlayer) {
+        final BukkitPlayer bukkitPlayer = BukkitPlatformHandler.universalPlayerToBukkit(universalPlayer);
         bukkitPlayer.player().playSound(
                 bukkitPlayer.player().getLocation(),
                 Sound.valueOf(identifier()),
@@ -21,5 +21,4 @@ public record BukkitSound(
                 (float) pitch()
         );
     }
-
 }

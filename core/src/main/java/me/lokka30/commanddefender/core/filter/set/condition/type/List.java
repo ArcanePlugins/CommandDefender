@@ -13,12 +13,6 @@ import java.util.Optional;
 
 public class List implements ConditionHandler {
 
-    CommandSet parentSet;
-    @Override
-    public @NotNull CommandSet parentSet() {
-        return parentSet;
-    }
-
     @Override
     public @NotNull String identifier() {
         return "list";
@@ -26,7 +20,6 @@ public class List implements ConditionHandler {
 
     @Override
     public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
-        this.parentSet = parentSet;
         //TODO parse from command set and presets
         return Optional.empty();
     }

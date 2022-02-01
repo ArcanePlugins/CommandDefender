@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface OptionHandler {
 
-    @NotNull CommandSet parentSet();
-
     @NotNull String identifier();
 
     @NotNull

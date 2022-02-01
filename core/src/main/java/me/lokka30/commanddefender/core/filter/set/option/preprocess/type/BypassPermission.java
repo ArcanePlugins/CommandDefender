@@ -11,12 +11,6 @@ import java.util.Optional;
 
 public class BypassPermission implements OptionHandler {
 
-    CommandSet parentSet;
-    @Override
-    public @NotNull CommandSet parentSet() {
-        return parentSet;
-    }
-
     @Override
     public @NotNull String identifier() {
         return "bypass-permission";
@@ -24,7 +18,6 @@ public class BypassPermission implements OptionHandler {
 
     @Override
     public @NotNull Optional<Option> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
-        this.parentSet = parentSet;
         //TODO
         return Optional.empty();
     }
