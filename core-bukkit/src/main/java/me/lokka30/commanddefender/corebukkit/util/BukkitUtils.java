@@ -7,28 +7,7 @@ public class BukkitUtils {
     private BukkitUtils() { throw new UnsupportedOperationException(); }
 
     // would use Optional, but we're targeting Java 8 :sob:. This will suffice.
-    private static byte serverHasPlayerCommandSendEvent = 0;
-    public static boolean serverHasPlayerCommandSendEvent() {
-        switch(serverHasPlayerCommandSendEvent) {
-            case 0:
-                try {
-                    Class.forName("org.bukkit.event.player.PlayerCommandSendEvent");
-                } catch (ClassNotFoundException e) {
-                    serverHasPlayerCommandSendEvent = 2;
-                    return false;
-                }
-                serverHasPlayerCommandSendEvent = 1;
-                return true;
-            case 1:
-                return true;
-            case 2:
-                return false;
-            default:
-                throw new IllegalStateException("Unexpected value: " + serverHasPlayerCommandSendEvent);
-        }
-    }
-
-    // would use Optional, but we're targeting Java 8 :sob:. This will suffice.
+    //TODO nope we're using Java 17 now! time to upgrade this!
     private static byte serverHasBungeeChatColorAPI = 0;
     public static boolean serverHasBungeeChatColorAPI() {
         switch(serverHasBungeeChatColorAPI) {

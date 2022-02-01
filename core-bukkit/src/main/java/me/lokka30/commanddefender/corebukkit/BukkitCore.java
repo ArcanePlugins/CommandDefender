@@ -7,7 +7,7 @@ import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
-import me.lokka30.commanddefender.corebukkit.listener.CDListener;
+import me.lokka30.commanddefender.corebukkit.listener.ListenerMetadata;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
@@ -52,7 +52,7 @@ public class BukkitCore extends JavaPlugin implements Core {
     @Override
     public void onDisable() {}
 
-    private final Set<CDListener> allListeners = Set.of(
+    private final Set<ListenerMetadata> allListeners = Set.of(
             new PlayerCommandPreprocessListener(),
             new PlayerCommandSendListener()
     );
@@ -102,9 +102,6 @@ public class BukkitCore extends JavaPlugin implements Core {
         // We want to do this slowly as to not haul
         // the server with update requests
 
-        // Make sure the server has the event to begin with.
-        if(!BukkitUtils.serverHasPlayerCommandSendEvent()) return;
-
         final LinkedList<Player> players = new LinkedList<>(Bukkit.getOnlinePlayers());
         if(players.size() == 0) return;
         final int[] index = {0}; // this is necessary due to the inner class below
@@ -112,11 +109,17 @@ public class BukkitCore extends JavaPlugin implements Core {
         new BukkitRunnable() {
             @Override
             public void run() {
-                players.get(index[0]).updateCommands();
-                index[0]++;
+                try {
+                    players.get(index[0]).updateCommands();
+                    index[0]++;
+                } catch(NoSuchMethodError error) {
+                    cancel();
+                }
             }
-        }.runTaskTimer(this, 1L, 5L);
-        // every quarter of a second, CD will update each player's tab completion commands list.
+        }.runTaskTimer(this, 1L, 1L);
+        // every tick, CD will update one online player's tab completion commands list. (20 players per secnd)
+        // this is done in a timer rather than all at once to prevent crashes just in case there is a
+        // gigantic amount of commands to filter through.
     }
 
     private final FileHandler fileHandler = new FileHandler(this);
