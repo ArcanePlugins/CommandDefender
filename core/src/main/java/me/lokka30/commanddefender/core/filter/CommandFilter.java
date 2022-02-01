@@ -11,6 +11,7 @@ import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.postprocess.type.ActionPredicateOverride;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.FilterContext;
@@ -32,12 +33,12 @@ public final class CommandFilter {
             for(final PreProcessOption option : set.preProcessOptions()) {
 
                 if(option instanceof BypassPermission.BypassPermissionOption bpo) {
-                    // Check Bypass Permission
+                    // Check Bypass Permission option
                     if(player.hasPermission(bpo.bypassPermission())) {
                         continue commandSetIterator;
                     }
                 } else if(option instanceof FilterContext.FilterContextOption fco) {
-                    // Check Filter Context Type
+                    // Check Filter Context Type option
                     boolean contains = false;
                     for(FilterContextType contextTypeInArray : fco.contextTypes()) {
                         if (contextTypeInArray.equals(contextType)) {
@@ -56,24 +57,30 @@ public final class CommandFilter {
             // processing
             final CommandAccessStatus status = set.getAccessStatus(player, args);
 
-            // post process options
+            // post-process options
+            boolean ignoreFilteringContext = false, ignoreCommandAccessStatus = false;
+
             for(final PostProcessOption option : set.postProcessOptions()) {
-                /* Intentionally empty */
-                Commons.core.logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
+                if(option instanceof ActionPredicateOverride.ActionPredicateOverrideOption apoo) {
+                    // Action Predicate Override option
+                    ignoreFilteringContext = apoo.ignoreFilteringContext();
+                    ignoreCommandAccessStatus = apoo.ignoreCommandAccessStatus();
+                } else {
+                    Commons.core.logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
+                }
             }
 
-            final boolean runActions = (status == CommandAccessStatus.DENY);
-            /*
-            TODO
-                - add post-process option 'run actions with command suggestion filtration'
-                - add post-process option 'run actions if command is allowed'
-             */
+            /* time to run the actions (if the checks agree with it) */
 
-            if(runActions) {
-                // actions
+            final boolean statusCheck = status == CommandAccessStatus.DENY || (ignoreCommandAccessStatus && status == CommandAccessStatus.ALLOW);
+            final boolean filterContextCheck = contextType == FilterContextType.COMMAND_EXECUTION || ignoreFilteringContext;
+
+            if(statusCheck && filterContextCheck) {
+                // run the actions.
                 set.actions().forEach(action -> action.run(player));
             }
 
+            /* return the status of the command set */
             if(status != CommandAccessStatus.UNKNOWN) {
                 return (status == CommandAccessStatus.ALLOW);
             }

@@ -149,6 +149,9 @@ command-sets:
     options:
       bypass-permission: "example.permission.here"
       skip-to: "example.set.id"
+      action-predicate-override:
+        ignore-filtering-context: true
+        ignore-command-set-type: true
 
   # Example command set
   # Disabled by default
