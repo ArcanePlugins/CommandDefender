@@ -21,13 +21,15 @@ public class PlaySound implements ActionHandler {
 
     @Override
     public @NotNull Optional<Action> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
+        final String path = "actions." + identifier();
+
         String soundId = null;
-        if(section.contains(identifier() + ".id")) {
-            soundId = section.getString(identifier() + ".id");
+        if(section.contains(path + ".id")) {
+            soundId = section.getString(path + ".id");
         } else {
             for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().contains("actions." + identifier() + ".id")) {
-                    soundId = preset.section().getString("actions." + identifier() + ".id");
+                if(preset.section().contains(path + ".id")) {
+                    soundId = preset.section().getString(path + ".id");
                     break;
                 }
             }
@@ -39,12 +41,12 @@ public class PlaySound implements ActionHandler {
         }
 
         Double volume = null;
-        if(section.contains(identifier() + ".volume")) {
-            volume = section.getDouble(identifier() + ".volume");
+        if(section.contains(path + ".volume")) {
+            volume = section.getDouble(path + ".volume");
         } else {
             for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().contains("actions." + identifier() + ".volume")) {
-                    volume = preset.section().getDouble("actions." + identifier() + ".volume");
+                if(preset.section().contains(path + ".volume")) {
+                    volume = preset.section().getDouble(path + ".volume");
                     break;
                 }
             }
@@ -56,12 +58,12 @@ public class PlaySound implements ActionHandler {
         }
 
         Double pitch = null;
-        if(section.contains(identifier() + ".pitch")) {
-            pitch = section.getDouble(identifier() + ".pitch");
+        if(section.contains(path + ".pitch")) {
+            pitch = section.getDouble(path + ".pitch");
         } else {
             for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().contains("actions." + identifier() + ".pitch")) {
-                    pitch = preset.section().getDouble("actions." + identifier() + ".pitch");
+                if(preset.section().contains(path + ".pitch")) {
+                    pitch = preset.section().getDouble(path + ".pitch");
                     break;
                 }
             }

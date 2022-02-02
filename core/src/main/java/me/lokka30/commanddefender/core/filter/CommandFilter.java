@@ -128,7 +128,7 @@ public final class CommandFilter {
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
-        final double conditionsPercentageRequired = settings.get(path + ".conditions.percentage-required", 0.0);
+        final double conditionsPercentageRequired = settings.get(path + ".conditions.percentage-required", 100.0D);
 
         switch (settings.get(path + ".type", "DENY").toUpperCase(Locale.ROOT)) {
             case "DENY" -> type = CommandAccessStatus.DENY;

@@ -5,4 +5,5 @@ public enum FilterContextType {
     COMMAND_SUGGESTION,
 
     COMMAND_EXECUTION
+
 }

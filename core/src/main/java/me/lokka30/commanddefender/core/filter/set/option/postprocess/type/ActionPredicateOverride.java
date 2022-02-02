@@ -18,14 +18,16 @@ public class ActionPredicateOverride implements OptionHandler {
 
     @Override
     public @NotNull Optional<Option> parse(@NotNull CommandSet parentSet, @NotNull FlatFileSection section) {
-        if(!section.contains(identifier())) {
+        final String path = "options." + identifier();
+
+        if(!section.contains(path)) {
             return Optional.empty();
         }
 
         return Optional.of(new ActionPredicateOverrideOption(
                 parentSet,
-                section.get(identifier() + ".ignore-filtering-context", false),
-                section.get(identifier() + ".ignore-command-set-type", false)
+                section.get(path + ".ignore-filtering-context", false),
+                section.get(path + ".ignore-command-set-type", false)
         ));
     }
 
