@@ -12,6 +12,11 @@ public record BukkitPlayer(
 ) implements UniversalPlayer {
 
     @Override
+    public @NotNull String name() {
+        return player.getName();
+    }
+
+    @Override
     public void sendChatMessage(@NotNull String msg) {
         player().sendMessage(msg);
     }

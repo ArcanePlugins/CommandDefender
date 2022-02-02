@@ -41,5 +41,4 @@ public class CoreUtils {
             return false;
         }
     }
-
 }

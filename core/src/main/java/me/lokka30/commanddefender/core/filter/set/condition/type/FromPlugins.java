@@ -26,12 +26,14 @@ public class FromPlugins implements ConditionHandler {
             @NotNull String[] plugins,
             boolean inverse
     ) implements Condition {
+
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
             boolean isFromPlugin = false;
             //TODO
             return isFromPlugin != inverse();
         }
+
     }
 
 }
