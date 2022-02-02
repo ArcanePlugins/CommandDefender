@@ -8,7 +8,8 @@ import java.util.Optional;
 
 public interface OptionHandler {
 
-    @NotNull String identifier();
+    @NotNull
+    String identifier();
 
     @NotNull
     Optional<Option> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section);

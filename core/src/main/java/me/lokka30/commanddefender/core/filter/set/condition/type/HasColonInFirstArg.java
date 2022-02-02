@@ -25,11 +25,12 @@ public class HasColonInFirstArg implements ConditionHandler {
     public record HasColonInFirstArgCondition(
             boolean inverse
     ) implements Condition {
+
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
             return args[0].contains(":") == !inverse();
         }
-    }
 
+    }
 
 }

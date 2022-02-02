@@ -81,7 +81,8 @@ public class BukkitPlatformHandler implements PlatformHandler {
     }
 
     @Override
-    public UniversalSound buildPlatformSpecificSound(@NotNull String identifier, double volume, double pitch) {
+    public @NotNull UniversalSound buildPlatformSpecificSound(@NotNull String identifier, double volume, double pitch) {
         return new BukkitSound(identifier, volume, pitch);
     }
+
 }

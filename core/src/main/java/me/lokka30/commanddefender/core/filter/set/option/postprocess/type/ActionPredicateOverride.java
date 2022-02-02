@@ -36,4 +36,5 @@ public class ActionPredicateOverride implements OptionHandler {
             boolean ignoreFilteringContext,
             boolean ignoreCommandAccessStatus
     ) implements PostProcessOption {}
+
 }

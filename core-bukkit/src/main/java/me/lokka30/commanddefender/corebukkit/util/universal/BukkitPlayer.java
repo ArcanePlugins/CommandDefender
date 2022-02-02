@@ -25,4 +25,5 @@ public record BukkitPlayer(
     public boolean hasPermission(@NotNull String permission) {
         return player().hasPermission(permission);
     }
+
 }

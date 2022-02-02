@@ -25,4 +25,5 @@ public class PlayerCommandPreprocessListener implements ListenerExt {
             event.setCancelled(true);
         }
     }
+
 }

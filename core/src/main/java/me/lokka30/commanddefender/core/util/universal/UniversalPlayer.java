@@ -6,9 +6,11 @@ import java.util.UUID;
 
 public interface UniversalPlayer {
 
-    @NotNull UUID uuid();
+    @NotNull
+    UUID uuid();
 
-    @NotNull String name();
+    @NotNull
+    String name();
 
     void sendChatMessage(final @NotNull String msg);
 

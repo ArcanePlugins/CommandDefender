@@ -10,21 +10,27 @@ public interface Core {
 
     /* Data */
 
-    @NotNull FileHandler fileHandler();
+    @NotNull
+    FileHandler fileHandler();
 
-    @NotNull String dataFolder();
+    @NotNull
+    String dataFolder();
 
     /* Utilities */
 
-    @NotNull UniversalLogger logger();
+    @NotNull
+    UniversalLogger logger();
 
-    @NotNull String colorize(final @NotNull String msg);
+    @NotNull
+    String colorize(final @NotNull String msg);
 
     /* Other */
 
-    @NotNull CommandFilter commandFilter();
+    @NotNull
+    CommandFilter commandFilter();
 
-    @NotNull PlatformHandler platformHandler();
+    @NotNull
+    PlatformHandler platformHandler();
 
     void updateTabCompletionForAllPlayers();
 

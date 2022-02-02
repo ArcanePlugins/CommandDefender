@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public class FilterContext implements OptionHandler {
 
-    @Override public @NotNull String identifier() {
+    @Override
+    public @NotNull String identifier() {
         return "filter";
     }
 
@@ -25,4 +26,5 @@ public class FilterContext implements OptionHandler {
     public record FilterContextOption(
             @NotNull FilterContextType[] contextTypes
     ) implements PreProcessOption {}
+
 }

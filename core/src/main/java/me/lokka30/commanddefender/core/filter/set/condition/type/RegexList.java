@@ -36,4 +36,5 @@ public class RegexList implements ConditionHandler {
         }
 
     }
+
 }

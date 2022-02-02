@@ -54,4 +54,5 @@ public record CommandSet(
         // so return `UNKNOWN`.
         return CommandAccessStatus.UNKNOWN;
     }
+
 }

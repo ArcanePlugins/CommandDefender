@@ -10,9 +10,11 @@ public record ModalList<T>(
 ) {
 
     public enum ModalListType {
+
         INCLUSIVE,
 
         EXCLUSIVE
+
     }
 
     public boolean includes(final T object) {
@@ -25,7 +27,8 @@ public record ModalList<T>(
 
         // Who in their right mind spends this amount of time
         // formatting a brainstorming table in the source code?
-        // Oh. Oops.
+        // (I did.)
         return contents.contains(object) && modalListType == ModalListType.INCLUSIVE;
     }
+
 }

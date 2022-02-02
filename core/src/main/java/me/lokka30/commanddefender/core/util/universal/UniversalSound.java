@@ -4,7 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface UniversalSound {
 
-    @NotNull String identifier();
+    @NotNull
+    String identifier();
 
     double volume();
 

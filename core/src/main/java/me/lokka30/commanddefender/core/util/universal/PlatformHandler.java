@@ -4,6 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PlatformHandler {
 
-    UniversalSound buildPlatformSpecificSound(final @NotNull String identifier, final double volume, final double pitch);
+    @NotNull UniversalSound buildPlatformSpecificSound(
+            final @NotNull String identifier,
+            final double volume,
+            final double pitch
+    );
 
 }

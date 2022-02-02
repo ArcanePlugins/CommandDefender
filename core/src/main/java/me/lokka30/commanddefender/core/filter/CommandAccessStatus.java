@@ -12,4 +12,5 @@ public enum CommandAccessStatus {
 
     // a command set has decided to allow the command.
     ALLOW
+
 }

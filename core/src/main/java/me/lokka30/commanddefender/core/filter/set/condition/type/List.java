@@ -102,5 +102,7 @@ public class List implements ConditionHandler {
             STARTS_WITH,
             CONTAINS
         }
+
     }
+
 }

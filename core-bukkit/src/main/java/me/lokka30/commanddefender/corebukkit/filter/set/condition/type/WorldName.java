@@ -42,10 +42,11 @@ public class WorldName implements ConditionHandler {
             @NotNull ModalList<String> modalList
     ) implements Condition {
 
-
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
             return modalList.includes(BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName());
         }
+
     }
+
 }

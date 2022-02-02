@@ -25,4 +25,5 @@ public class BypassPermission implements OptionHandler {
     public record BypassPermissionOption(
             @NotNull String bypassPermission
     ) implements PreProcessOption {}
+
 }
