@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class BukkitCore extends JavaPlugin implements Core {
 
@@ -129,6 +130,13 @@ public class BukkitCore extends JavaPlugin implements Core {
         final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
         if(pluginCommand == null) { return null; }
         return pluginCommand.getPlugin().getName();
+    }
+
+    @Override
+    public @NotNull Set<String> aliasesOfCommand(@NotNull String command) {
+        final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
+        if(pluginCommand == null) { return Set.of(); }
+        return pluginCommand.getAliases().stream().collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

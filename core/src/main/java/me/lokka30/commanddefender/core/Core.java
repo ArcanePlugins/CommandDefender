@@ -7,6 +7,8 @@ import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 public interface Core {
 
     /* Data */
@@ -37,5 +39,8 @@ public interface Core {
 
     @Nullable
     String pluginThatRegisteredCommand(final @NotNull String command);
+
+    @NotNull
+    Set<String> aliasesOfCommand(final @NotNull String command);
 
 }

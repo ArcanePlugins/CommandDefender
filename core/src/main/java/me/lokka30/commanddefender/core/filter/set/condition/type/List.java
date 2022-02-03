@@ -1,6 +1,7 @@
 package me.lokka30.commanddefender.core.filter.set.condition.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 public class List implements ConditionHandler {
 
@@ -28,7 +30,7 @@ public class List implements ConditionHandler {
             @NotNull MatchingMode matchingMode,
             boolean ignoreCase,
             @NotNull String[] contents,
-            boolean includeAliases, //TODO implement
+            boolean includeAliases,
             boolean inverse
     ) implements Condition {
 
@@ -68,19 +70,28 @@ public class List implements ConditionHandler {
                 }
             }
 
+            final Set<String> aliases = Commons.core.aliasesOfCommand(adaptedArgs[1].substring(1));
+
             contentsLoop:
             for(String content : adaptedContents) {
                 final String[] cSplit = content.split(" ");
                 final int maxIteration = Math.min(adaptedArgs.length, cSplit.length);
 
                 for (int i = 0; i < maxIteration; i++) {
-                    final boolean matchingModeCheckSuccess = cSplit[i].equals("*") || switch(matchingMode()) {
-                        case EQUALS -> cSplit[i].equals(adaptedArgs[i]);
-                        case CONTAINS -> cSplit[i].contains(adaptedArgs[i]);
-                        case STARTS_WITH -> cSplit[i].startsWith(adaptedArgs[i]);
-                    };
+                    if(
+                            // if includeAliases, then check if the alias is also listed
+                            // only run this on the first index (i.e. base label)
+                            // cSplit[i].substring(1) is used to remove the starting slash
+                            (i == 0 && includeAliases() && aliases.contains(cSplit[i].substring(1))) ||
 
-                    if (matchingModeCheckSuccess) {
+                            cSplit[i].equals("*") ||
+
+                            switch(matchingMode()) {
+                                case EQUALS -> cSplit[i].equals(adaptedArgs[i]);
+                                case CONTAINS -> cSplit[i].contains(adaptedArgs[i]);
+                                case STARTS_WITH -> cSplit[i].startsWith(adaptedArgs[i]);
+                            }
+                    ){
                         if ((i + 1) == cSplit.length) {
                             return !inverse();
                         }
