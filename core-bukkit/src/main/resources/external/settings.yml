@@ -196,4 +196,4 @@ default-command-status: "ALLOW"
 # for compat, migration, etc.
 # *** Do NOT modify this section! ***
 file-metadata:
-  version: 123456789
+  version: 3

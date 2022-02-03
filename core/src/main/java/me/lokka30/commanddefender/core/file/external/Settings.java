@@ -50,7 +50,7 @@ public class Settings implements YamlVersionedExternalFile {
     public void migrate() {
         if(installedVersion() == currentVersion()) return;
 
-        if(installedVersion() < 12345) {
+        if(installedVersion() < 3) {
             Commons.core.logger().warning(
                     "Your '&b" + nameWithExtension() + "&7' file is too old to be migrated. It has been " +
                             "backed up. CommandDefender is now using the default latest file instead. " +
@@ -63,7 +63,7 @@ public class Settings implements YamlVersionedExternalFile {
         for(int i = installedVersion(); i < currentVersion(); i++) {
             Commons.core.logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
             switch(installedVersion()) {
-                case 999: //TODO
+                case 3:
                     break;
                 default:
                     Commons.core.logger().error(
@@ -77,6 +77,6 @@ public class Settings implements YamlVersionedExternalFile {
 
     @Override
     public int currentVersion() {
-        return 9999; //TODO
+        return 3;
     }
 }
