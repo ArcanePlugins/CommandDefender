@@ -5,6 +5,7 @@ import me.lokka30.commanddefender.core.filter.CommandFilter;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface Core {
 
@@ -33,5 +34,8 @@ public interface Core {
     PlatformHandler platformHandler();
 
     void updateTabCompletionForAllPlayers();
+
+    @Nullable
+    String pluginThatRegisteredCommand(final @NotNull String command);
 
 }

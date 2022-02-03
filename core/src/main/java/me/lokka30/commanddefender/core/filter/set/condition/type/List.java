@@ -74,22 +74,19 @@ public class List implements ConditionHandler {
                 final int maxIteration = Math.min(adaptedArgs.length, cSplit.length);
 
                 for (int i = 0; i < maxIteration; i++) {
-                    if (cSplit[i].equals("*")) {
-                        return !inverse();
-                    }
-
-                    final boolean matchingModeCheckSuccess = switch(matchingMode()) {
+                    final boolean matchingModeCheckSuccess = cSplit[i].equals("*") || switch(matchingMode()) {
                         case EQUALS -> cSplit[i].equals(adaptedArgs[i]);
                         case CONTAINS -> cSplit[i].contains(adaptedArgs[i]);
                         case STARTS_WITH -> cSplit[i].startsWith(adaptedArgs[i]);
                     };
 
                     if (matchingModeCheckSuccess) {
-                        if ((i + 1) == maxIteration) {
+                        if ((i + 1) == cSplit.length) {
                             return !inverse();
                         }
+                        // last arg not reached,
                     } else {
-                        // don't waste processing power. skip to the next content
+                        // don't waste processing power by checking other args. skip to the next content.
                         continue contentsLoop;
                     }
                 }

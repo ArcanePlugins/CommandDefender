@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.Set;
@@ -121,6 +122,13 @@ public class BukkitCore extends JavaPlugin implements Core {
         // the main thread to run still and thus not crash the server. of course, this is in a scenario
         // where a server owner has a stupidly extreme amount of commands on their server and/or equally
         // stupidly extreme amount of command sets.
+    }
+
+    @Override
+    public @Nullable String pluginThatRegisteredCommand(@NotNull String command) {
+        final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
+        if(pluginCommand == null) { return null; }
+        return pluginCommand.getPlugin().getName();
     }
 
     @Override
