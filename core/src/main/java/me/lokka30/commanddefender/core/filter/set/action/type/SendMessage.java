@@ -26,19 +26,19 @@ public class SendMessage implements ActionHandler {
             return Optional.empty();
         }
 
-        return Optional.of(
-                new SendMessageAction(section.getStringList(path))
-        );
+        return Optional.of(new SendMessageAction(section.getStringList(path)));
     }
 
     public record SendMessageAction(
-            @NotNull List<String> messages,
-            @NotNull Message.Placeholder... placeholders
+            @NotNull List<String> messages
     ) implements Action {
 
         @Override
-        public void run(@NotNull UniversalPlayer player) {
-            new Message(messages(), placeholders()).send(player);
+        public void run(@NotNull UniversalPlayer player, @NotNull String[] args) {
+            new Message(messages(),
+                    new Message.Placeholder("%player-name%", player.name()),
+                    new Message.Placeholder("%command%", String.join(" ", args))
+            ).send(player);
         }
 
     }

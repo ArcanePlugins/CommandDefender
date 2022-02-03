@@ -77,7 +77,7 @@ public final class CommandFilter {
 
             if(statusCheck && filterContextCheck) {
                 // run the actions.
-                set.actions().forEach(action -> action.run(player));
+                set.actions().forEach(action -> action.run(player, args));
             }
 
             /* return the status of the command set */

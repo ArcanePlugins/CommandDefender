@@ -5,6 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Action {
 
-    void run(final @NotNull UniversalPlayer player);
+    void run(final @NotNull UniversalPlayer player, final @NotNull String[] commandArgs);
 
 }

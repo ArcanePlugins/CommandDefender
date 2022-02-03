@@ -86,7 +86,7 @@ public class PlaySound implements ActionHandler {
     ) implements Action {
 
         @Override
-        public void run(@NotNull UniversalPlayer player) {
+        public void run(@NotNull UniversalPlayer player, @NotNull String[] args) {
             player.playSound(sound);
         }
 
