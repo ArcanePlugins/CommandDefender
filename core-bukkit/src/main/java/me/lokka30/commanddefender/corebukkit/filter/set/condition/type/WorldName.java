@@ -4,11 +4,11 @@ import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
-import me.lokka30.commanddefender.core.util.ModalList;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public class WorldName implements ConditionHandler {
@@ -39,12 +39,13 @@ public class WorldName implements ConditionHandler {
 
     public record WorldNameCondition(
             @NotNull CommandSet parentSet,
-            @NotNull ModalList<String> modalList
+            @NotNull List<String> list,
+            boolean inverse
     ) implements Condition {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            return modalList.includes(BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName());
+            return list.contains(BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName()) != inverse();
         }
 
     }

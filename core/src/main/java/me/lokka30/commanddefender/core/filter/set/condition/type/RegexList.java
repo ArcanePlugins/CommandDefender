@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core.filter.set.condition.type;
 
+import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
@@ -106,7 +107,14 @@ public class RegexList implements ConditionHandler {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            final String joinedArgs = String.join(" ", args);
+            String joinedArgs = String.join(" ", args);
+
+            // adapt array for 'use starting slash'
+            final Yaml advancedSettingsData = Commons.core().fileHandler().advancedSettings().data();
+            if(!advancedSettingsData.get("commands-configured-with-starting-slash", true)) {
+                assert joinedArgs.startsWith("/");
+                joinedArgs = joinedArgs.substring(1);
+            }
 
             for(Pattern pattern : patterns()) {
                 if(pattern.matcher(joinedArgs).find()) {

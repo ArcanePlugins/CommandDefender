@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+//TODO Marked for removal.
+
 public record ModalList<T>(
         @NotNull ModalListType modalListType,
         @NotNull List<T> contents

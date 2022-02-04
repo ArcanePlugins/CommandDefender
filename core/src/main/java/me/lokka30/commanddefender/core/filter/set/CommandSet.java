@@ -10,7 +10,6 @@ import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOp
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.HashSet;
 
 public record CommandSet(
@@ -44,14 +43,9 @@ public record CommandSet(
         int conditionsMet = 0;
         int totalConditions = conditions().size();
 
-        final String[] adaptedArgs = Arrays.copyOf(args, args.length);
-        if(!advancedSettingsData.get("commands-configured-with-starting-slash", true)) {
-            adaptedArgs[0] = adaptedArgs[0].substring(1);
-        }
-
         // loop thru conditions
         for(Condition condition : conditions()) {
-            if(condition.appliesTo(player, adaptedArgs)) {
+            if(condition.appliesTo(player, args)) {
                 // 0.0 = only one condition is required.
                 if(conditionsPercentageRequired() == 0.0) { return type(); }
 

@@ -139,7 +139,9 @@ command-sets:
 
         contents:
           - "SomeCommandWithSpecificCapitalLetters * third_argument_here \* FIFTH_ARGUMENT"
-      from-plugins: ["WorldEdit"]
+      from-plugins:
+        contents: ["WorldEdit"]
+        inverse: false
     actions:
       send-message: ["%prefix% Hello there!"]
       play-sound:

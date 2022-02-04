@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core.filter.set.condition.type;
 
+import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
@@ -68,6 +69,13 @@ public class List implements ConditionHandler {
                 if(adaptedArgs[i].equals("*")) {
                     adaptedArgs[i] = "\\*";
                 }
+            }
+
+            // adapt array for 'use starting slash'
+            final Yaml advancedSettingsData = Commons.core().fileHandler().advancedSettings().data();
+            if(!advancedSettingsData.get("commands-configured-with-starting-slash", true)) {
+                assert (adaptedArgs[0].startsWith("/"));
+                adaptedArgs[0] = adaptedArgs[0].substring(1);
             }
 
             final Set<String> aliases = Commons.core().aliasesOfCommand(adaptedArgs[1].substring(1));
