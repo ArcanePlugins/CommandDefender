@@ -20,8 +20,8 @@ public class License implements TxtExternalFile {
 
     @Override
     public void load(boolean fromReload) {
-        Commons.core.logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        Commons.getCore().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         replaceWithDefault();
-        Commons.core.logger().info("Loaded file.");
+        Commons.getCore().logger().info("Loaded file.");
     }
 }

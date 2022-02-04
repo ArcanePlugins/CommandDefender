@@ -18,7 +18,7 @@ public interface ExternalFile {
     @NotNull String resourcePath();
 
     @NotNull default String fullPath() {
-        return Commons.core.dataFolder() + File.separator + resourcePath();
+        return Commons.getCore().dataFolder() + File.separator + resourcePath();
     }
 
     /* LOADING */

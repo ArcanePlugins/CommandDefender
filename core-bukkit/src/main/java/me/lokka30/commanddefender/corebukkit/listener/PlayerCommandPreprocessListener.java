@@ -17,7 +17,7 @@ public class PlayerCommandPreprocessListener implements ListenerExt {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
-        if(!Commons.core.commandFilter().canAccess(
+        if(!Commons.getCore().commandFilter().canAccess(
                 FilterContextType.COMMAND_EXECUTION,
                 BukkitPlatformHandler.bukkitPlayerToUniversal(event.getPlayer()),
                 BukkitPlatformHandler.bukkitCommandMessageToUniversal(event.getMessage())

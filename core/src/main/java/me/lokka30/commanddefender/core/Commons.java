@@ -17,7 +17,14 @@ import java.util.Set;
 
 public class Commons {
 
-    public static Core core;
+    private static Core core;
+    
+    public static Core getCore() { return core; }
+    
+    public static void setCore(final Core core) {
+        assert Commons.getCore() == null;
+        Commons.core = core;
+    }
 
     public static final HashSet<ConditionHandler> conditionHandlers = new HashSet<>(Set.of(
             new FromPlugins(),

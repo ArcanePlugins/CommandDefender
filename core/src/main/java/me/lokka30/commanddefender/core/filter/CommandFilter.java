@@ -50,7 +50,7 @@ public final class CommandFilter {
                         continue commandSetIterator;
                     }
                 } else {
-                    Commons.core.logger().error("Unexpected pre-process option " + option.getClass().getSimpleName() + "&7'.");
+                    Commons.getCore().logger().error("Unexpected pre-process option " + option.getClass().getSimpleName() + "&7'.");
                 }
             }
 
@@ -66,7 +66,7 @@ public final class CommandFilter {
                     ignoreFilteringContext = apoo.ignoreFilteringContext();
                     ignoreCommandAccessStatus = apoo.ignoreCommandAccessStatus();
                 } else {
-                    Commons.core.logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
+                    Commons.getCore().logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
                 }
             }
 
@@ -86,7 +86,7 @@ public final class CommandFilter {
             }
         }
         // command sets don't specify the command -> return default status:
-        return Commons.core.fileHandler().settings().data().get("default-command-status", true);
+        return Commons.getCore().fileHandler().settings().data().get("default-command-status", true);
     }
 
     public void load() {
@@ -95,12 +95,12 @@ public final class CommandFilter {
 
         // update the tab completion for all online players
         // so that it matches the new command sets
-        Commons.core.updateTabCompletionForAllPlayers();
+        Commons.getCore().updateTabCompletionForAllPlayers();
     }
 
     private void parseCommandSets() {
         // reference to the settings data for cleaner code
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
 
         // iterate thru all presets in the settings file
         presets.clear();
@@ -118,13 +118,13 @@ public final class CommandFilter {
     }
 
     private void parsePreset(final @NotNull String identifier) {
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
         final String path = "presets." + identifier;
         presets.add(new CommandSetPreset(identifier, settings.getSection(path)));
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
@@ -135,7 +135,7 @@ public final class CommandFilter {
             case "ALLOW" -> type = CommandAccessStatus.ALLOW;
             default -> {
                 type = CommandAccessStatus.DENY;
-                Commons.core.logger().error(
+                Commons.getCore().logger().error(
                         "Command set '&b" + identifier + "&7' has an invalid &btype&7 specified, expecting '&b" +
                                 "ALLOW&7' or '&bDENY&7'. CommandDefender will assume this set is in &bDENY&7 mode. " +
                                 "Fix this ASAP.");
@@ -169,13 +169,13 @@ public final class CommandFilter {
     }
 
     private void parseCommandSetPresets(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
         final List<String> presetIds = settings.getStringList("command-sets." + identifier + ".use-presets");
 
         presets.forEach(preset -> {
             if(presetIds.contains(preset.identifier())) {
                 if(commandSet.presets().contains(preset)) {
-                    Commons.core.logger().error("Duplicate preset '" + preset.identifier() + "' specified for " +
+                    Commons.getCore().logger().error("Duplicate preset '" + preset.identifier() + "' specified for " +
                             "command set '" + commandSet.identifier() + "'. Remove duplicate entries ASAP.");
                 } else {
                     commandSet.presets().add(preset);
@@ -185,7 +185,7 @@ public final class CommandFilter {
     }
 
     private void parseCommandSetConditions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
 
         final HashSet<Condition> conditions = new HashSet<>();
         for(ConditionHandler conditionHandler : Commons.conditionHandlers) {
@@ -199,7 +199,7 @@ public final class CommandFilter {
     }
 
     private void parseCommandSetActions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
 
         final HashSet<Action> actions = new HashSet<>();
         for(ActionHandler actionHandler : Commons.actionHandlers) {
@@ -213,7 +213,7 @@ public final class CommandFilter {
     }
 
     private void parseCommandSetOptions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
-        final Yaml settings = Commons.core.fileHandler().settings().data();
+        final Yaml settings = Commons.getCore().fileHandler().settings().data();
 
         for(OptionHandler optionHandler : Commons.optionHandlers) {
             final Optional<Option> option = optionHandler.parse(

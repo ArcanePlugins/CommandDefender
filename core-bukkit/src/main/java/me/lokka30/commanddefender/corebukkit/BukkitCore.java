@@ -30,7 +30,7 @@ public class BukkitCore extends JavaPlugin implements Core {
 
     @Override
     public void onLoad() {
-        Commons.core = this;
+        Commons.setCore(this);
     }
 
     @Override

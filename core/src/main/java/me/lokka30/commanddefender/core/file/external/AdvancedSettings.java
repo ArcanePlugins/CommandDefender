@@ -31,7 +31,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
 
     @Override
     public void load(boolean fromReload) {
-        Commons.core.logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        Commons.getCore().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         if (fromReload) {
             data.forceReload();
         } else {
@@ -43,7 +43,7 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
                     .createYaml();
         }
         migrate();
-        Commons.core.logger().info("Loaded file.");
+        Commons.getCore().logger().info("Loaded file.");
     }
 
     @Override
@@ -51,17 +51,17 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
         if(installedVersion() == currentVersion()) return;
 
         for(int i = installedVersion(); i < currentVersion(); i++) {
-            Commons.core.logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
+            Commons.getCore().logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
             switch(installedVersion()) {
                 case 1:
                     break;
                 default:
-                    Commons.core.logger().error(
+                    Commons.getCore().logger().error(
                             "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
                                     "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
             }
-            Commons.core.logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
+            Commons.getCore().logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
         }
     }
 
