@@ -163,11 +163,11 @@ command-sets:
       percentage-required: 0.0
       regex-list:
         inverse: true
-        include-aliases: true
         contents:
           - "PutRegexExpressionHere"
-        actions:
-          send-message: ["%prefix% Blocked thru regex example"]
+        pattern-flag: "CASE_INSENSITIVE"
+    actions:
+      send-message: ["%prefix% Blocked thru regex example"]
     use-presets: []
 
   # Example command set

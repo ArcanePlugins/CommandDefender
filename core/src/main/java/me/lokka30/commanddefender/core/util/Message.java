@@ -44,7 +44,7 @@ public class Message {
         for(String msg : finalMessages) {
             for(Placeholder placeholder : placeholders) {
                 newFinalMessages.add(
-                        Commons.getCore().colorize(
+                        Commons.core().colorize(
                                 msg.replace(placeholder.id(), placeholder.replacement())
                         )
                 );

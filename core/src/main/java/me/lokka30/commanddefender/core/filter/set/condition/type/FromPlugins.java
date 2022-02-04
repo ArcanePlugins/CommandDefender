@@ -31,7 +31,7 @@ public class FromPlugins implements ConditionHandler {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            final String pluginName = Commons.getCore().pluginThatRegisteredCommand(args[0].substring(1));
+            final String pluginName = Commons.core().pluginThatRegisteredCommand(args[0].substring(1));
             if(pluginName == null) { return false; }
             return plugins.includes(pluginName) != inverse();
         }

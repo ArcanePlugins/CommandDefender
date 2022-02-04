@@ -19,10 +19,10 @@ public class Commons {
 
     private static Core core;
     
-    public static Core getCore() { return core; }
+    public static Core core() { return core; }
     
     public static void setCore(final Core core) {
-        assert Commons.getCore() == null;
+        assert Commons.core() == null;
         Commons.core = core;
     }
 
