@@ -8,6 +8,7 @@ import me.lokka30.commanddefender.core.filter.CommandFilter;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
+import me.lokka30.commanddefender.corebukkit.filter.set.condition.type.WorldName;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
@@ -37,7 +38,10 @@ public class BukkitCore extends JavaPlugin implements Core {
     public void onEnable() {
         final long startTime = System.currentTimeMillis();
 
-        // llad files
+        // register platform-specific conditions
+        registerBukkitConditions();
+
+        // load files
         fileHandler().load(false);
 
         // register listeners
@@ -49,6 +53,10 @@ public class BukkitCore extends JavaPlugin implements Core {
         // print total time taken
         final long duration = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
         logger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
+    }
+
+    void registerBukkitConditions() {
+        Commons.conditionHandlers.add(new WorldName());
     }
 
     void registerListeners() {
