@@ -26,4 +26,9 @@ public record BukkitPlayer(
         return player().hasPermission(permission);
     }
 
+    @Override
+    public boolean isOp() {
+        return player().isOp();
+    }
+
 }

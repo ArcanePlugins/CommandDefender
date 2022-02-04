@@ -1,5 +1,7 @@
 package me.lokka30.commanddefender.core.filter.set;
 
+import de.leonhard.storage.Yaml;
+import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.CommandAccessStatus;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
@@ -8,6 +10,7 @@ import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOp
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public record CommandSet(
@@ -30,12 +33,25 @@ public record CommandSet(
 
     // get if a command set wants to allow/deny a command, or if it doesn't care about the command.
     public CommandAccessStatus getAccessStatus(final UniversalPlayer player, final String[] args) {
+        final Yaml advancedSettingsData = Commons.core().fileHandler().advancedSettings().data();
+
+        if(advancedSettingsData.get("operator-status-bypasses-processing", true)) {
+            if(player.isOp()) {
+                return CommandAccessStatus.ALLOW;
+            }
+        }
+
         int conditionsMet = 0;
         int totalConditions = conditions().size();
 
+        final String[] adaptedArgs = Arrays.copyOf(args, args.length);
+        if(!advancedSettingsData.get("commands-configured-with-starting-slash", true)) {
+            adaptedArgs[0] = adaptedArgs[0].substring(1);
+        }
+
         // loop thru conditions
         for(Condition condition : conditions()) {
-            if(condition.appliesTo(player, args)) {
+            if(condition.appliesTo(player, adaptedArgs)) {
                 // 0.0 = only one condition is required.
                 if(conditionsPercentageRequired() == 0.0) { return type(); }
 

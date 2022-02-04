@@ -12,7 +12,7 @@
 #################################
 
 # Configure the update checker here.
-update-checker:
+update-checker: #TODO
 
   # Should the update checker run?
   enabled: true
@@ -42,7 +42,7 @@ update-checker:
 
 # Should server operators bypass all CommandDefender
 # processing entirely?
-operator-status-bypasses-processing: false
+operator-status-bypasses-processing: true
 
 # When specifying commands in the command set lists,
 # should they be configured with a starting slash? Example:

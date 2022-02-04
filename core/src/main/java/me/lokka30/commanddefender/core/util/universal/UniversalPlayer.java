@@ -20,4 +20,6 @@ public interface UniversalPlayer {
 
     boolean hasPermission(final @NotNull String permission);
 
+    boolean isOp();
+
 }
