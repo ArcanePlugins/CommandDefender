@@ -95,9 +95,6 @@ command-sets:
         volume: 0.5
         pitch: 0.7
     options:
-      filter:
-        command-suggestion: false
-        command-execution: true
       bypass-permission: "commanddefender.bypass.block-colons-in-first-arg"
 
 
@@ -183,6 +180,7 @@ command-sets:
       list:
         matching-mode: 'CONTAINS'
         ignore-case: true
+        include-aliases: true
         contents:
           - "jeff"
 

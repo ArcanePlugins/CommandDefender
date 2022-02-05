@@ -4,6 +4,7 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
+import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
@@ -23,8 +24,80 @@ public class List implements ConditionHandler {
 
     @Override
     public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
-        //TODO parse from command set and presets
-        return Optional.empty();
+
+        java.util.List<String> contents = null;
+        final String contentsPath = "conditions." + identifier() + ".contents";
+        if(section.contains(contentsPath)) {
+            contents = section.getStringList(contentsPath);
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains(contentsPath)) {
+                    contents = preset.section().getStringList(contentsPath);
+                    break;
+                }
+            }
+        }
+        if(contents == null) { return Optional.empty(); }
+
+        ListCondition.MatchingMode matchingMode = ListCondition.MatchingMode.EQUALS;
+        final String matchingModePath = "conditions." + identifier() + ".matching-mode";
+        if(section.contains(matchingModePath)) {
+            matchingMode = ListCondition.MatchingMode.valueOf(section.getString(matchingModePath));
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains(matchingModePath)) {
+                    matchingMode = ListCondition.MatchingMode.valueOf(preset.section().getString(matchingModePath));
+                    break;
+                }
+            }
+        }
+
+        boolean inverse = false;
+        final String inversePath = "conditions." + identifier() + ".inverse";
+        if(section.contains(inversePath)) {
+            inverse = section.getBoolean(inversePath);
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains(inversePath)) {
+                    inverse = preset.section().getBoolean(inversePath);
+                    break;
+                }
+            }
+        }
+
+        boolean ignoreCase = true;
+        final String ignoreCasePath = "conditions." + identifier() + ".ignore-case";
+        if(section.contains(ignoreCasePath)) {
+            ignoreCase = section.getBoolean(ignoreCasePath);
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains(ignoreCasePath)) {
+                    ignoreCase = preset.section().getBoolean(ignoreCasePath);
+                    break;
+                }
+            }
+        }
+
+        boolean includeAliases = false;
+        final String includeAliasesPath = "conditions." + identifier() + ".include-aliases";
+        if(section.contains(includeAliasesPath)) {
+            includeAliases = section.getBoolean(includeAliasesPath);
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains(includeAliasesPath)) {
+                    includeAliases = preset.section().getBoolean(includeAliasesPath);
+                    break;
+                }
+            }
+        }
+
+        return Optional.of(new ListCondition(
+                matchingMode,
+                ignoreCase,
+                contents.toArray(new String[0]),
+                includeAliases,
+                inverse
+        ));
     }
 
     public record ListCondition(
