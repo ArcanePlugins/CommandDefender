@@ -72,7 +72,10 @@ public record CommandSet(
             }
 
             // check if % of conditions met / total conditions matches requirement
-            if(((double) conditionsMet / (double) totalConditions) >= conditionsPercentageRequired()) {
+            if(
+                    conditionsPercentageRequired() != 0.0 &&
+                            ((double) conditionsMet / (double) totalConditions) >= conditionsPercentageRequired()
+            ) {
                 // if enough conditions are met, then return the type, e.g. `"`DENY`.
                 if(debugLog) {
                     Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(

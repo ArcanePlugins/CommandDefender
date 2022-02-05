@@ -40,8 +40,8 @@ public class BypassPermission implements OptionHandler {
             return Optional.empty();
         } else {
             // START DEBUG LOG
-            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
-                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.OPTIONS)) {
+                Commons.core().logger().debug(DebugCategory.OPTIONS, String.format(
                         "Parsed BypassPermission option in command set %s with perm = %s",
                         parentSet.identifier(),
                         bypassPermission

@@ -168,7 +168,7 @@ public class List implements ConditionHandler {
                 adaptedArgs[0] = adaptedArgs[0].substring(1);
             }
 
-            final Set<String> aliases = Commons.core().aliasesOfCommand(adaptedArgs[1].substring(1));
+            final Set<String> aliases = Commons.core().aliasesOfCommand(adaptedArgs[0].substring(1));
 
             contentsLoop:
             for(String content : adaptedContents) {

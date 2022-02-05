@@ -2,7 +2,7 @@ package me.lokka30.commanddefender.core.debug;
 
 public enum DebugCategory {
     CONDITIONS,
-    OPTIONS, //unused
+    OPTIONS,
     ACTIONS, //unused
 
     COMMAND_FILTER_PARSING,

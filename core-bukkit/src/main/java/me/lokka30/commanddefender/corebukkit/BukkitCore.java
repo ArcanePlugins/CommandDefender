@@ -41,7 +41,10 @@ public class BukkitCore extends JavaPlugin implements Core {
         registerBukkitConditions();
 
         fileHandler().load(false);
+
         debugHandler.load();
+
+        commandFilter().load();
 
         registerListeners();
 

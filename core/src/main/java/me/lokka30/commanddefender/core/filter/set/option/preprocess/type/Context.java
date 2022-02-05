@@ -63,8 +63,8 @@ public class Context implements OptionHandler {
            }
 
            // START DEBUG LOG
-           if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
-               Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+           if(DebugHandler.isDebugCategoryEnabled(DebugCategory.OPTIONS)) {
+               Commons.core().logger().debug(DebugCategory.OPTIONS, String.format(
                        "Parsed context option in command set %s with types %s",
                        parentSet.identifier(),
                        types
