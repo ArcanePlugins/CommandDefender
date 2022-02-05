@@ -47,6 +47,5 @@ public final class FileHandler {
     public void load(final boolean fromReload) {
         Commons.core().logger().info("Loading external files...");
         allExternalFiles.forEach(file -> file.load(fromReload));
-        Commons.core().logger().info("Loaded external files.");
     }
 }

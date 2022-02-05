@@ -2,6 +2,8 @@ package me.lokka30.commanddefender.core.filter.set;
 
 import de.leonhard.storage.Yaml;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.CommandAccessStatus;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
@@ -10,6 +12,7 @@ import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOp
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public record CommandSet(
@@ -32,10 +35,25 @@ public record CommandSet(
 
     // get if a command set wants to allow/deny a command, or if it doesn't care about the command.
     public CommandAccessStatus getAccessStatus(final UniversalPlayer player, final String[] args) {
+        boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_ACCESSIBILITY);
+
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                    "Checking access status for command set: %s, player: %s, args: %s",
+                    identifier(),
+                    player.name(),
+                    Arrays.toString(args)
+            ));
+        }
+
         final Yaml advancedSettingsData = Commons.core().fileHandler().advancedSettings().data();
 
         if(advancedSettingsData.get("operator-status-bypasses-processing", true)) {
             if(player.isOp()) {
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY,
+                            "Player is OP, bypassing processing.");
+                }
                 return CommandAccessStatus.ALLOW;
             }
         }
@@ -56,8 +74,22 @@ public record CommandSet(
             // check if % of conditions met / total conditions matches requirement
             if(((double) conditionsMet / (double) totalConditions) >= conditionsPercentageRequired()) {
                 // if enough conditions are met, then return the type, e.g. `"`DENY`.
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                            "%s of %s conditions were met (req %s); returning %s",
+                            conditionsMet,
+                            totalConditions,
+                            conditionsPercentageRequired(),
+                            type()
+                    ));
+                }
                 return type();
             }
+        }
+
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY,
+                    "Not enough conditions were met.");
         }
 
         // command set doesn't want to do anything with this command,

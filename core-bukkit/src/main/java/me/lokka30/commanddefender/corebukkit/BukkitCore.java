@@ -3,13 +3,13 @@ package me.lokka30.commanddefender.corebukkit;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
 import me.lokka30.commanddefender.core.filter.CommandFilter;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
-import me.lokka30.commanddefender.corebukkit.filter.set.condition.type.WorldName;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class BukkitCore extends JavaPlugin implements Core {
@@ -50,12 +49,11 @@ public class BukkitCore extends JavaPlugin implements Core {
         checkForUpdates();
 
         // print total time taken
-        final long duration = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
-        logger().info("Plugin enabled successfully &8(&7took &b" + duration + " seconds&8)&7.");
+        logger().info("Plugin enabled successfully &8(&7took &b" + (System.currentTimeMillis() - startTime) + "ms&8)&7.");
     }
 
     void registerBukkitConditions() {
-        Commons.conditionHandlers.add(new WorldName());
+        //Commons.conditionHandlers.add(new WorldName());
     }
 
     void registerListeners() {
@@ -64,12 +62,10 @@ public class BukkitCore extends JavaPlugin implements Core {
                 new PlayerCommandPreprocessListener(),
                 new PlayerCommandSendListener()
         ).forEach(listener -> {
-            logger().info("Registering listener '&b" + listener.getClass().getSimpleName() + "&7'...");
             if(listener.compatibleWithServer()) {
                 getServer().getPluginManager().registerEvents(listener, this);
-                logger().info("Registed listener.");
             } else {
-                logger().info("Listener was not registered: incompatible server. This can be safely ignored.");
+                logger().info("Skipping registration of listener '&b" + listener.getClass().getSimpleName() + "&7'.");
             }
         });
         universalLogger.info("Registered listeners.");
@@ -155,6 +151,12 @@ public class BukkitCore extends JavaPlugin implements Core {
     public void checkForUpdates() {
         //TODO
     }
+
+    @Override
+    public @NotNull DebugHandler debugHandler() {
+        return debugHandler;
+    }
+    private final DebugHandler debugHandler = new DebugHandler();
 
     @Override
     public @NotNull FileHandler fileHandler() { return fileHandler; }

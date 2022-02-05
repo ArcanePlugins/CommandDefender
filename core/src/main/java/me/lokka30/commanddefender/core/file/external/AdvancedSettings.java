@@ -44,7 +44,6 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
                     .createYaml();
         }
         migrate();
-        Commons.core().logger().info("Loaded file.");
     }
 
     @Override
@@ -52,6 +51,14 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
         if(installedVersion() == currentVersion()) return;
 
         for(int i = installedVersion(); i < currentVersion(); i++) {
+            if(i == -1) {
+                Commons.core().logger().error("Unable to find file version for '&b" + nameWithExtension() + "&7'." +
+                        " The file has been backed up and replaced with the default version.");
+                backup();
+                replaceWithDefault();
+                return;
+            }
+
             Commons.core().logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
             switch(installedVersion()) {
                 case 1:

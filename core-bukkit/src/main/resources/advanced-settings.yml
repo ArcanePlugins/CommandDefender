@@ -50,6 +50,9 @@ operator-status-bypasses-processing: true
 # If below is `false`, then `/plugins` will be configured as `plugins`.
 commands-configured-with-starting-slash: true
 
+# Debug categories to spy on
+debug: []
+
 # *** Do NOT modify this section! ***
 # Extra data of this file
 # for compat, migration, etc.

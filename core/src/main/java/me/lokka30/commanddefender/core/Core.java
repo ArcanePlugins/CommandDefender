@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core;
 
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
 import me.lokka30.commanddefender.core.filter.CommandFilter;
@@ -41,5 +42,8 @@ public interface Core {
     void replaceFileWithDefault(final ExternalFile externalFile);
 
     void checkForUpdates(); //TODO
+
+    @NotNull
+    DebugHandler debugHandler();
 
 }

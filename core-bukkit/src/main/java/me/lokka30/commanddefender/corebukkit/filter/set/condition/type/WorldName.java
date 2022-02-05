@@ -1,5 +1,5 @@
 package me.lokka30.commanddefender.corebukkit.filter.set.condition.type;
-
+/*
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
@@ -11,8 +11,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
+ */
 
-public class WorldName implements ConditionHandler {
+public class WorldName
+        //implements ConditionHandler
+{
+    /*
 
     @Override
     public @NotNull String identifier() {
@@ -20,22 +24,18 @@ public class WorldName implements ConditionHandler {
     }
 
     @Override
-    public @NotNull Optional<Condition> parse(@NotNull CommandSet parentSet, @NotNull FlatFileSection section) {
+    public @NotNull Optional<Condition> parse(@NotNull final CommandSet parentSet, @NotNull final FlatFileSection section) {
         //TODO program the parsing, and also register the condition
 
-        /*
-        format:
-
-        conditions:
-            world-name:
-                inclusive-list: ['world']
-                ...OR...
-                exclusive-list: ['world']
-            ...OR...
-            world-name-incl: ['world']
-            ...OR...
-            world-name-excl: ['world']
-         */
+        //conditions:
+        //    world-name:
+        //        inclusive-list: ['world']
+        //        ...OR...
+        //        exclusive-list: ['world']
+        //    ...OR...
+        //    world-name-incl: ['world']
+        //    ...OR...
+        //    world-name-excl: ['world']
         Commons.core().logger().error("WorldName condition not implemented!");
 
         return Optional.empty();
@@ -53,5 +53,6 @@ public class WorldName implements ConditionHandler {
         }
 
     }
+     */
 
 }

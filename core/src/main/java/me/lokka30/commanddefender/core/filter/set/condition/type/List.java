@@ -3,6 +3,8 @@ package me.lokka30.commanddefender.core.filter.set.condition.type;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
@@ -90,6 +92,21 @@ public class List implements ConditionHandler {
                 }
             }
         }
+
+        // START DEBUG LOG
+        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+            Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                    "Parsed list condition in command set %s with matchingMode=%s, " +
+                            "ignoreCase=%s, contents=%s, includeAliases=%s, inverse=%s",
+                    parentSet.identifier(),
+                    matchingMode,
+                    ignoreCase,
+                    contents,
+                    includeAliases,
+                    inverse
+            ));
+        }
+        // END DEBUG LOG
 
         return Optional.of(new ListCondition(
                 matchingMode,

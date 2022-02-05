@@ -1,6 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.option.preprocess.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
@@ -36,6 +39,15 @@ public class BypassPermission implements OptionHandler {
         if(bypassPermission == null) {
             return Optional.empty();
         } else {
+            // START DEBUG LOG
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "Parsed BypassPermission option in command set %s with perm = %s",
+                        parentSet.identifier(),
+                        bypassPermission
+                ));
+            }
+            // END DEBUG LOG
             return Optional.of(new BypassPermissionOption(bypassPermission));
         }
     }

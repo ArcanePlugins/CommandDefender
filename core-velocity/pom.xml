@@ -56,7 +56,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.lokka30.commanddefender.core-velocity.org.bstats</shadedPattern>
+                            <shadedPattern>me.lokka30.commanddefender.core-velocity.libs.org.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

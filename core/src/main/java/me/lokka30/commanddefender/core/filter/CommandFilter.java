@@ -2,6 +2,8 @@ package me.lokka30.commanddefender.core.filter;
 
 import de.leonhard.storage.Yaml;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
@@ -26,8 +28,20 @@ public final class CommandFilter {
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
     public boolean canAccess(final @NotNull FilterContextType contextType, final @NotNull UniversalPlayer player, @NotNull final String[] args) {
+        final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_ACCESSIBILITY);
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                    "Checking if '%s' can access args '%s' with contextType '%s'",
+                    player.name(),
+                    Arrays.toString(args),
+                    contextType
+            ));
+        }
+
         commandSetIterator:
         for(final CommandSet set : commandSets) {
+
+
 
             // pre process options
             for(final PreProcessOption option : set.preProcessOptions()) {
@@ -35,6 +49,12 @@ public final class CommandFilter {
                 if(option instanceof BypassPermission.BypassPermissionOption bpo) {
                     // Check Bypass Permission option
                     if(player.hasPermission(bpo.bypassPermission())) {
+                        if(debugLog) {
+                            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                                    "Player has bypass permission for command set %s",
+                                    set.identifier()
+                            ));
+                        }
                         continue commandSetIterator;
                     }
                 } else if(option instanceof Context.ContextOption fco) {
@@ -47,6 +67,14 @@ public final class CommandFilter {
                         }
                     }
                     if(!contains) {
+                        if(debugLog) {
+                            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                                    "Filter context %s not used for command set %s (available: %s)",
+                                    contextType,
+                                    set.identifier(),
+                                    Arrays.toString(fco.contextTypes())
+                            ));
+                        }
                         continue commandSetIterator;
                     }
                 } else {
@@ -56,6 +84,13 @@ public final class CommandFilter {
 
             // processing
             final CommandAccessStatus status = set.getAccessStatus(player, args);
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                        "Status for command set %s is %s",
+                        set.identifier(),
+                        status
+                ));
+            }
 
             // post-process options
             boolean ignoreFilteringContext = false, ignoreCommandAccessStatus = false;
@@ -65,6 +100,15 @@ public final class CommandFilter {
                     // Action Predicate Override option
                     ignoreFilteringContext = apoo.ignoreFilteringContext();
                     ignoreCommandAccessStatus = apoo.ignoreCommandAccessStatus();
+                    if(debugLog) {
+                        Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                                "Post processing options for command set %s are " +
+                                        "ignoreFilteringContext=%s, ignoreCommandAccessStatus=%s",
+                                set.identifier(),
+                                ignoreFilteringContext,
+                                ignoreCommandAccessStatus
+                        ));
+                    }
                 } else {
                     Commons.core().logger().error("Unexpected post-process option '&b" + option.getClass().getSimpleName() + "&7'.");
                 }
@@ -77,6 +121,12 @@ public final class CommandFilter {
 
             if(statusCheck && filterContextCheck) {
                 // run the actions.
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                            "Running actions for command set %s since the status and filter context checks are true",
+                            set.identifier()
+                    ));
+                }
                 set.actions().forEach(action -> action.run(player, args));
             }
 
@@ -85,8 +135,18 @@ public final class CommandFilter {
                 return (status == CommandAccessStatus.ALLOW);
             }
         }
+
         // command sets don't specify the command -> return default status:
-        return Commons.core().fileHandler().settings().data().get("default-command-status", true);
+
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                    "Returning default command status for %s",
+                    player.name()
+            ));
+        }
+
+        return Commons.core().fileHandler().settings().data().get("default-command-status", "ALLOW")
+                .equalsIgnoreCase("ALLOW");
     }
 
     public void load() {
@@ -99,7 +159,7 @@ public final class CommandFilter {
     }
 
     private void parseCommandSets() {
-        // reference to the settings data for cleaner code
+        final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING);
         final Yaml settings = Commons.core().fileHandler().settings().data();
 
         // iterate thru all presets in the settings file
@@ -111,7 +171,7 @@ public final class CommandFilter {
         settings.getSection("command-sets").singleLayerKeySet().stream()
 
                 // make sure the command set is enabled
-                .filter(identifier -> !settings.get("command-sets." + identifier + ".enabled", false))
+                .filter(identifier -> settings.get("command-sets." + identifier + ".enabled", false))
 
                 // feed it to the individual parse method
                 .forEach(this::parseCommandSet);
@@ -121,9 +181,24 @@ public final class CommandFilter {
         final Yaml settings = Commons.core().fileHandler().settings().data();
         final String path = "presets." + identifier;
         presets.add(new CommandSetPreset(identifier, settings.getSection(path)));
+
+        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                    "Loaded preset %s, there are now %s presets.",
+                    identifier,
+                    presets.size()
+            ));
+        }
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
+        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                    "Started parsing commnand set %s",
+                    identifier
+            ));
+        }
+
         final Yaml settings = Commons.core().fileHandler().settings().data();
         final String path = "command-sets." + identifier;
 
@@ -166,11 +241,28 @@ public final class CommandFilter {
         parseCommandSetOptions(commandSet, identifier);
 
         commandSets.add(commandSet);
+
+        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                    "Finished parsing commnand set %s, there are now %s command sets loaded",
+                    identifier,
+                    commandSets.size()
+            ));
+        }
     }
 
     private void parseCommandSetPresets(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
         final Yaml settings = Commons.core().fileHandler().settings().data();
         final List<String> presetIds = settings.getStringList("command-sets." + identifier + ".use-presets");
+
+        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                    "Command set %s specifies %s preset IDs: %s",
+                    identifier,
+                    presetIds.size(),
+                    presetIds
+            ));
+        }
 
         presets.forEach(preset -> {
             if(presetIds.contains(preset.identifier())) {
@@ -180,6 +272,8 @@ public final class CommandFilter {
                 } else {
                     commandSet.presets().add(preset);
                 }
+            } else {
+                Commons.core().logger().error("Command set '&b" + identifier + "&7' specifies a preset that doesn't exist. Fix this ASAP.");
             }
         });
     }
@@ -187,7 +281,6 @@ public final class CommandFilter {
     private void parseCommandSetConditions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
         final Yaml settings = Commons.core().fileHandler().settings().data();
 
-        final HashSet<Condition> conditions = new HashSet<>();
         for(ConditionHandler conditionHandler : Commons.conditionHandlers) {
             final Optional<Condition> condition = conditionHandler.parse(
                     commandSet,
@@ -195,13 +288,20 @@ public final class CommandFilter {
             );
             if(condition.isEmpty()) continue;
             commandSet.conditions().add(condition.get());
+
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+                Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                        "Loaded condition %s for command set %s",
+                        condition.get().getClass().getSimpleName(),
+                        identifier
+                ));
+            }
         }
     }
 
     private void parseCommandSetActions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
         final Yaml settings = Commons.core().fileHandler().settings().data();
 
-        final HashSet<Action> actions = new HashSet<>();
         for(ActionHandler actionHandler : Commons.actionHandlers) {
             final Optional<Action> action = actionHandler.parse(
                     commandSet,
@@ -209,6 +309,14 @@ public final class CommandFilter {
             );
             if(action.isEmpty()) continue;
             commandSet.actions().add(action.get());
+
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+                Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                        "Loaded action %s for command set %s",
+                        action.get().getClass().getSimpleName(),
+                        identifier
+                ));
+            }
         }
     }
 
@@ -227,6 +335,14 @@ public final class CommandFilter {
                 commandSet.postProcessOptions().add((PostProcessOption) option.get());
             } else {
                 throw new IllegalStateException(option.toString());
+            }
+
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+                Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                        "Loaded option %s for command set %s",
+                        option.get().getClass().getSimpleName(),
+                        identifier
+                ));
             }
         }
     }

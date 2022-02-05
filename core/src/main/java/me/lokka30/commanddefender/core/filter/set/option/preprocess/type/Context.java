@@ -1,6 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.option.preprocess.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.FilterContextType;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
@@ -58,6 +61,17 @@ public class Context implements OptionHandler {
                    types.add(type);
                }
            }
+
+           // START DEBUG LOG
+           if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+               Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                       "Parsed context option in command set %s with types %s",
+                       parentSet.identifier(),
+                       types
+               ));
+           }
+           // END DEBUG LOG
+
            return Optional.of(new ContextOption(types.toArray(new FilterContextType[0])));
        }
     }

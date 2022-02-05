@@ -22,6 +22,5 @@ public class License implements TxtExternalFile {
     public void load(boolean fromReload) {
         Commons.core().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
         replaceWithDefault();
-        Commons.core().logger().info("Loaded file.");
     }
 }

@@ -135,7 +135,7 @@ command-sets:
         ignore-case: false
 
         contents:
-          - "SomeCommandWithSpecificCapitalLetters * third_argument_here \* FIFTH_ARGUMENT"
+          - "SomeCommandWithSpecificCapitalLetters * third_argument_here \\* FIFTH_ARGUMENT"
       from-plugins:
         contents: ["WorldEdit"]
         inverse: false

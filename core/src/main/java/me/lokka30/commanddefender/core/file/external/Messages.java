@@ -44,7 +44,6 @@ public class Messages implements YamlVersionedExternalFile {
                     .createYaml();
         }
         migrate();
-        Commons.core().logger().info("Loaded file.");
     }
 
     @Override
