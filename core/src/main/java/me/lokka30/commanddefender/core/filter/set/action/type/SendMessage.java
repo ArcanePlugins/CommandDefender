@@ -2,6 +2,8 @@ package me.lokka30.commanddefender.core.filter.set.action.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.action.ActionHandler;
@@ -36,11 +38,21 @@ public class SendMessage implements ActionHandler {
 
         @Override
         public void run(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            new Message(messages(),
+            final Message message = new Message(messages(),
                     new Message.Placeholder("%prefix%", Commons.core().fileHandler().messages().data().get("common.prefix", "&b&lCommandDefender: &7")),
                     new Message.Placeholder("%player-name%", player.name()),
                     new Message.Placeholder("%command%", String.join(" ", args))
-            ).send(player);
+            );
+
+            message.send(player);
+
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.ACTIONS)) {
+                Commons.core().logger().debug(DebugCategory.ACTIONS, String.format(
+                        "Sent messages '%s' to player '%s'.",
+                        message.finalMessages(),
+                        player.name()
+                ));
+            }
         }
 
     }

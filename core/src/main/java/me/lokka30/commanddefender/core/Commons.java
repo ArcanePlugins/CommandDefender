@@ -9,6 +9,7 @@ import me.lokka30.commanddefender.core.filter.set.condition.type.HasColonInFirst
 import me.lokka30.commanddefender.core.filter.set.condition.type.List;
 import me.lokka30.commanddefender.core.filter.set.condition.type.RegexList;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
+import me.lokka30.commanddefender.core.filter.set.option.postprocess.type.ActionPredicateOverride;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.Context;
 
@@ -39,6 +40,10 @@ public class Commons {
     ));
 
     public static final HashSet<OptionHandler> optionHandlers = new HashSet<>(Set.of(
+            /* Post-process */
+            new ActionPredicateOverride(),
+
+            /* Pre-process */
             new BypassPermission(),
             new Context()
     ));

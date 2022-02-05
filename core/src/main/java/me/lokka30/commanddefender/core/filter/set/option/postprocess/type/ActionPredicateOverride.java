@@ -1,6 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.option.postprocess.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
@@ -24,10 +27,23 @@ public class ActionPredicateOverride implements OptionHandler {
             return Optional.empty();
         }
 
+        final boolean ignoreFilteringContext = section.get(path + ".ignore-filtering-context", false);
+        final boolean ignoreCommandSetType = section.get(path + ".ignore-command-set-type", false);
+
+        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.OPTIONS)) {
+            Commons.core().logger().debug(DebugCategory.OPTIONS, String.format(
+                    "Parsing ActionPredicateOverride option in set '%s' with ignoreFilteringContext=%s," +
+                            " ignoreCommandSetType=%s",
+                    parentSet.identifier(),
+                    ignoreFilteringContext,
+                    ignoreCommandSetType
+            ));
+        }
+
         return Optional.of(new ActionPredicateOverrideOption(
                 parentSet,
-                section.get(path + ".ignore-filtering-context", false),
-                section.get(path + ".ignore-command-set-type", false)
+                ignoreFilteringContext,
+                ignoreCommandSetType
         ));
     }
 

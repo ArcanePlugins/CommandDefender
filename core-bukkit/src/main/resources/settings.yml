@@ -48,15 +48,15 @@ command-sets:
         # Remember to use the starting slash (this
         # can be disabled in advanced-settings.yml).
         contents:
-          - "plugins"
-          - "pl"
-          - "version"
-          - "ver"
-          - "about"
-          - "icanhasbukkit"
-          - "?"
-          - "help"
-          - "ehelp"
+          - "/plugins"
+          - "/pl"
+          - "/version"
+          - "/ver"
+          - "/about"
+          - "/icanhasbukkit"
+          - "/?"
+          - "/help"
+          - "/ehelp"
 
     # Aside from blocking the command, what things should run when the condition(s) are met?
     actions:
@@ -147,7 +147,6 @@ command-sets:
         pitch: 0.0
     options:
       bypass-permission: "example.permission.here"
-      skip-to: "example.set.id"
       action-predicate-override:
         ignore-filtering-context: true
         ignore-command-set-type: true

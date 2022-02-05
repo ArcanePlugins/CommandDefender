@@ -17,7 +17,7 @@ public class Message {
 
     private final List<String> messages;
     private final Placeholder[] placeholders;
-    private List<String> finalMessages;
+    private final List<String> finalMessages;
     public Message(
             @NotNull final List<String> messages,
             @NotNull final Placeholder... placeholders
@@ -30,28 +30,27 @@ public class Message {
     }
 
     @NotNull
-    public List<String> getMessages() { return messages; }
+    public List<String> messages() { return messages; }
 
     @NotNull
-    public Placeholder[] getPlaceholders() { return placeholders; }
+    public Placeholder[] placeholders() { return placeholders; }
 
     @NotNull
-    public List<String> getFinalMessages() { return finalMessages; }
+    public List<String> finalMessages() { return finalMessages; }
 
     private void buildFinalMessages() {
         final List<String> newFinalMessages = new ArrayList<>();
 
         for(String msg : finalMessages) {
+            String newFinalMessage = msg;
             for(Placeholder placeholder : placeholders) {
-                newFinalMessages.add(
-                        Commons.core().colorize(
-                                msg.replace(placeholder.id(), placeholder.replacement())
-                        )
-                );
+                newFinalMessage = newFinalMessage.replace(placeholder.id(), placeholder.replacement());
             }
+            newFinalMessages.add(Commons.core().colorize(newFinalMessage));
         }
 
-        finalMessages = newFinalMessages;
+        finalMessages.clear();
+        finalMessages.addAll(newFinalMessages);
     }
 
     public void send(@NotNull final UniversalCommandSender recipient) {
