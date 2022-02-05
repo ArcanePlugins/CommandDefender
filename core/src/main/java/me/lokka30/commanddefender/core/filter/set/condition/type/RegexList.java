@@ -78,6 +78,7 @@ public class RegexList implements ConditionHandler {
                 case "UNICODE_CASE" -> Pattern.UNICODE_CASE;
                 case "CANON_EQ" -> Pattern.CANON_EQ;
                 case "UNICODE_CHARACTER_CLASS" -> Pattern.UNICODE_CHARACTER_CLASS;
+                default -> throw new IllegalStateException("Unexpected value: " + patternFlagStr);
             };
         }
 

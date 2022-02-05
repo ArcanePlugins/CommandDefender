@@ -1,6 +1,7 @@
 package me.lokka30.commanddefender.corebukkit.filter.set.condition.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class WorldName implements ConditionHandler {
+
     @Override
     public @NotNull String identifier() {
         return "world-name";
@@ -34,6 +36,8 @@ public class WorldName implements ConditionHandler {
             ...OR...
             world-name-excl: ['world']
          */
+        Commons.core().logger().error("WorldName condition not implemented!");
+
         return Optional.empty();
     }
 
