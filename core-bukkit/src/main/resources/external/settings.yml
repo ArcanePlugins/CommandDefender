@@ -183,6 +183,10 @@ command-sets:
         include-aliases: true
         contents:
           - "jeff"
+    options:
+      context:
+        command-execution: true
+        command-suggestion: false
 
 # For any commands that were not covered
 # by the command sets above, should

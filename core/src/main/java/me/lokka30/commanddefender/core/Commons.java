@@ -10,7 +10,7 @@ import me.lokka30.commanddefender.core.filter.set.condition.type.List;
 import me.lokka30.commanddefender.core.filter.set.condition.type.RegexList;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.FilterContext;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.Context;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +40,7 @@ public class Commons {
 
     public static final HashSet<OptionHandler> optionHandlers = new HashSet<>(Set.of(
             new BypassPermission(),
-            new FilterContext()
+            new Context()
     ));
 
     public static final String DEFAULT_PREFIX = "&b&lCommandDefender:&7 ";

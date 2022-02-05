@@ -32,6 +32,7 @@ public class Settings implements YamlVersionedExternalFile {
     @Override
     public void load(boolean fromReload) {
         Commons.core().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
+        if(!exists()) { replaceWithDefault(); }
         if (fromReload) {
             data.forceReload();
         } else {

@@ -14,7 +14,7 @@ import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcess
 import me.lokka30.commanddefender.core.filter.set.option.postprocess.type.ActionPredicateOverride;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.FilterContext;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.Context;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +37,7 @@ public final class CommandFilter {
                     if(player.hasPermission(bpo.bypassPermission())) {
                         continue commandSetIterator;
                     }
-                } else if(option instanceof FilterContext.FilterContextOption fco) {
+                } else if(option instanceof Context.ContextOption fco) {
                     // Check Filter Context Type option
                     boolean contains = false;
                     for(FilterContextType contextTypeInArray : fco.contextTypes()) {

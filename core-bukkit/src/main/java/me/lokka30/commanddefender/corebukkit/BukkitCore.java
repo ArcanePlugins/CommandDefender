@@ -4,6 +4,7 @@ import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
 import me.lokka30.commanddefender.core.file.FileHandler;
+import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
 import me.lokka30.commanddefender.core.filter.CommandFilter;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
@@ -38,17 +39,15 @@ public class BukkitCore extends JavaPlugin implements Core {
     public void onEnable() {
         final long startTime = System.currentTimeMillis();
 
-        // register platform-specific conditions
         registerBukkitConditions();
 
-        // load files
         fileHandler().load(false);
 
-        // register listeners
         registerListeners();
 
-        // register commands
         registerCommands();
+
+        checkForUpdates();
 
         // print total time taken
         final long duration = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startTime);
@@ -145,6 +144,16 @@ public class BukkitCore extends JavaPlugin implements Core {
         final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
         if(pluginCommand == null) { return Set.of(); }
         return pluginCommand.getAliases().stream().collect(Collectors.toUnmodifiableSet());
+    }
+
+    @Override
+    public void replaceFileWithDefault(ExternalFile externalFile) {
+        saveResource(externalFile.resourcePath(), true);
+    }
+
+    @Override
+    public void checkForUpdates() {
+        //TODO
     }
 
     @Override
