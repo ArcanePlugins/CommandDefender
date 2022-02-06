@@ -42,4 +42,10 @@ public class CoreUtils {
         }
     }
 
+    public static double ensureBetween(final double min, final double max, final double current) {
+        if(current < min) return min;
+        if(current > max) return min;
+        return current;
+    }
+
 }

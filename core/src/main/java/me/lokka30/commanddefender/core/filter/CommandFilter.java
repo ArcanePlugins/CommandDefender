@@ -17,6 +17,7 @@ import me.lokka30.commanddefender.core.filter.set.option.postprocess.type.Action
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
 import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.Context;
+import me.lokka30.commanddefender.core.util.CoreUtils;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -207,7 +208,7 @@ public final class CommandFilter {
     private void parseCommandSet(final @NotNull String identifier) {
         if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                    "Started parsing commnand set %s",
+                    "Started parsing command set %s",
                     identifier
             ));
         }
@@ -216,7 +217,8 @@ public final class CommandFilter {
         final String path = "command-sets." + identifier;
 
         final CommandAccessStatus type;
-        final double conditionsPercentageRequired = settings.get(path + ".conditions.percentage-required", 100.0D);
+        final double conditionsPercentageRequired = CoreUtils.ensureBetween(0.0, 1.0,
+                settings.get(path + ".conditions.percentage-required", 100.0D) / 100);
 
         switch (settings.get(path + ".type", "DENY").toUpperCase(Locale.ROOT)) {
             case "DENY" -> type = CommandAccessStatus.DENY;
@@ -335,6 +337,7 @@ public final class CommandFilter {
 
     private void parseCommandSetOptions(final @NotNull CommandSet commandSet, final @NotNull String identifier) {
         final Yaml settings = Commons.core().fileHandler().settings().data();
+        final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING);
 
         for(OptionHandler optionHandler : Commons.optionHandlers) {
             final Optional<Option> option = optionHandler.parse(
@@ -342,19 +345,36 @@ public final class CommandFilter {
                     settings.getSection("command-sets." + identifier)
             );
             if(option.isEmpty()) continue;
-            if(option.get() instanceof PreProcessOption) {
-                commandSet.preProcessOptions().add((PreProcessOption) option.get());
-            } else if(option.get() instanceof PostProcessOption) {
-                commandSet.postProcessOptions().add((PostProcessOption) option.get());
+            final Option got = option.get();
+
+            if(got instanceof PreProcessOption) {
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                            "Option %s is a PreProcessOption",
+                            got.getClass().getSimpleName()
+                    ));
+                }
+                commandSet.preProcessOptions().add((PreProcessOption) got);
+            } else if(got instanceof PostProcessOption) {
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                            "Option %s is a PostProcessOption",
+                            got.getClass().getSimpleName()
+                    ));
+                }
+                commandSet.postProcessOptions().add((PostProcessOption) got);
             } else {
-                throw new IllegalStateException(option.toString());
+                throw new IllegalStateException(got.getClass().getSimpleName() +
+                        " does not implement pre/post-processing interface.");
             }
 
-            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
+            if(debugLog) {
                 Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                        "Loaded option %s for command set %s",
-                        option.get().getClass().getSimpleName(),
-                        identifier
+                        "Loaded option %s for command set %s. Pre-pro options: %s, post-pro options: %s.",
+                        got.getClass().getSimpleName(),
+                        identifier,
+                        commandSet.preProcessOptions().size(),
+                        commandSet.postProcessOptions().size()
                 ));
             }
         }

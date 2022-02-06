@@ -81,8 +81,14 @@ public record CommandSet(
         }
 
         if(debugLog) {
-            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY,
-                    "Not enough conditions were met.");
+            Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                    "Not enough conditions were met: requires %s percent (%s conditions), achieved %s percent (%s / %s conditions).",
+                    conditionsPercentageRequired(),
+                    (conditionsPercentageRequired() * totalConditions),
+                    (conditionsMet / totalConditions),
+                    conditionsMet,
+                    totalConditions
+            ));
         }
 
         // command set doesn't want to do anything with this command,
