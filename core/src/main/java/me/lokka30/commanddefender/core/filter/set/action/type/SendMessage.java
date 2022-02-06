@@ -11,6 +11,7 @@ import me.lokka30.commanddefender.core.util.Message;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class SendMessage implements ActionHandler {
 
         @Override
         public void run(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            final Message message = new Message(messages(),
+            final Message message = new Message(new LinkedList<>(messages()),
                     new Message.Placeholder("%prefix%", Commons.core().fileHandler().messages().data().get("common.prefix", "&b&lCommandDefender: &7")),
                     new Message.Placeholder("%player-name%", player.name()),
                     new Message.Placeholder("%command%", String.join(" ", args))

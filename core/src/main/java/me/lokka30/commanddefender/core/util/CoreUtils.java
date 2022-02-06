@@ -2,6 +2,7 @@ package me.lokka30.commanddefender.core.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
@@ -46,6 +47,15 @@ public class CoreUtils {
         if(current < min) return min;
         if(current > max) return min;
         return current;
+    }
+
+    public static boolean containsIgnoreCase(final @NotNull Collection<String> collection, final @NotNull String what) {
+        for(String str : collection) {
+            if(str.equalsIgnoreCase(what)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

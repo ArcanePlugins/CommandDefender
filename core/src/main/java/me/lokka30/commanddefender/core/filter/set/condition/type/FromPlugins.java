@@ -8,6 +8,7 @@ import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
+import me.lokka30.commanddefender.core.util.CoreUtils;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,7 +80,7 @@ public class FromPlugins implements ConditionHandler {
                 ));
             }
             if(pluginName == null) { return false; }
-            return plugins.contains(pluginName) != inverse();
+            return CoreUtils.containsIgnoreCase(plugins, pluginName) != inverse();
         }
 
     }
