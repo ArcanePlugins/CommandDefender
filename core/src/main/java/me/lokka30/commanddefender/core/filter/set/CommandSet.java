@@ -82,10 +82,10 @@ public record CommandSet(
 
         if(debugLog) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                    "Not enough conditions were met: requires %s percent (%s conditions), achieved %s percent (%s / %s conditions).",
-                    conditionsPercentageRequired(),
+                    "Not enough conditions were met: requires &b%s&7 percent of &btrue&7" +
+                            " conditions &8(&7total: &b%s&8)&7; but only &b%s&7 of &b%s&7 conditions are &btrue&7.",
+                    conditionsPercentageRequired() * 100,
                     (conditionsPercentageRequired() * totalConditions),
-                    (conditionsMet / totalConditions),
                     conditionsMet,
                     totalConditions
             ));

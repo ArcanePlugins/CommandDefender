@@ -12,10 +12,7 @@ import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class List implements ConditionHandler {
 
@@ -93,7 +90,6 @@ public class List implements ConditionHandler {
             }
         }
 
-        // START DEBUG LOG
         if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
             Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
                     "Parsed list condition in command set %s with matchingMode=%s, " +
@@ -106,7 +102,6 @@ public class List implements ConditionHandler {
                     inverse
             ));
         }
-        // END DEBUG LOG
 
         return Optional.of(new ListCondition(
                 matchingMode,
@@ -126,14 +121,17 @@ public class List implements ConditionHandler {
     ) implements Condition {
 
         // this is cached to improve performance.
-        private static String[] adaptedContents = null;
+        private static final HashMap<ListCondition, String[]> adaptedContentsMap = new HashMap<>();
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
 
+            final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS);
+
             // we don't want to modify the existing args or contents arrays
             // so we generate a copy of them.
 
+            String[] adaptedContents = adaptedContentsMap.get(this);
             final String[] adaptedArgs = Arrays.copyOf(args, args.length);
 
             if(adaptedContents == null) {
@@ -145,6 +143,14 @@ public class List implements ConditionHandler {
                         adaptedContents[i] = adaptedContents[i].toLowerCase(Locale.ROOT);
                     }
                 }
+
+                adaptedContentsMap.put(this, adaptedContents);
+            }
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "List contents after adaption is: &b%s&7.",
+                        String.join("&7, &b", adaptedContents)
+                ));
             }
 
             // adapt array for ignoreCase
@@ -168,7 +174,21 @@ public class List implements ConditionHandler {
                 adaptedArgs[0] = adaptedArgs[0].substring(1);
             }
 
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "List args array after adaption is: &b%s&7.",
+                        String.join("&7, &b", adaptedArgs)
+                ));
+            }
+
             final Set<String> aliases = Commons.core().aliasesOfCommand(adaptedArgs[0].substring(1));
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "Aliases for command &b%s&7: &b/%s&7.",
+                        adaptedArgs[0],
+                        String.join("&7, &b/", aliases)
+                ));
+            }
 
             contentsLoop:
             for(String content : adaptedContents) {
@@ -179,8 +199,11 @@ public class List implements ConditionHandler {
                     if(
                             // if includeAliases, then check if the alias is also listed
                             // only run this on the first index (i.e. base label)
-                            // cSplit[i].substring(1) is used to remove the starting slash
-                            (i == 0 && includeAliases() && aliases.contains(cSplit[i].substring(1))) ||
+                            // substring(1) is used to remove the starting slash
+                            (i == 0 && includeAliases() && aliases.contains(adaptedArgs[0].substring(1))) ||
+
+                            // if /* is used in the list then it means to detect all commands
+                            (i == 0 && cSplit[i].equals("/*")) ||
 
                             cSplit[i].equals("*") ||
 

@@ -48,9 +48,10 @@ public class SendMessage implements ActionHandler {
 
             if(DebugHandler.isDebugCategoryEnabled(DebugCategory.ACTIONS)) {
                 Commons.core().logger().debug(DebugCategory.ACTIONS, String.format(
-                        "Sent messages '%s' to player '%s'.",
+                        "Sent messages '%s' to player '%s' Original messages are '%s'.",
                         message.finalMessages(),
-                        player.name()
+                        player.name(),
+                        messages()
                 ));
             }
         }

@@ -259,7 +259,7 @@ public final class CommandFilter {
 
         if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                    "Finished parsing commnand set %s, there are now %s command sets loaded",
+                    "Finished parsing command set '%s', there are now %s command sets loaded.",
                     identifier,
                     commandSets.size()
             ));
