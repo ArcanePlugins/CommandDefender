@@ -38,6 +38,19 @@ public final class CommandFilter {
             ));
         }
 
+        if(
+                Commons.core().fileHandler().advancedSettings().data()
+                        .get("operator-status-bypasses-processing", true)
+        ) {
+            if(player.isOp()) {
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY,
+                            "Player is OP, bypassing processing.");
+                }
+                return true;
+            }
+        }
+
         commandSetIterator:
         for(final CommandSet set : commandSets) {
 

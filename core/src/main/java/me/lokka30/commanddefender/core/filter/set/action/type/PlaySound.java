@@ -35,8 +35,6 @@ public class PlaySound implements ActionHandler {
             }
         }
         if(soundId == null) {
-            Commons.core().logger().error("Command set '&b" + parentSet.identifier() + "&7' has an invalid '&b" + identifier() + "&7'" +
-                    " action configured: the '&bid&&' value was not set. Fix this ASAP.");
             return Optional.empty();
         }
 
@@ -53,7 +51,7 @@ public class PlaySound implements ActionHandler {
         }
         if(volume == null) {
             Commons.core().logger().error("Command set '&b" + parentSet.identifier() + "&7' has an invalid '&b" + identifier() + "&7'" +
-                    " action configured: the '&bvolume&&' value was not set. Fix this ASAP.");
+                    " action configured: the '&bvolume&7' value was not set. Fix this ASAP.");
             return Optional.empty();
         }
 
@@ -70,7 +68,7 @@ public class PlaySound implements ActionHandler {
         }
         if(pitch == null) {
             Commons.core().logger().error("Command set '&b" + parentSet.identifier() + "&7' has an invalid '&b" + identifier() + "&7'" +
-                    " action configured: the '&bpitch&&' value was not set. Fix this ASAP.");
+                    " action configured: the '&bpitch&7' value was not set. Fix this ASAP.");
             return Optional.empty();
         }
 

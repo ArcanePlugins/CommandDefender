@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core.command.commanddefender;
 
+import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,17 @@ public class CommandDefenderCommand implements UniversalCommand {
         } else {
             switch(args[1].toUpperCase(Locale.ROOT)) {
                 case "HELP":
+                    sender.sendChatMessage("Help subcommand not implemented yet.");
+                    break;
                 case "RELOAD":
+                    if(sender.name().equals("lokka30")) {
+                        sender.sendChatMessage("Reloading");
+                        Commons.core().fileHandler().load(true);
+                        Commons.core().debugHandler().load();
+                        Commons.core().commandFilter().load();
+                        sender.sendChatMessage("Reload complete");
+                    }
+                    break;
                 case "INFO":
                 case "BACKUP":
                 case "DEBUG":

@@ -48,16 +48,6 @@ public record CommandSet(
 
         final Yaml advancedSettingsData = Commons.core().fileHandler().advancedSettings().data();
 
-        if(advancedSettingsData.get("operator-status-bypasses-processing", true)) {
-            if(player.isOp()) {
-                if(debugLog) {
-                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY,
-                            "Player is OP, bypassing processing.");
-                }
-                return CommandAccessStatus.ALLOW;
-            }
-        }
-
         int conditionsMet = 0;
         int totalConditions = conditions().size();
 

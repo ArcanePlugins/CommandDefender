@@ -39,17 +39,11 @@ public class BukkitCore extends JavaPlugin implements Core {
         final long startTime = System.currentTimeMillis();
 
         registerBukkitConditions();
-
         fileHandler().load(false);
-
         debugHandler.load();
-
         commandFilter().load();
-
         registerListeners();
-
         registerCommands();
-
         checkForUpdates();
 
         // print total time taken
@@ -117,8 +111,15 @@ public class BukkitCore extends JavaPlugin implements Core {
             @Override
             public void run() {
                 try {
-                    players.get(index[0]).updateCommands();
+                    final Player player =  players.get(index[0]);
+                    if(player.isOnline()) {
+                        player.updateCommands();
+                    }
+
                     index[0]++;
+                    if(index[0] == players.size()) {
+                        cancel();
+                    }
                 } catch(NoSuchMethodError error) {
                     cancel();
                 }
