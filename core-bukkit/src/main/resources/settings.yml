@@ -174,13 +174,19 @@ command-sets:
     enabled: false
     type: "ALLOW"
     conditions:
-      percentage-required: 0.0
+      percentage-required: 100.0
       list:
         matching-mode: 'CONTAINS'
         ignore-case: true
         include-aliases: true
         contents:
-          - "jeff"
+          - "/jeff"
+      world-name:
+        contents: ['world_the_end']
+        inverse: true
+      server-name:
+        contents: ['lobby']
+        inverse: true
     options:
       context:
         command-execution: true

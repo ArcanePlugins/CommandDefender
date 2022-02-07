@@ -1,22 +1,19 @@
 package me.lokka30.commanddefender.corebukkit.filter.set.condition.type;
-/*
+
 import de.leonhard.storage.sections.FlatFileSection;
-import me.lokka30.commanddefender.core.Commons;
+import java.util.List;
+import java.util.Optional;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
+import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Optional;
- */
-
 public class WorldName
-    //implements ConditionHandler
+    implements ConditionHandler
 {
-    /*
 
     @Override
     public @NotNull String identifier() {
@@ -25,34 +22,46 @@ public class WorldName
 
     @Override
     public @NotNull Optional<Condition> parse(@NotNull final CommandSet parentSet, @NotNull final FlatFileSection section) {
-        //TODO program the parsing, and also register the condition
+        List<String> contents = null;
+        if(section.contains("conditions.world-name.contents")) {
+            contents = section.getStringList("conditions.world-name.contents");
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains("conditions.world-name.contents")) {
+                    contents = preset.section().getStringList("conditions.world-name.contents");
+                    break;
+                }
+            }
+        }
+        if(contents == null) return Optional.empty();
 
-        //conditions:
-        //    world-name:
-        //        inclusive-list: ['world']
-        //        ...OR...
-        //        exclusive-list: ['world']
-        //    ...OR...
-        //    world-name-incl: ['world']
-        //    ...OR...
-        //    world-name-excl: ['world']
-        Commons.core().logger().error("WorldName condition not implemented!");
+        boolean inverse = false;
+        if(section.contains("conditions.world-name.inverse")) {
+            inverse = section.getBoolean("conditions.world-name.inverse");
+        } else {
+            for(CommandSetPreset preset : parentSet.presets()) {
+                if(preset.section().contains("conditions.world-name.inverse")) {
+                    inverse = preset.section().getBoolean("conditions.world-name.inverse");
+                    break;
+                }
+            }
+        }
 
-        return Optional.empty();
+        return Optional.of(new WorldNameCondition(
+            contents, inverse
+        ));
     }
 
     public record WorldNameCondition(
-            @NotNull CommandSet parentSet,
-            @NotNull List<String> list,
+            @NotNull List<String> contents,
             boolean inverse
     ) implements Condition {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            return list.contains(BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName()) != inverse();
+            return contents.contains(BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName()) != inverse();
         }
 
     }
-     */
 
 }
