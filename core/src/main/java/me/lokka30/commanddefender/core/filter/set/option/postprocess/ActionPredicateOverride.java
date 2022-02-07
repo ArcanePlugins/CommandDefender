@@ -52,14 +52,12 @@ public class ActionPredicateOverride implements OptionHandler {
         }
 
         return Optional.of(new ActionPredicateOverrideOption(
-            parentSet,
             ignoreFilteringContext,
             ignoreCommandSetType
         ));
     }
 
     public record ActionPredicateOverrideOption(
-        @NotNull CommandSet parentSet,
         boolean ignoreFilteringContext,
         boolean ignoreCommandAccessStatus
     ) implements Option {

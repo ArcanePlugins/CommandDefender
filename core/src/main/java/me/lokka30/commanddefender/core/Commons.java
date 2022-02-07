@@ -53,4 +53,20 @@ public class Commons {
 
     public static final String DEBUG_LOGGING_PREFIX = "&8[&3Debug &8// &3%s&8]:&7 ";
 
+    public static final String[][] MAINTAINERS = {
+        {"lokka30", "author, maintainer"}
+    };
+
+    public static final String[][] ACKNOWLEDGEMENTS = {
+        {"drives_a_ford", "bug fixing"},
+
+        /*
+        v2.x credits
+        these contributions are no longer present
+        in the plugin (due to the re-code), but
+        they are still acknowledged & appreciated!
+         */
+        {"Hugo5551", "(v2.x) bug fixing"}
+    };
+
 }

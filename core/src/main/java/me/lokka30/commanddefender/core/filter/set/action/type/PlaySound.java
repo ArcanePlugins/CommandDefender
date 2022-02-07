@@ -13,6 +13,10 @@ import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import me.lokka30.commanddefender.core.util.universal.UniversalSound;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author lokka30 (original author)
+ * @author drives_a_ford (stack overflow fix)
+ */
 public class PlaySound implements ActionHandler {
 
     @Override
@@ -108,13 +112,11 @@ public class PlaySound implements ActionHandler {
         }
 
         return Optional.of(new PlaySoundAction(
-            parentSet,
             platformSpecificSound
         ));
     }
 
     public record PlaySoundAction(
-        @NotNull CommandSet parentSet,
         @NotNull UniversalSound sound
     ) implements Action {
 
