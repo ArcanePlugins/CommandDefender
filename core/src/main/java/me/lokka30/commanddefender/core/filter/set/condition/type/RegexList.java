@@ -1,8 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.condition.type;
 
-import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
@@ -91,9 +92,11 @@ public class RegexList implements ConditionHandler {
                     patterns.add(Pattern.compile(regex, patternFlag));
                 }
             } catch(PatternSyntaxException ex) {
-                Commons.core().logger().error("Invalid regex pattern syntax: '&b" + regex + "&7'. Fix this ASAP.");
+                Commons.core().logger().error("Invalid regex pattern syntax: '&b" + regex + "&7'. " +
+                        "CommandDefender will ignore this regex pattern. Fix this ASAP.");
             }
         }
+        if(patterns.isEmpty()) { return Optional.empty(); }
 
         return Optional.of(new RegexListCondition(
                 patterns.toArray(new Pattern[0]),
@@ -108,19 +111,31 @@ public class RegexList implements ConditionHandler {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            String joinedArgs = String.join(" ", args);
+            final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS);
 
-            // adapt array for 'use starting slash'
-            final Yaml advancedSettingsData = Commons.core().fileHandler().advancedSettings().data();
-            if(!advancedSettingsData.get("commands-configured-with-starting-slash", true)) {
-                assert joinedArgs.startsWith("/");
-                joinedArgs = joinedArgs.substring(1);
+            final String joinedArgs = String.join(" ", args)
+
+                    // adapt array for 'use starting slash'
+                    .substring(1);
+
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "RegexList - joined args are '&b%s&7'.",
+                        joinedArgs
+                ));
             }
 
             for(Pattern pattern : patterns()) {
                 if(pattern.matcher(joinedArgs).find()) {
+                    if(debugLog) {
+                        Commons.core().logger().debug(DebugCategory.CONDITIONS, "RegexList - a pattern has matched.");
+                    }
                     return !inverse();
                 }
+            }
+
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, "RegexList - none of the patterns matched.");
             }
 
             return inverse();

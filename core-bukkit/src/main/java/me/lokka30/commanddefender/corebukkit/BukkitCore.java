@@ -23,9 +23,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BukkitCore extends JavaPlugin implements Core {
 
@@ -144,7 +144,10 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull Set<String> aliasesOfCommand(@NotNull String command) {
         final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
         if(pluginCommand == null) { return Set.of(); }
-        return pluginCommand.getAliases().stream().collect(Collectors.toUnmodifiableSet());
+        final Set<String> aliases = new HashSet<>();
+        aliases.add(command);
+        aliases.addAll(pluginCommand.getAliases());
+        return aliases;
     }
 
     @Override

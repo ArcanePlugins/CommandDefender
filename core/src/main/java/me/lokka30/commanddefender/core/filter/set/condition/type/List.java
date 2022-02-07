@@ -181,12 +181,16 @@ public class List implements ConditionHandler {
                 ));
             }
 
-            final Set<String> aliases = Commons.core().aliasesOfCommand(adaptedArgs[0].substring(1));
+            final Set<String> aliases = includeAliases() ?
+                    Commons.core().aliasesOfCommand(adaptedArgs[0].substring(1)) :
+                    Set.of();
             if(debugLog) {
                 Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                        "Aliases for command &b%s&7: &b/%s&7.",
+                        "Aliases for command &b%s&7: &8[&b%s&8]&7.",
                         adaptedArgs[0],
-                        String.join("&7, &b/", aliases)
+                        includeAliases() ?
+                                String.join("&7, &b", aliases) :
+                                "Include-Aliases is disabled"
                 ));
             }
 
@@ -196,6 +200,17 @@ public class List implements ConditionHandler {
                 final int maxIteration = Math.min(adaptedArgs.length, cSplit.length);
 
                 for (int i = 0; i < maxIteration; i++) {
+                    if(debugLog) {
+                        if(i == 0 && includeAliases()) {
+                            Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                                    "Command &b%s&7 is included in aliases list &8[&b%s&8]&7: %s&7.",
+                                    adaptedArgs[0].substring(1),
+                                    String.join("&7, &b", aliases),
+                                    aliases.contains(adaptedArgs[0].substring(1)) ? "&aYes" : "&cNo"
+                            ));
+                        }
+                    }
+
                     if(
                             // if includeAliases, then check if the alias is also listed
                             // only run this on the first index (i.e. base label)
