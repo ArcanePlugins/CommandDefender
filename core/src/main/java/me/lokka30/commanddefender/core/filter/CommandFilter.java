@@ -403,8 +403,12 @@ public final class CommandFilter {
             }
 
             switch (got.processingStage()) {
-                case PRE_PROCESS -> commandSet.preProcessOptions().add(got);
-                case POST_PROCESS -> commandSet.postProcessOptions().add(got);
+                case PRE_PROCESS:
+                    commandSet.preProcessOptions().add(got); break;
+                case POST_PROCESS:
+                    commandSet.postProcessOptions().add(got); break;
+                default:
+                    throw new IllegalStateException("Unexpected state: " + got.processingStage());
             }
 
             if (debugLog) {
