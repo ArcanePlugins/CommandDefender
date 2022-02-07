@@ -2,6 +2,8 @@ package me.lokka30.commanddefender.core.filter.set.action.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
@@ -21,6 +23,8 @@ public class PlaySound implements ActionHandler {
 
     @Override
     public @NotNull Optional<Action> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
+        final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.ACTIONS);
+
         final String path = "actions." + identifier();
 
         String soundId = null;
@@ -33,6 +37,12 @@ public class PlaySound implements ActionHandler {
                     break;
                 }
             }
+        }
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                    "PlaySound - the sound ID is '&b%s&7'.",
+                    soundId == null ? "&cN/A" : soundId
+            ));
         }
         if(soundId == null) {
             return Optional.empty();
@@ -48,6 +58,12 @@ public class PlaySound implements ActionHandler {
                     break;
                 }
             }
+        }
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                    "PlaySound - the sound volume is '&b%s&7'.",
+                    volume == null ? "&cN/A" : volume
+            ));
         }
         if(volume == null) {
             Commons.core().logger().error("Command set '&b" + parentSet.identifier() + "&7' has an invalid '&b" + identifier() + "&7'" +
@@ -66,15 +82,30 @@ public class PlaySound implements ActionHandler {
                 }
             }
         }
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                    "PlaySound - the sound pitch is '&b%s&7'.",
+                    pitch == null ? "&cN/A" : pitch
+            ));
+        }
         if(pitch == null) {
             Commons.core().logger().error("Command set '&b" + parentSet.identifier() + "&7' has an invalid '&b" + identifier() + "&7'" +
                     " action configured: the '&bpitch&7' value was not set. Fix this ASAP.");
             return Optional.empty();
         }
 
+        final UniversalSound platformSpecificSound = Commons.core().platformHandler()
+                .buildPlatformSpecificSound(soundId, volume, pitch);
+        if(debugLog) {
+            Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                    "PlaySound - the universal sound has been built, using the class '&b%s&7'.",
+                    platformSpecificSound.getClass().getSimpleName()
+            ));
+        }
+
         return Optional.of(new PlaySoundAction(
                 parentSet,
-                Commons.core().platformHandler().buildPlatformSpecificSound(soundId, volume, pitch)
+                platformSpecificSound
         ));
     }
 
@@ -85,6 +116,14 @@ public class PlaySound implements ActionHandler {
 
         @Override
         public void run(@NotNull UniversalPlayer player, @NotNull String[] args) {
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "PlaySound - playing sound &b%s&7 to &f%s&7.",
+                        sound().identifier(),
+                        player.name()
+                ));
+            }
+
             player.playSound(sound);
         }
 
