@@ -187,6 +187,7 @@ public final class CommandFilter {
     }
 
     private void parseCommandSets() {
+
         final boolean debugLog = DebugHandler.isDebugCategoryEnabled(
             DebugCategory.COMMAND_FILTER_PARSING);
 
@@ -213,8 +214,10 @@ public final class CommandFilter {
     }
 
     private void parsePreset(final @NotNull String identifier) {
+
         final Yaml settings = Commons.core().fileHandler().settings().data();
         final String path = "presets." + identifier;
+
         presets.add(new CommandSetPreset(identifier, settings.getSection(path)));
 
         if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
@@ -227,6 +230,7 @@ public final class CommandFilter {
     }
 
     private void parseCommandSet(final @NotNull String identifier) {
+
         if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
                 "Started parsing command set %s",
@@ -291,7 +295,9 @@ public final class CommandFilter {
 
     private void parseCommandSetPresets(final @NotNull CommandSet commandSet,
         final @NotNull String identifier) {
+
         final Yaml settings = Commons.core().fileHandler().settings().data();
+
         final List<String> presetIds = settings.getStringList(
             "command-sets." + identifier + ".use-presets");
 
@@ -323,6 +329,7 @@ public final class CommandFilter {
 
     private void parseCommandSetConditions(final @NotNull CommandSet commandSet,
         final @NotNull String identifier) {
+
         final Yaml settings = Commons.core().fileHandler().settings().data();
 
         for (ConditionHandler conditionHandler : Commons.conditionHandlers) {
@@ -347,6 +354,7 @@ public final class CommandFilter {
 
     private void parseCommandSetActions(final @NotNull CommandSet commandSet,
         final @NotNull String identifier) {
+
         final Yaml settings = Commons.core().fileHandler().settings().data();
 
         for (ActionHandler actionHandler : Commons.actionHandlers) {
@@ -371,6 +379,7 @@ public final class CommandFilter {
 
     private void parseCommandSetOptions(final @NotNull CommandSet commandSet,
         final @NotNull String identifier) {
+
         final Yaml settings = Commons.core().fileHandler().settings().data();
         final boolean debugLog = DebugHandler.isDebugCategoryEnabled(
             DebugCategory.COMMAND_FILTER_PARSING);
