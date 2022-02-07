@@ -14,7 +14,7 @@ prefix: 'CommandDefender'
 commands:
   'commanddefender':
     description: 'Used to manage the CommandDefender plugin.'
-    aliases: ['cd', 'cmddef']
+    aliases: [ 'cd', 'cmddef' ]
     usage: '/<command> help'
 
 # permissions

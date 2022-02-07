@@ -1,6 +1,8 @@
 package me.lokka30.commanddefender.core.filter.set.condition.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import java.util.Arrays;
+import java.util.Optional;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.debug.DebugHandler;
@@ -11,9 +13,6 @@ import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public class HasColonInFirstArg implements ConditionHandler {
 
     @Override
@@ -22,33 +21,34 @@ public class HasColonInFirstArg implements ConditionHandler {
     }
 
     @Override
-    public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
+    public @NotNull Optional<Condition> parse(final @NotNull CommandSet parentSet,
+        final @NotNull FlatFileSection section) {
         final String path = "conditions." + identifier();
 
-        if(section.get(path, false)) {
+        if (section.get(path, false)) {
 
             // START DEBUG LOG
-            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+            if (DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
                 Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                        "Parsing '%s' in command set '%s': true",
-                        identifier(),
-                        parentSet.identifier()
+                    "Parsing '%s' in command set '%s': true",
+                    identifier(),
+                    parentSet.identifier()
                 ));
             }
             // END DEBUG LOG
 
             return Optional.of(new HasColonInFirstArgCondition());
         } else {
-            for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().get(path, false)) {
+            for (CommandSetPreset preset : parentSet.presets()) {
+                if (preset.section().get(path, false)) {
 
                     // START DEBUG LOG
-                    if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+                    if (DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
                         Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                                "Parsing '%s' in command set '%s': true, in preset '%s': true",
-                                identifier(),
-                                parentSet.identifier(),
-                                preset.identifier()
+                            "Parsing '%s' in command set '%s': true, in preset '%s': true",
+                            identifier(),
+                            parentSet.identifier(),
+                            preset.identifier()
                         ));
                     }
                     // END DEBUG LOG
@@ -59,11 +59,11 @@ public class HasColonInFirstArg implements ConditionHandler {
         }
 
         // START DEBUG LOG
-        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+        if (DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
             Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                    "Parsing '%s' in command set '%s': false",
-                    identifier(),
-                    parentSet.identifier()
+                "Parsing '%s' in command set '%s': false",
+                identifier(),
+                parentSet.identifier()
             ));
         }
         // END DEBUG LOG
@@ -79,13 +79,13 @@ public class HasColonInFirstArg implements ConditionHandler {
             final boolean result = args[0].contains(":");
 
             // START DEBUG LOG
-            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
+            if (DebugHandler.isDebugCategoryEnabled(DebugCategory.CONDITIONS)) {
                 Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                        "Checking appliesTo for '%s' for player '%s' with args '%s' -> result: '%s'.",
-                        this.getClass().getSimpleName(),
-                        player.name(),
-                        Arrays.toString(args),
-                        result
+                    "Checking appliesTo for '%s' for player '%s' with args '%s' -> result: '%s'.",
+                    this.getClass().getSimpleName(),
+                    player.name(),
+                    Arrays.toString(args),
+                    result
                 ));
             }
             // END DEBUG LOG

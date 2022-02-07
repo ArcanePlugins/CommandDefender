@@ -1,10 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.action;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import java.util.Optional;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public interface ActionHandler {
 
@@ -12,6 +11,7 @@ public interface ActionHandler {
     String identifier();
 
     @NotNull
-    Optional<Action> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section);
+    Optional<Action> parse(final @NotNull CommandSet parentSet,
+        final @NotNull FlatFileSection section);
 
 }

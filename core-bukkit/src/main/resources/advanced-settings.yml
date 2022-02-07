@@ -51,7 +51,7 @@ operator-status-bypasses-processing: true
 commands-configured-with-starting-slash: true
 
 # Debug categories to spy on
-debug: []
+debug: [ ]
 
 # *** Do NOT modify this section! ***
 # Extra data of this file

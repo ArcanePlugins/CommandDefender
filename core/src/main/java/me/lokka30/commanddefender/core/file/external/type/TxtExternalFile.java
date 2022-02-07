@@ -4,7 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface TxtExternalFile extends ExternalFile {
 
-    @NotNull @Override
+    @NotNull
+    @Override
     default String nameWithExtension() {
         return nameWithoutExtension() + ".txt";
     }

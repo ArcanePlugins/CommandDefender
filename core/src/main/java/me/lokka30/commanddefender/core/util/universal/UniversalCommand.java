@@ -1,8 +1,7 @@
 package me.lokka30.commanddefender.core.util.universal;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public interface UniversalCommand {
 
@@ -12,7 +11,8 @@ public interface UniversalCommand {
     void run(final @NotNull UniversalCommandSender sender, final @NotNull String[] args);
 
     @NotNull
-    List<String> generateTabSuggestions(final @NotNull UniversalCommandSender sender, final @NotNull String[] args);
+    List<String> generateTabSuggestions(final @NotNull UniversalCommandSender sender,
+        final @NotNull String[] args);
 
     @NotNull
     String baseUsage();

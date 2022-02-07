@@ -1,6 +1,14 @@
 package me.lokka30.commanddefender.corebukkit.util.universal;
 
-import me.lokka30.commanddefender.core.util.universal.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
+import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
+import me.lokka30.commanddefender.core.util.universal.UniversalCommandSender;
+import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
+import me.lokka30.commanddefender.core.util.universal.UniversalSound;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,37 +16,39 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-
 public class BukkitPlatformHandler implements PlatformHandler {
 
     @NotNull
-    public static TabExecutor universalCommandToBukkit(final @NotNull UniversalCommand universalCommand) {
+    public static TabExecutor universalCommandToBukkit(
+        final @NotNull UniversalCommand universalCommand) {
         return new TabExecutor() {
             @Override
-            public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command cmd, final @NotNull String label, final @NotNull String[] args) {
+            public boolean onCommand(final @NotNull CommandSender sender,
+                final @NotNull Command cmd, final @NotNull String label,
+                final @NotNull String[] args) {
                 universalCommand.run(
-                        bukkitCommandSenderToUniversal(sender),
-                        bukkitCommandArgsToUniversal(label, args)
+                    bukkitCommandSenderToUniversal(sender),
+                    bukkitCommandArgsToUniversal(label, args)
                 );
                 return true;
             }
 
-            @Override @NotNull
-            public List<String> onTabComplete(final @NotNull CommandSender sender, final @NotNull Command cmd, final @NotNull String label, final @NotNull String[] args) {
+            @Override
+            @NotNull
+            public List<String> onTabComplete(final @NotNull CommandSender sender,
+                final @NotNull Command cmd, final @NotNull String label,
+                final @NotNull String[] args) {
                 return universalCommand.generateTabSuggestions(
-                        bukkitCommandSenderToUniversal(sender),
-                        bukkitCommandArgsToUniversal(label, args)
+                    bukkitCommandSenderToUniversal(sender),
+                    bukkitCommandArgsToUniversal(label, args)
                 );
             }
         };
     }
 
     @NotNull
-    public static UniversalCommandSender bukkitCommandSenderToUniversal(final @NotNull CommandSender bukkitSender) {
+    public static UniversalCommandSender bukkitCommandSenderToUniversal(
+        final @NotNull CommandSender bukkitSender) {
         return new UniversalCommandSender() {
             @Override
             public @NotNull String name() {
@@ -58,7 +68,8 @@ public class BukkitPlatformHandler implements PlatformHandler {
     }
 
     @NotNull
-    public static String[] bukkitCommandArgsToUniversal(final @NotNull String label, final @NotNull String[] bukkitArgs) {
+    public static String[] bukkitCommandArgsToUniversal(final @NotNull String label,
+        final @NotNull String[] bukkitArgs) {
         final LinkedList<String> args = new LinkedList<>();
         args.add(label);
         Collections.addAll(args, bukkitArgs);
@@ -72,7 +83,8 @@ public class BukkitPlatformHandler implements PlatformHandler {
 
     @NotNull
     public static BukkitPlayer universalPlayerToBukkit(final @NotNull UniversalPlayer player) {
-        return new BukkitPlayer(player.uuid(), Objects.requireNonNull(Bukkit.getPlayer(player.uuid())));
+        return new BukkitPlayer(player.uuid(),
+            Objects.requireNonNull(Bukkit.getPlayer(player.uuid())));
     }
 
     @NotNull
@@ -81,7 +93,8 @@ public class BukkitPlatformHandler implements PlatformHandler {
     }
 
     @Override
-    public @NotNull UniversalSound buildPlatformSpecificSound(@NotNull String identifier, double volume, double pitch) {
+    public @NotNull UniversalSound buildPlatformSpecificSound(@NotNull String identifier,
+        double volume, double pitch) {
         return new BukkitSound(identifier, volume, pitch);
     }
 

@@ -1,6 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.action.type;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.debug.DebugHandler;
@@ -11,10 +14,6 @@ import me.lokka30.commanddefender.core.util.Message;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
 public class SendMessage implements ActionHandler {
 
     @Override
@@ -23,10 +22,11 @@ public class SendMessage implements ActionHandler {
     }
 
     @Override
-    public @NotNull Optional<Action> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
+    public @NotNull Optional<Action> parse(final @NotNull CommandSet parentSet,
+        final @NotNull FlatFileSection section) {
         final String path = "actions." + identifier();
 
-        if(!section.contains(path)) {
+        if (!section.contains(path)) {
             return Optional.empty();
         }
 
@@ -34,25 +34,26 @@ public class SendMessage implements ActionHandler {
     }
 
     public record SendMessageAction(
-            @NotNull List<String> messages
+        @NotNull List<String> messages
     ) implements Action {
 
         @Override
         public void run(@NotNull UniversalPlayer player, @NotNull String[] args) {
             final Message message = new Message(new LinkedList<>(messages()),
-                    new Message.Placeholder("%prefix%", Commons.core().fileHandler().messages().data().get("common.prefix", "&b&lCommandDefender: &7")),
-                    new Message.Placeholder("%player-name%", player.name()),
-                    new Message.Placeholder("%command%", String.join(" ", args))
+                new Message.Placeholder("%prefix%", Commons.core().fileHandler().messages().data()
+                    .get("common.prefix", "&b&lCommandDefender: &7")),
+                new Message.Placeholder("%player-name%", player.name()),
+                new Message.Placeholder("%command%", String.join(" ", args))
             );
 
             message.send(player);
 
-            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.ACTIONS)) {
+            if (DebugHandler.isDebugCategoryEnabled(DebugCategory.ACTIONS)) {
                 Commons.core().logger().debug(DebugCategory.ACTIONS, String.format(
-                        "Sent messages '%s' to player '%s' Original messages are '%s'.",
-                        message.finalMessages(),
-                        player.name(),
-                        messages()
+                    "Sent messages '%s' to player '%s' Original messages are '%s'.",
+                    message.finalMessages(),
+                    player.name(),
+                    messages()
                 ));
             }
         }

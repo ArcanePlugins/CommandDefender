@@ -5,15 +5,15 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.DataType;
 import de.leonhard.storage.internal.settings.ReloadSettings;
+import java.io.File;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.file.external.type.YamlVersionedExternalFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-
 public class Settings implements YamlVersionedExternalFile {
 
     private Yaml data;
+
     @Override
     public Yaml data() {
         return data;
@@ -32,46 +32,56 @@ public class Settings implements YamlVersionedExternalFile {
     @Override
     public void load(boolean fromReload) {
         Commons.core().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
-        if(!exists()) { replaceWithDefault(); }
+        if (!exists()) {
+            replaceWithDefault();
+        }
         if (fromReload) {
             data.forceReload();
         } else {
             data = LightningBuilder
-                    .fromFile(new File(fullPath()))
-                    .setReloadSettings(ReloadSettings.MANUALLY)
-                    .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
-                    .setDataType(DataType.SORTED)
-                    .createYaml();
+                .fromFile(new File(fullPath()))
+                .setReloadSettings(ReloadSettings.MANUALLY)
+                .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
+                .setDataType(DataType.SORTED)
+                .createYaml();
         }
         migrate();
     }
 
     @Override
     public void migrate() {
-        if(installedVersion() == currentVersion()) return;
+        if (installedVersion() == currentVersion()) {
+            return;
+        }
 
-        if(installedVersion() < 3) {
+        if (installedVersion() < 3) {
             Commons.core().logger().warning(
-                    "Your '&b" + nameWithExtension() + "&7' file is too old to be migrated. It has been " +
-                            "backed up. CommandDefender is now using the default latest file instead. " +
-                            "Edit this file with any of the changes you wish ASAP.");
+                "Your '&b" + nameWithExtension()
+                    + "&7' file is too old to be migrated. It has been " +
+                    "backed up. CommandDefender is now using the default latest file instead. " +
+                    "Edit this file with any of the changes you wish ASAP.");
             backup();
             replaceWithDefault();
             return;
         }
 
-        for(int i = installedVersion(); i < currentVersion(); i++) {
-            Commons.core().logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
-            switch(installedVersion()) {
+        for (int i = installedVersion(); i < currentVersion(); i++) {
+            Commons.core().logger().info(
+                "Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b"
+                    + installedVersion() + "&7 to &b" + i + "&7...");
+            switch (installedVersion()) {
                 case 3:
                     break;
                 default:
                     Commons.core().logger().error(
-                            "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
-                                    "&b" + i + "&7. Inform CommandDefender developers ASAP.");
+                        "No migration logic available for file '&b" + nameWithExtension()
+                            + "&7' @ version " +
+                            "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
             }
-            Commons.core().logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
+            Commons.core().logger().info(
+                "Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i
+                    + "&7 successfully.");
         }
     }
 

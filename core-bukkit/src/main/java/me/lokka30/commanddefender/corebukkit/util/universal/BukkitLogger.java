@@ -31,7 +31,8 @@ public class BukkitLogger implements UniversalLogger {
 
     @Override
     public void debug(final @NotNull DebugCategory category, final @NotNull String msg) {
-        Bukkit.getLogger().info(colorizeAndPrefix(String.format(Commons.DEBUG_LOGGING_PREFIX, category) + msg));
+        Bukkit.getLogger()
+            .info(colorizeAndPrefix(String.format(Commons.DEBUG_LOGGING_PREFIX, category) + msg));
     }
 
 }

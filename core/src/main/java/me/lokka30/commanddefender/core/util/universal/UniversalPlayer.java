@@ -1,8 +1,7 @@
 package me.lokka30.commanddefender.core.util.universal;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 public interface UniversalPlayer {
 

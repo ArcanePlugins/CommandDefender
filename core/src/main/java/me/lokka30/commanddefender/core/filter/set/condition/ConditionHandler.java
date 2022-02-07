@@ -1,10 +1,9 @@
 package me.lokka30.commanddefender.core.filter.set.condition;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import java.util.Optional;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public interface ConditionHandler {
 
@@ -12,5 +11,6 @@ public interface ConditionHandler {
     String identifier();
 
     @NotNull
-    Optional<Condition> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section);
+    Optional<Condition> parse(final @NotNull CommandSet parentSet,
+        final @NotNull FlatFileSection section);
 }

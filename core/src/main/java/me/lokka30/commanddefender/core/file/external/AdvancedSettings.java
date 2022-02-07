@@ -5,15 +5,15 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.DataType;
 import de.leonhard.storage.internal.settings.ReloadSettings;
+import java.io.File;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.file.external.type.YamlVersionedExternalFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-
 public class AdvancedSettings implements YamlVersionedExternalFile {
 
     private Yaml data;
+
     @Override
     public Yaml data() {
         return data;
@@ -32,44 +32,54 @@ public class AdvancedSettings implements YamlVersionedExternalFile {
     @Override
     public void load(boolean fromReload) {
         Commons.core().logger().info("Loading file '&b" + nameWithExtension() + "&7'...");
-        if(!exists()) { replaceWithDefault(); }
+        if (!exists()) {
+            replaceWithDefault();
+        }
         if (fromReload) {
             data.forceReload();
         } else {
             data = LightningBuilder
-                    .fromFile(new File(fullPath()))
-                    .setReloadSettings(ReloadSettings.MANUALLY)
-                    .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
-                    .setDataType(DataType.SORTED)
-                    .createYaml();
+                .fromFile(new File(fullPath()))
+                .setReloadSettings(ReloadSettings.MANUALLY)
+                .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
+                .setDataType(DataType.SORTED)
+                .createYaml();
         }
         migrate();
     }
 
     @Override
     public void migrate() {
-        if(installedVersion() == currentVersion()) return;
+        if (installedVersion() == currentVersion()) {
+            return;
+        }
 
-        for(int i = installedVersion(); i < currentVersion(); i++) {
-            if(i == -1) {
-                Commons.core().logger().error("Unable to find file version for '&b" + nameWithExtension() + "&7'." +
+        for (int i = installedVersion(); i < currentVersion(); i++) {
+            if (i == -1) {
+                Commons.core().logger()
+                    .error("Unable to find file version for '&b" + nameWithExtension() + "&7'." +
                         " The file has been backed up and replaced with the default version.");
                 backup();
                 replaceWithDefault();
                 return;
             }
 
-            Commons.core().logger().info("Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b" + installedVersion() + "&7 to &b" + i + "&7...");
-            switch(installedVersion()) {
+            Commons.core().logger().info(
+                "Attempting to migrate file '&b" + nameWithExtension() + "&7' from version &b"
+                    + installedVersion() + "&7 to &b" + i + "&7...");
+            switch (installedVersion()) {
                 case 1:
                     break;
                 default:
                     Commons.core().logger().error(
-                            "No migration logic available for file '&b" + nameWithExtension() + "&7' @ version " +
-                                    "&b" + i + "&7. Inform CommandDefender developers ASAP.");
+                        "No migration logic available for file '&b" + nameWithExtension()
+                            + "&7' @ version " +
+                            "&b" + i + "&7. Inform CommandDefender developers ASAP.");
                     return;
             }
-            Commons.core().logger().info("Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i + "&7 successfully.");
+            Commons.core().logger().info(
+                "Migrated file '&b" + nameWithExtension() + "&7' to version &b" + i
+                    + "&7 successfully.");
         }
     }
 

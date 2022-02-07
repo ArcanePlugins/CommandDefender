@@ -17,11 +17,11 @@ public class PlayerCommandSendListener implements ListenerExt {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandSend(final PlayerCommandSendEvent event) {
-        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_SUGGESTION_LISTENER)) {
+        if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_SUGGESTION_LISTENER)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_SUGGESTION_LISTENER, String.format(
-                    "%s is being sent the commands %s",
-                    event.getPlayer().getName(),
-                    event.getCommands()
+                "%s is being sent the commands %s",
+                event.getPlayer().getName(),
+                event.getCommands()
             ));
         }
         //TODO

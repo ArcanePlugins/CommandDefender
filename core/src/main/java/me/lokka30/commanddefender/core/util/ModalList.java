@@ -1,14 +1,13 @@
 package me.lokka30.commanddefender.core.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 //TODO Marked for removal.
 
 public record ModalList<T>(
-        @NotNull ModalListType modalListType,
-        @NotNull List<T> contents
+    @NotNull ModalListType modalListType,
+    @NotNull List<T> contents
 ) {
 
     public enum ModalListType {

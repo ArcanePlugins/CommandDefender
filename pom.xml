@@ -1,82 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.lokka30</groupId>
-    <artifactId>commanddefender-parent</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>core</module>
-        <module>core-bukkit</module>
-        <module>core-bungee</module>
-        <module>core-velocity</module>
-    </modules>
+  <groupId>me.lokka30</groupId>
+  <artifactId>commanddefender-parent</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+    <module>core</module>
+    <module>core-bukkit</module>
+    <module>core-bungee</module>
+    <module>core-velocity</module>
+  </modules>
 
-    <name>CommandDefender-Parent</name>
-    <version>3.0.0-SNAPSHOT</version>
-    <description>The ultimate command blocking solution for Minecraft servers,
-        built to be robust and with multi-platform support.</description>
-    <inceptionYear>2020</inceptionYear>
-    <url>https://github.com/lokka30/CommandDefender</url>
+  <name>CommandDefender-Parent</name>
+  <version>3.0.0-SNAPSHOT</version>
+  <description>The ultimate command blocking solution for Minecraft servers,
+    built to be robust and with multi-platform support.
+  </description>
+  <inceptionYear>2020</inceptionYear>
+  <url>https://github.com/lokka30/CommandDefender</url>
 
-    <licenses>
-        <license>
-            <name>GNU GPL v3.0</name>
-            <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  <licenses>
+    <license>
+      <name>GNU GPL v3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <java.version>17</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-    <repositories>
-        <repository>
-            <id>JitPack</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
+  <repositories>
+    <repository>
+      <id>JitPack</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.simplix-softworks</groupId>
-            <artifactId>simplixstorage</artifactId>
-            <version>3.2.3</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>com.github.simplix-softworks</groupId>
+      <artifactId>simplixstorage</artifactId>
+      <version>3.2.3</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <relocations>
-                        <relocation>
-                            <pattern>de.leonhard.storage</pattern>
-                            <shadedPattern>me.lokka30.commanddefender.libs.de.leonhard.storage</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.3.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <relocations>
+            <relocation>
+              <pattern>de.leonhard.storage</pattern>
+              <shadedPattern>me.lokka30.commanddefender.libs.de.leonhard.storage</shadedPattern>
+            </relocation>
+          </relocations>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

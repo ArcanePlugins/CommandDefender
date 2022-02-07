@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core;
 
+import java.util.Set;
 import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
@@ -8,8 +9,6 @@ import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Set;
 
 public interface Core {
 

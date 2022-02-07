@@ -1,10 +1,9 @@
 package me.lokka30.commanddefender.core.file.external.misc;
 
+import java.io.File;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.file.external.type.TxtExternalFile;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
 
 public class License implements TxtExternalFile {
 

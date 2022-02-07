@@ -10,7 +10,8 @@ public interface YamlVersionedExternalFile extends VersionedExternalFile {
     // to load only when we tell it to.
     Yaml data();
 
-    @NotNull @Override
+    @NotNull
+    @Override
     default String nameWithExtension() {
         return nameWithoutExtension() + ".yml";
     }

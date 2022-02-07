@@ -1,5 +1,8 @@
 package me.lokka30.commanddefender.corebukkit;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.Core;
 import me.lokka30.commanddefender.core.command.commanddefender.CommandDefenderCommand;
@@ -23,10 +26,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-
 public class BukkitCore extends JavaPlugin implements Core {
 
     @Override
@@ -47,7 +46,9 @@ public class BukkitCore extends JavaPlugin implements Core {
         checkForUpdates();
 
         // print total time taken
-        logger().info("Plugin enabled successfully &8(&7took &b" + (System.currentTimeMillis() - startTime) + "ms&8)&7.");
+        logger().info(
+            "Plugin enabled successfully &8(&7took &b" + (System.currentTimeMillis() - startTime)
+                + "ms&8)&7.");
     }
 
     void registerBukkitConditions() {
@@ -57,27 +58,31 @@ public class BukkitCore extends JavaPlugin implements Core {
     void registerListeners() {
         logger().info("Registering listeners...");
         Set.of(
-                new PlayerCommandPreprocessListener(),
-                new PlayerCommandSendListener()
+            new PlayerCommandPreprocessListener(),
+            new PlayerCommandSendListener()
         ).forEach(listener -> {
-            if(listener.compatibleWithServer()) {
+            if (listener.compatibleWithServer()) {
                 getServer().getPluginManager().registerEvents(listener, this);
             } else {
-                logger().info("Skipping registration of listener '&b" + listener.getClass().getSimpleName() + "&7'.");
+                logger().info(
+                    "Skipping registration of listener '&b" + listener.getClass().getSimpleName()
+                        + "&7'.");
             }
         });
         universalLogger.info("Registered listeners.");
     }
 
     private final Set<UniversalCommand> allCommands = Set.of(
-            new CommandDefenderCommand()
+        new CommandDefenderCommand()
     );
+
     void registerCommands() {
         logger().info("Registering commands...");
         allCommands.forEach(command -> {
             final PluginCommand pluginCommand = getCommand(command.labels()[0]);
-            if(pluginCommand == null) {
-                this.logger().error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
+            if (pluginCommand == null) {
+                this.logger()
+                    .error("Unable to register the command '&b/" + command.labels()[0] + "&7'! " +
                         "Please inform CommandDefender developers.");
             } else {
                 pluginCommand.setExecutor(BukkitPlatformHandler.universalCommandToBukkit(command));
@@ -87,7 +92,10 @@ public class BukkitCore extends JavaPlugin implements Core {
     }
 
     @Override
-    public @NotNull UniversalLogger logger() { return universalLogger; }
+    public @NotNull UniversalLogger logger() {
+        return universalLogger;
+    }
+
     private final UniversalLogger universalLogger = new BukkitLogger();
 
     @Override
@@ -99,28 +107,31 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull CommandFilter commandFilter() {
         return filter;
     }
+
     private final CommandFilter filter = new CommandFilter();
 
     @Override
     public void updateTabCompletionForAllPlayers() {
         final LinkedList<Player> players = new LinkedList<>(Bukkit.getOnlinePlayers());
-        if(players.size() == 0) return;
+        if (players.size() == 0) {
+            return;
+        }
         final int[] index = {0}; // this is necessary due to the inner class below
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
-                    final Player player =  players.get(index[0]);
-                    if(player.isOnline()) {
+                    final Player player = players.get(index[0]);
+                    if (player.isOnline()) {
                         player.updateCommands();
                     }
 
                     index[0]++;
-                    if(index[0] == players.size()) {
+                    if (index[0] == players.size()) {
                         cancel();
                     }
-                } catch(NoSuchMethodError error) {
+                } catch (NoSuchMethodError error) {
                     cancel();
                 }
             }
@@ -136,14 +147,18 @@ public class BukkitCore extends JavaPlugin implements Core {
     @Override
     public @Nullable String pluginThatRegisteredCommand(@NotNull String command) {
         final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
-        if(pluginCommand == null) { return null; }
+        if (pluginCommand == null) {
+            return null;
+        }
         return pluginCommand.getPlugin().getName();
     }
 
     @Override
     public @NotNull Set<String> aliasesOfCommand(@NotNull String command) {
         final PluginCommand pluginCommand = Bukkit.getPluginCommand(command);
-        if(pluginCommand == null) { return Set.of(); }
+        if (pluginCommand == null) {
+            return Set.of();
+        }
         final Set<String> aliases = new HashSet<>();
         aliases.add(command);
         aliases.addAll(pluginCommand.getAliases());
@@ -164,10 +179,14 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull DebugHandler debugHandler() {
         return debugHandler;
     }
+
     private final DebugHandler debugHandler = new DebugHandler();
 
     @Override
-    public @NotNull FileHandler fileHandler() { return fileHandler; }
+    public @NotNull FileHandler fileHandler() {
+        return fileHandler;
+    }
+
     private final FileHandler fileHandler = new FileHandler();
 
     @Override
@@ -179,6 +198,7 @@ public class BukkitCore extends JavaPlugin implements Core {
     public @NotNull PlatformHandler platformHandler() {
         return platformHandler;
     }
+
     private final BukkitPlatformHandler platformHandler = new BukkitPlatformHandler();
 
 }

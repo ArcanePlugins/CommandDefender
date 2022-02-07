@@ -1,14 +1,13 @@
 package me.lokka30.commanddefender.corebukkit.util.universal;
 
+import java.util.UUID;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
-
 public record BukkitPlayer(
-        @NotNull UUID uuid,
-        @NotNull Player player
+    @NotNull UUID uuid,
+    @NotNull Player player
 ) implements UniversalPlayer {
 
     @Override

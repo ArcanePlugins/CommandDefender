@@ -1,6 +1,7 @@
 package me.lokka30.commanddefender.core.filter.set.option.preprocess;
 
 import de.leonhard.storage.sections.FlatFileSection;
+import java.util.Optional;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.debug.DebugHandler;
@@ -11,8 +12,6 @@ import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.ProcessingStage;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 public class BypassPermission implements OptionHandler {
 
     @Override
@@ -21,30 +20,31 @@ public class BypassPermission implements OptionHandler {
     }
 
     @Override
-    public @NotNull Optional<Option> parse(final @NotNull CommandSet parentSet, final @NotNull FlatFileSection section) {
+    public @NotNull Optional<Option> parse(final @NotNull CommandSet parentSet,
+        final @NotNull FlatFileSection section) {
         String bypassPermission = null;
 
         final String path = "options." + identifier();
-        if(section.contains(path)) {
+        if (section.contains(path)) {
             bypassPermission = section.getString(path);
         } else {
-            for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().contains(path)) {
+            for (CommandSetPreset preset : parentSet.presets()) {
+                if (preset.section().contains(path)) {
                     bypassPermission = preset.section().getString(path);
                     break;
                 }
             }
         }
 
-        if(bypassPermission == null) {
+        if (bypassPermission == null) {
             return Optional.empty();
         } else {
             // START DEBUG LOG
-            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.OPTIONS)) {
+            if (DebugHandler.isDebugCategoryEnabled(DebugCategory.OPTIONS)) {
                 Commons.core().logger().debug(DebugCategory.OPTIONS, String.format(
-                        "Parsed BypassPermission option in command set %s with perm = %s",
-                        parentSet.identifier(),
-                        bypassPermission
+                    "Parsed BypassPermission option in command set %s with perm = %s",
+                    parentSet.identifier(),
+                    bypassPermission
                 ));
             }
             // END DEBUG LOG
@@ -53,8 +53,9 @@ public class BypassPermission implements OptionHandler {
     }
 
     public record BypassPermissionOption(
-            @NotNull String bypassPermission
+        @NotNull String bypassPermission
     ) implements Option {
+
         @Override
         public @NotNull ProcessingStage processingStage() {
             return ProcessingStage.PRE_PROCESS;

@@ -1,29 +1,30 @@
 package me.lokka30.commanddefender.core.command.commanddefender;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 public class CommandDefenderCommand implements UniversalCommand {
 
-    @Override @NotNull
+    @Override
+    @NotNull
     public String[] labels() {
         return LABELS;
     }
+
     private final String[] LABELS = new String[]{"commanddefender", "cd", "cmddef"};
 
     @Override
     public void run(@NotNull UniversalCommandSender sender, @NotNull String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             sender.sendChatMessage("Invalid usage: subcommand not specified.");
             sender.sendChatMessage("For a list of subcommands, run '/" + args[0] + " help'.");
         } else {
-            switch(args[1].toUpperCase(Locale.ROOT)) {
+            switch (args[1].toUpperCase(Locale.ROOT)) {
                 case "HELP":
                     sender.sendChatMessage("Help subcommand not implemented yet.");
                     break;
@@ -34,8 +35,9 @@ public class CommandDefenderCommand implements UniversalCommand {
                         Commons.core().debugHandler().load();
                         Commons.core().commandFilter().load();
                         sender.sendChatMessage("Reload complete :)");
-                    } catch(Exception ex) {
-                        sender.sendChatMessage("Errors occured whilst reloading - check console. >:(");
+                    } catch (Exception ex) {
+                        sender.sendChatMessage(
+                            "Errors occured whilst reloading - check console. >:(");
                         ex.printStackTrace();
                     }
                     break;
@@ -45,17 +47,22 @@ public class CommandDefenderCommand implements UniversalCommand {
                     sender.sendChatMessage("Subcommand not implemented yet.");
                     break;
                 default:
-                    sender.sendChatMessage("Invalid usage: '" + args[1] + "' is not a valid subcommand.");
-                    sender.sendChatMessage("For a list of subcommands, run '/" + args[0] + " help'.");
+                    sender.sendChatMessage(
+                        "Invalid usage: '" + args[1] + "' is not a valid subcommand.");
+                    sender.sendChatMessage(
+                        "For a list of subcommands, run '/" + args[0] + " help'.");
                     break;
             }
         }
     }
 
     @Override
-    public @NotNull List<String> generateTabSuggestions(@NotNull UniversalCommandSender sender, @NotNull String[] args) {
-        if(args.length == 1) return Collections.emptyList();
-        switch(args[1].toUpperCase(Locale.ROOT)) {
+    public @NotNull List<String> generateTabSuggestions(@NotNull UniversalCommandSender sender,
+        @NotNull String[] args) {
+        if (args.length == 1) {
+            return Collections.emptyList();
+        }
+        switch (args[1].toUpperCase(Locale.ROOT)) {
             case "HELP":
             case "RELOAD":
             case "INFO":

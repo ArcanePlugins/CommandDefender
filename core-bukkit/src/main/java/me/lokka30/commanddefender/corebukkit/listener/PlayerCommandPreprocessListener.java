@@ -19,20 +19,20 @@ public class PlayerCommandPreprocessListener implements ListenerExt {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
-        if(!Commons.core().commandFilter().canAccess(
-                FilterContextType.COMMAND_EXECUTION,
-                BukkitPlatformHandler.bukkitPlayerToUniversal(event.getPlayer()),
-                BukkitPlatformHandler.bukkitCommandMessageToUniversal(event.getMessage())
+        if (!Commons.core().commandFilter().canAccess(
+            FilterContextType.COMMAND_EXECUTION,
+            BukkitPlatformHandler.bukkitPlayerToUniversal(event.getPlayer()),
+            BukkitPlatformHandler.bukkitCommandMessageToUniversal(event.getMessage())
         )) {
             event.setCancelled(true);
         }
 
-        if(DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_EXECUTION_LISTENER)) {
+        if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_EXECUTION_LISTENER)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_EXECUTION_LISTENER, String.format(
-                    "%s tried to run %s, cancellation status: %s",
-                    event.getPlayer().getName(),
-                    event.getMessage(),
-                    event.isCancelled()
+                "%s tried to run %s, cancellation status: %s",
+                event.getPlayer().getName(),
+                event.getMessage(),
+                event.isCancelled()
             ));
         }
     }

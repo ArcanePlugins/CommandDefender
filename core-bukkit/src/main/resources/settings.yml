@@ -1,4 +1,3 @@
-
 # Presets help remove boilerplate when you have certain conditions or actions
 # used in multiple command sets with the same configuration.
 # By default these are not used as to not make the file look complicated :)
@@ -137,10 +136,10 @@ command-sets:
         contents:
           - "SomeCommandWithSpecificCapitalLetters * third_argument_here \\* FIFTH_ARGUMENT"
       from-plugins:
-        contents: ["WorldEdit"]
+        contents: [ "WorldEdit" ]
         inverse: false
     actions:
-      send-message: ["%prefix% Hello there!"]
+      send-message: [ "%prefix% Hello there!" ]
       play-sound:
         id: "ENTITY_ENDERMAN_TELEPORT"
         volume: 1.0
@@ -165,8 +164,8 @@ command-sets:
           - "PutRegexExpressionHere"
         pattern-flag: "CASE_INSENSITIVE"
     actions:
-      send-message: ["%prefix% Blocked thru regex example"]
-    use-presets: []
+      send-message: [ "%prefix% Blocked thru regex example" ]
+    use-presets: [ ]
 
   # Example command set
   # Disabled by default

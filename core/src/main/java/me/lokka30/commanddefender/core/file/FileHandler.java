@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender.core.file;
 
+import java.util.Set;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.file.external.AdvancedSettings;
 import me.lokka30.commanddefender.core.file.external.Messages;
@@ -8,8 +9,6 @@ import me.lokka30.commanddefender.core.file.external.misc.License;
 import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
-
 public final class FileHandler {
 
     /* External Files */
@@ -17,21 +16,33 @@ public final class FileHandler {
     // ... misc ...
 
     @NotNull
-    public License license() { return license; }
+    public License license() {
+        return license;
+    }
+
     private final License license = new License();
 
     // ... root ...
 
     @NotNull
-    public AdvancedSettings advancedSettings() { return advancedSettings; }
+    public AdvancedSettings advancedSettings() {
+        return advancedSettings;
+    }
+
     private final AdvancedSettings advancedSettings = new AdvancedSettings();
 
     @NotNull
-    public Messages messages() { return messages; }
+    public Messages messages() {
+        return messages;
+    }
+
     private final Messages messages = new Messages();
 
     @NotNull
-    public Settings settings() { return settings; }
+    public Settings settings() {
+        return settings;
+    }
+
     private final Settings settings = new Settings();
 
     private final Set<ExternalFile> allExternalFiles = Set.of(

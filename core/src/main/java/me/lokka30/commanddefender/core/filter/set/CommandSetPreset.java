@@ -4,6 +4,8 @@ import de.leonhard.storage.sections.FlatFileSection;
 import org.jetbrains.annotations.NotNull;
 
 public record CommandSetPreset(
-        @NotNull String identifier,
-        @NotNull FlatFileSection section
-) {}
+    @NotNull String identifier,
+    @NotNull FlatFileSection section
+) {
+
+}
