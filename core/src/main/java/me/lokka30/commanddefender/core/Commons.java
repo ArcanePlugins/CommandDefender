@@ -9,9 +9,9 @@ import me.lokka30.commanddefender.core.filter.set.condition.type.HasColonInFirst
 import me.lokka30.commanddefender.core.filter.set.condition.type.List;
 import me.lokka30.commanddefender.core.filter.set.condition.type.RegexList;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
-import me.lokka30.commanddefender.core.filter.set.option.postprocess.type.ActionPredicateOverride;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.Context;
+import me.lokka30.commanddefender.core.filter.set.option.postprocess.ActionPredicateOverride;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.BypassPermission;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.Context;
 
 import java.util.HashSet;
 import java.util.Set;

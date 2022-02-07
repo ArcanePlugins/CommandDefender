@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.core.filter.set.option.preprocess.type;
+package me.lokka30.commanddefender.core.filter.set.option.preprocess;
 
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
@@ -8,7 +8,7 @@ import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.ProcessingStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -54,6 +54,11 @@ public class BypassPermission implements OptionHandler {
 
     public record BypassPermissionOption(
             @NotNull String bypassPermission
-    ) implements PreProcessOption {}
+    ) implements Option {
+        @Override
+        public @NotNull ProcessingStage processingStage() {
+            return ProcessingStage.PRE_PROCESS;
+        }
+    }
 
 }

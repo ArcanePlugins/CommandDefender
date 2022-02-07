@@ -12,11 +12,9 @@ import me.lokka30.commanddefender.core.filter.set.condition.Condition;
 import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
-import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
-import me.lokka30.commanddefender.core.filter.set.option.postprocess.type.ActionPredicateOverride;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.BypassPermission;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.type.Context;
+import me.lokka30.commanddefender.core.filter.set.option.postprocess.ActionPredicateOverride;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.BypassPermission;
+import me.lokka30.commanddefender.core.filter.set.option.preprocess.Context;
 import me.lokka30.commanddefender.core.util.CoreUtils;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +56,7 @@ public final class CommandFilter {
 
 
             // pre process options
-            for(final PreProcessOption option : set.preProcessOptions()) {
+            for(final Option option : set.preProcessOptions()) {
 
                 if(option instanceof BypassPermission.BypassPermissionOption bpo) {
                     // Check Bypass Permission option
@@ -109,7 +107,7 @@ public final class CommandFilter {
             // post-process options
             boolean ignoreFilteringContext = false, ignoreCommandAccessStatus = false;
 
-            for(final PostProcessOption option : set.postProcessOptions()) {
+            for(final Option option : set.postProcessOptions()) {
                 if(option instanceof ActionPredicateOverride.ActionPredicateOverrideOption apoo) {
                     // Action Predicate Override option
                     ignoreFilteringContext = apoo.ignoreFilteringContext();
@@ -347,25 +345,17 @@ public final class CommandFilter {
             if(option.isEmpty()) continue;
             final Option got = option.get();
 
-            if(got instanceof PreProcessOption) {
-                if(debugLog) {
-                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                            "Option %s is a PreProcessOption",
-                            got.getClass().getSimpleName()
-                    ));
-                }
-                commandSet.preProcessOptions().add((PreProcessOption) got);
-            } else if(got instanceof PostProcessOption) {
-                if(debugLog) {
-                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                            "Option %s is a PostProcessOption",
-                            got.getClass().getSimpleName()
-                    ));
-                }
-                commandSet.postProcessOptions().add((PostProcessOption) got);
-            } else {
-                throw new IllegalStateException(got.getClass().getSimpleName() +
-                        " does not implement pre/post-processing interface.");
+            if(debugLog) {
+                Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
+                        "Option '&b%s&7' processing stage is '&b%s&7'.",
+                        got.getClass().getSimpleName(),
+                        CoreUtils.formatConstantTypeStr(got.processingStage().toString())
+                ));
+            }
+
+            switch(got.processingStage()) {
+                case PRE_PROCESS -> commandSet.preProcessOptions().add(got);
+                case POST_PROCESS -> commandSet.postProcessOptions().add(got);
             }
 
             if(debugLog) {

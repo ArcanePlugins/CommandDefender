@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.core.filter.set.option.preprocess.type;
+package me.lokka30.commanddefender.core.filter.set.option.preprocess;
 
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
@@ -9,7 +9,7 @@ import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.ProcessingStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -62,7 +62,6 @@ public class Context implements OptionHandler {
                }
            }
 
-           // START DEBUG LOG
            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.OPTIONS)) {
                Commons.core().logger().debug(DebugCategory.OPTIONS, String.format(
                        "Parsed context option in command set %s with types %s",
@@ -70,7 +69,6 @@ public class Context implements OptionHandler {
                        types
                ));
            }
-           // END DEBUG LOG
 
            return Optional.of(new ContextOption(types.toArray(new FilterContextType[0])));
        }
@@ -78,6 +76,11 @@ public class Context implements OptionHandler {
 
     public record ContextOption(
             @NotNull FilterContextType[] contextTypes
-    ) implements PreProcessOption {}
+    ) implements Option {
+        @Override
+        public @NotNull ProcessingStage processingStage() {
+            return ProcessingStage.PRE_PROCESS;
+        }
+    }
 
 }

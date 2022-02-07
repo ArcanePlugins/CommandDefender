@@ -7,8 +7,7 @@ import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.CommandAccessStatus;
 import me.lokka30.commanddefender.core.filter.set.action.Action;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
-import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
-import me.lokka30.commanddefender.core.filter.set.option.preprocess.PreProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,8 +28,8 @@ public record CommandSet(
         @NotNull HashSet<Action> actions,
 
         /* Options */
-        @NotNull HashSet<PreProcessOption> preProcessOptions,
-        @NotNull HashSet<PostProcessOption> postProcessOptions
+        @NotNull HashSet<Option> preProcessOptions,
+        @NotNull HashSet<Option> postProcessOptions
 ) {
 
     // get if a command set wants to allow/deny a command, or if it doesn't care about the command.

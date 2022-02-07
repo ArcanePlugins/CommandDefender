@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.core.filter.set.option.postprocess.type;
+package me.lokka30.commanddefender.core.filter.set.option.postprocess;
 
 import de.leonhard.storage.sections.FlatFileSection;
 import me.lokka30.commanddefender.core.Commons;
@@ -7,7 +7,7 @@ import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.option.Option;
 import me.lokka30.commanddefender.core.filter.set.option.OptionHandler;
-import me.lokka30.commanddefender.core.filter.set.option.postprocess.PostProcessOption;
+import me.lokka30.commanddefender.core.filter.set.option.ProcessingStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -51,6 +51,11 @@ public class ActionPredicateOverride implements OptionHandler {
             @NotNull CommandSet parentSet,
             boolean ignoreFilteringContext,
             boolean ignoreCommandAccessStatus
-    ) implements PostProcessOption {}
+    ) implements Option {
+        @Override
+        public @NotNull ProcessingStage processingStage() {
+            return ProcessingStage.POST_PROCESS;
+        }
+    }
 
 }
