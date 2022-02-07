@@ -28,12 +28,15 @@ public class CommandDefenderCommand implements UniversalCommand {
                     sender.sendChatMessage("Help subcommand not implemented yet.");
                     break;
                 case "RELOAD":
-                    if(sender.name().equals("lokka30")) {
-                        sender.sendChatMessage("Reloading");
+                    sender.sendChatMessage("Reloading...");
+                    try {
                         Commons.core().fileHandler().load(true);
                         Commons.core().debugHandler().load();
                         Commons.core().commandFilter().load();
-                        sender.sendChatMessage("Reload complete");
+                        sender.sendChatMessage("Reload complete :)");
+                    } catch(Exception ex) {
+                        sender.sendChatMessage("Errors occured whilst reloading - check console. >:(");
+                        ex.printStackTrace();
                     }
                     break;
                 case "INFO":
