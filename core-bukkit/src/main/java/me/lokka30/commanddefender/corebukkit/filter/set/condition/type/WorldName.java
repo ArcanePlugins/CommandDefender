@@ -6,41 +6,52 @@ import java.util.Optional;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
-import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class WorldName
-    implements ConditionHandler
-{
+public class WorldName {
+    //implements ConditionHandler
 
-    @Override
+    //TODO fix and register this
+    /*
+    me.lokka30.commanddefender.corebukkit.filter.set.condition.type.WorldName
+     is not abstract and does not override abstract
+      method parse(me.lokka30.commanddefender.core.filter.set.CommandSet,
+      me.lokka30.commanddefender.libs.de.leonhard.storage.sections.FlatFileSection)
+       in me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler
+     */
+
+    //@Override
     public @NotNull String identifier() {
         return "world-name";
     }
 
-    @Override
-    public @NotNull Optional<Condition> parse(@NotNull final CommandSet parentSet, @NotNull final FlatFileSection section) {
+    //@Override
+    public @NotNull Optional<Condition> parse(@NotNull final CommandSet parentSet,
+        @NotNull final FlatFileSection section) {
+
         List<String> contents = null;
-        if(section.contains("conditions.world-name.contents")) {
+        if (section.contains("conditions.world-name.contents")) {
             contents = section.getStringList("conditions.world-name.contents");
         } else {
-            for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().contains("conditions.world-name.contents")) {
+            for (CommandSetPreset preset : parentSet.presets()) {
+                if (preset.section().contains("conditions.world-name.contents")) {
                     contents = preset.section().getStringList("conditions.world-name.contents");
                     break;
                 }
             }
         }
-        if(contents == null) return Optional.empty();
+        if (contents == null) {
+            return Optional.empty();
+        }
 
         boolean inverse = false;
-        if(section.contains("conditions.world-name.inverse")) {
+        if (section.contains("conditions.world-name.inverse")) {
             inverse = section.getBoolean("conditions.world-name.inverse");
         } else {
-            for(CommandSetPreset preset : parentSet.presets()) {
-                if(preset.section().contains("conditions.world-name.inverse")) {
+            for (CommandSetPreset preset : parentSet.presets()) {
+                if (preset.section().contains("conditions.world-name.inverse")) {
                     inverse = preset.section().getBoolean("conditions.world-name.inverse");
                     break;
                 }
@@ -53,13 +64,15 @@ public class WorldName
     }
 
     public record WorldNameCondition(
-            @NotNull List<String> contents,
-            boolean inverse
+        @NotNull List<String> contents,
+        boolean inverse
     ) implements Condition {
 
         @Override
         public boolean appliesTo(@NotNull UniversalPlayer player, @NotNull String[] args) {
-            return contents.contains(BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName()) != inverse();
+            return contents.contains(
+                BukkitPlatformHandler.universalPlayerToBukkit(player).player().getWorld().getName())
+                != inverse();
         }
 
     }
