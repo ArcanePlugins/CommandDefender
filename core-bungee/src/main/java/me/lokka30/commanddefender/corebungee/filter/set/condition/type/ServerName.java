@@ -6,20 +6,21 @@ import java.util.Optional;
 import me.lokka30.commanddefender.core.filter.set.CommandSet;
 import me.lokka30.commanddefender.core.filter.set.CommandSetPreset;
 import me.lokka30.commanddefender.core.filter.set.condition.Condition;
-import me.lokka30.commanddefender.core.filter.set.condition.ConditionHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalPlayer;
 import org.jetbrains.annotations.NotNull;
 
 public class ServerName
-    implements ConditionHandler
+    //implements ConditionHandler
 {
 
-    @Override
+    //TODO fix and register
+
+    //@Override
     public @NotNull String identifier() {
         return "server-name";
     }
 
-    @Override
+    //@Override
     public @NotNull Optional<Condition> parse(@NotNull final CommandSet parentSet, @NotNull final FlatFileSection section) {
         List<String> contents = null;
         if(section.contains("conditions.server-name.contents")) {
