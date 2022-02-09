@@ -6,6 +6,7 @@ import me.lokka30.commanddefender.core.debug.DebugCategory;
 import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.FilterContextType;
 import me.lokka30.commanddefender.core.util.CoreUtils;
+import me.lokka30.commanddefender.corebukkit.listener.misc.ListenerExt;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

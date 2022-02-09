@@ -1,4 +1,4 @@
-package me.lokka30.commanddefender.corebukkit.listener;
+package me.lokka30.commanddefender.corebukkit.listener.misc;
 
 import org.bukkit.event.Listener;
 

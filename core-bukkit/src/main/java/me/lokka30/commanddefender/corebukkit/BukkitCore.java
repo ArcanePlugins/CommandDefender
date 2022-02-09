@@ -13,8 +13,10 @@ import me.lokka30.commanddefender.core.filter.CommandFilter;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
+import me.lokka30.commanddefender.corebukkit.listener.AsyncTabCompleteListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
+import me.lokka30.commanddefender.corebukkit.listener.TabCompleteListener;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitLogger;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
@@ -58,15 +60,17 @@ public class BukkitCore extends JavaPlugin implements Core {
     void registerListeners() {
         logger().info("Registering listeners...");
         Set.of(
+            new AsyncTabCompleteListener(),
             new PlayerCommandPreprocessListener(),
-            new PlayerCommandSendListener()
+            new PlayerCommandSendListener(),
+            new TabCompleteListener()
         ).forEach(listener -> {
             if (listener.compatibleWithServer()) {
                 getServer().getPluginManager().registerEvents(listener, this);
             } else {
                 logger().info(
                     "Skipping registration of listener '&b" + listener.getClass().getSimpleName()
-                        + "&7'.");
+                        + "&7' (ignore this).");
             }
         });
         universalLogger.info("Registered listeners.");
