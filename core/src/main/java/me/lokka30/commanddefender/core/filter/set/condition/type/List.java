@@ -191,10 +191,10 @@ public class List implements ConditionHandler {
 
             final Set<String> aliases = includeAliases() ?
                 Commons.core().aliasesOfCommand(adaptedArgs[0].substring(1)) :
-                Set.of();
+                Set.of(adaptedArgs[0].substring(1));
             if (debugLog) {
                 Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                    "Aliases for command &b%s&7: &8[&b%s&8]&7.",
+                    "Aliases for command &b%s&7 are &8[&b%s&8]&7.",
                     adaptedArgs[0],
                     includeAliases() ?
                         String.join("&7, &b", aliases) :
@@ -211,7 +211,7 @@ public class List implements ConditionHandler {
                     if (debugLog) {
                         if (i == 0 && includeAliases()) {
                             Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                                "Command &b%s&7 is included in aliases list &8[&b%s&8]&7: %s&7.",
+                                "Is command &b%s&7 included in aliases list &8[&b%s&8]&7: %s&7.",
                                 adaptedArgs[0].substring(1),
                                 String.join("&7, &b", aliases),
                                 aliases.contains(adaptedArgs[0].substring(1)) ? "&aYes" : "&cNo"
@@ -224,7 +224,7 @@ public class List implements ConditionHandler {
                         // only run this on the first index (i.e. base label)
                         // substring(1) is used to remove the starting slash
                         (i == 0 && includeAliases() && aliases.contains(
-                            adaptedArgs[0].substring(1))) ||
+                            cSplit[0].substring(1))) ||
 
                             // if /* is used in the list then it means to detect all commands
                             (i == 0 && cSplit[i].equals("/*")) ||

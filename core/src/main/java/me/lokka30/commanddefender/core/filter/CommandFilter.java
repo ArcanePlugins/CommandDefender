@@ -36,9 +36,9 @@ public final class CommandFilter {
             DebugCategory.COMMAND_FILTER_ACCESSIBILITY);
         if (debugLog) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                "Checking if '%s' can access args '%s' with contextType '%s'",
+                "Checking if &f%s&7 can access &8[&b%s&8]&7 with &bFilterContextType.%s&7.",
                 player.name(),
-                Arrays.toString(args),
+                String.join("&7, &b", args),
                 contextType
             ));
         }
@@ -49,8 +49,10 @@ public final class CommandFilter {
         ) {
             if (player.isOp()) {
                 if (debugLog) {
-                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY,
-                        "Player is OP, bypassing processing.");
+                    Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
+                        "&f%s&7 is an operator! Bypassing processing.",
+                        player.name()
+                    ));
                 }
                 return true;
             }
@@ -68,7 +70,8 @@ public final class CommandFilter {
                         if (debugLog) {
                             Commons.core().logger()
                                 .debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                                    "Player has bypass permission for command set %s",
+                                    "&f%s&7 has bypass permission for command set &b%s&7.",
+                                    player.name(),
                                     set.identifier()
                                 ));
                         }
@@ -87,7 +90,7 @@ public final class CommandFilter {
                         if (debugLog) {
                             Commons.core().logger()
                                 .debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                                    "Filter context %s not used for command set %s (available: %s)",
+                                    "Filter context &b%s&7 is not used for command set &b%s &8(&7available: &b%s&8)&7.",
                                     contextType,
                                     set.identifier(),
                                     Arrays.toString(fco.contextTypes())
@@ -97,8 +100,8 @@ public final class CommandFilter {
                     }
                 } else {
                     Commons.core().logger().error(
-                        "Unexpected pre-process option " + option.getClass().getSimpleName()
-                            + "&7'.");
+                        "Unexpected pre-process option &b" + option.getClass().getSimpleName()
+                            + "&7'!");
                 }
             }
 
@@ -107,9 +110,13 @@ public final class CommandFilter {
             if (debugLog) {
                 Commons.core().logger()
                     .debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                        "Status for command set %s is %s",
+                        "Status for command set &b%s&7 is %s&7.",
                         set.identifier(),
-                        status
+                        switch(status) {
+                            case ALLOW -> "&aallow";
+                            case UNKNOWN -> "&eunknown";
+                            case DENY -> "&cdeny";
+                        }
                     ));
             }
 
@@ -124,17 +131,18 @@ public final class CommandFilter {
                     if (debugLog) {
                         Commons.core().logger()
                             .debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                                "Post processing options for command set %s are " +
-                                    "ignoreFilteringContext=%s, ignoreCommandAccessStatus=%s",
+                                "Post processing options for command set &b%s&7 are "
+                                    + "&8[&7IgnoreFilteringContext: %s&8]&7, "
+                                    + "&8[&7IgnoreCommandAccessStatus: %s&8]&7.",
                                 set.identifier(),
-                                ignoreFilteringContext,
-                                ignoreCommandAccessStatus
+                                ignoreFilteringContext ? "&aYes" : "&cNo",
+                                ignoreCommandAccessStatus ? "&aYes" : "&cNo"
                             ));
                     }
                 } else {
                     Commons.core().logger().error(
                         "Unexpected post-process option '&b" + option.getClass().getSimpleName()
-                            + "&7'.");
+                            + "&7'!");
                 }
             }
 
@@ -151,7 +159,7 @@ public final class CommandFilter {
                 if (debugLog) {
                     Commons.core().logger()
                         .debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                            "Running actions for command set %s since the status and filter context checks are true",
+                            "Running actions for command set &b%s&7, since the status and filter context checks passed.",
                             set.identifier()
                         ));
                 }
@@ -168,21 +176,23 @@ public final class CommandFilter {
 
         if (debugLog) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                "Returning default command status for %s",
+                "Returning default command status for &f%s&7.",
                 player.name()
             ));
         }
 
-        return Commons.core().fileHandler().settings().data().get("default-command-status", "ALLOW")
+        return Commons.core().fileHandler().settings().data().get("default-command-status", "DENY")
             .equalsIgnoreCase("ALLOW");
     }
 
     public void load() {
         // load all command sets from the config
+        Commons.core().logger().info("Parsing command sets...");
         parseCommandSets();
 
         // update the tab completion for all online players
         // so that it matches the new command sets
+        Commons.core().logger().info("Updating command suggestions for all online players...");
         Commons.core().updateTabCompletionForAllPlayers();
     }
 
@@ -190,11 +200,6 @@ public final class CommandFilter {
 
         final boolean debugLog = DebugHandler.isDebugCategoryEnabled(
             DebugCategory.COMMAND_FILTER_PARSING);
-
-        if (debugLog) {
-            Commons.core().logger()
-                .debug(DebugCategory.COMMAND_FILTER_PARSING, "Loading command sets");
-        }
 
         final Yaml settings = Commons.core().fileHandler().settings().data();
 
@@ -222,7 +227,7 @@ public final class CommandFilter {
 
         if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                "Loaded preset %s, there are now %s presets.",
+                "Loaded preset &b%s&7, there are now &b%s&7 presets.",
                 identifier,
                 presets.size()
             ));
@@ -233,7 +238,7 @@ public final class CommandFilter {
 
         if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                "Started parsing command set %s",
+                "Started parsing command set &b%s&7...",
                 identifier
             ));
         }
@@ -252,7 +257,7 @@ public final class CommandFilter {
                 type = CommandAccessStatus.DENY;
                 Commons.core().logger().error(
                     "Command set '&b" + identifier
-                        + "&7' has an invalid &btype&7 specified, expecting '&b" +
+                        + "&7' has an invalid &btype&7 specified, was expecting '&b" +
                         "ALLOW&7' or '&bDENY&7'. CommandDefender will assume this set is in &bDENY&7 mode "
                         +
                         "for security purposes. Fix this ASAP.");
@@ -286,7 +291,7 @@ public final class CommandFilter {
 
         if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                "Finished parsing command set '%s', there are now %s command sets loaded.",
+                "Finished parsing command set '&b%s&7', there are now &b%s&7 command sets loaded.",
                 identifier,
                 commandSets.size()
             ));
@@ -303,26 +308,30 @@ public final class CommandFilter {
 
         if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                "Command set %s specifies %s preset IDs: %s",
+                "Command set &b%s&7 specifies &b%s&7 preset IDs: &8[&b%s&8]&7.",
                 identifier,
                 presetIds.size(),
-                presetIds
+                String.join("&7, &b", presetIds)
             ));
         }
 
-        presets.forEach(preset -> {
-            if (presetIds.contains(preset.identifier())) {
-                if (commandSet.presets().contains(preset)) {
+        presetIds.forEach(presetId -> {
+            Optional<CommandSetPreset> preset = presets.stream()
+                .filter(val -> val.identifier().equals(presetId))
+                .findFirst();
+
+            if(preset.isPresent()) {
+                if(commandSet.presets().stream().anyMatch(val -> val.identifier().equals(presetId))) {
                     Commons.core().logger()
-                        .error("Duplicate preset '" + preset.identifier() + "' specified for " +
-                            "command set '" + commandSet.identifier()
-                            + "'. Remove duplicate entries ASAP.");
+                        .warning("Duplicate preset '&b" + presetId + "&7' specified for " +
+                            "command set '&b" + commandSet.identifier()
+                            + "&7'.");
                 } else {
-                    commandSet.presets().add(preset);
+                    commandSet.presets().add(preset.get());
                 }
             } else {
                 Commons.core().logger().error("Command set '&b" + identifier
-                    + "&7' specifies a preset that doesn't exist. Fix this ASAP.");
+                    + "&7' specifies a preset that doesn't exist: '&b" + presetId + "&7'. Fix this ASAP.");
             }
         });
     }
@@ -344,9 +353,10 @@ public final class CommandFilter {
 
             if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
                 Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                    "Loaded condition %s for command set %s",
+                    "Parsed condition &b%s&7 for command set &b%s&7. It now has &b%s&7 conditions.",
                     condition.get().getClass().getSimpleName(),
-                    identifier
+                    identifier,
+                    commandSet.conditions().size()
                 ));
             }
         }
@@ -369,9 +379,10 @@ public final class CommandFilter {
 
             if (DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_FILTER_PARSING)) {
                 Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                    "Loaded action %s for command set %s",
+                    "Parsed action &b%s&7 for command set &b%s&7. It now has &b%s&7 actions.",
                     action.get().getClass().getSimpleName(),
-                    identifier
+                    identifier,
+                    commandSet.actions().size()
                 ));
             }
         }
@@ -413,7 +424,7 @@ public final class CommandFilter {
 
             if (debugLog) {
                 Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_PARSING, String.format(
-                    "Loaded option '&b%s&7' for command set '&b%s&7'. " +
+                    "Parsed option '&b%s&7' for command set '&b%s&7'. " +
                         "There are currently: pre-process options - &b%s&7; post-process options - &b%s&7.",
                     got.getClass().getSimpleName(),
                     identifier,
