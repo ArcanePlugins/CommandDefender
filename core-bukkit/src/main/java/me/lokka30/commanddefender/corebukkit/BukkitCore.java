@@ -164,7 +164,7 @@ public class BukkitCore extends JavaPlugin implements Core {
             return Set.of();
         }
         final Set<String> aliases = new HashSet<>();
-        aliases.add(command);
+        aliases.add(pluginCommand.getLabel());
         aliases.addAll(pluginCommand.getAliases());
         return aliases;
     }

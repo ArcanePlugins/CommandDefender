@@ -1,7 +1,6 @@
 package me.lokka30.commanddefender.core.filter.set;
 
 import de.leonhard.storage.Yaml;
-import java.util.Arrays;
 import java.util.HashSet;
 import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.debug.DebugCategory;
@@ -38,10 +37,10 @@ public record CommandSet(
 
         if (debugLog) {
             Commons.core().logger().debug(DebugCategory.COMMAND_FILTER_ACCESSIBILITY, String.format(
-                "Checking access status for command set: %s, player: %s, args: %s",
+                "Checking access status for command set &b%s&7, player &f%s&7, args &8[&b%s&8]&7...",
                 identifier(),
                 player.name(),
-                Arrays.toString(args)
+                String.join("&7, &b", args)
             ));
         }
 

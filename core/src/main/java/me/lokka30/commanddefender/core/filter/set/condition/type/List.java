@@ -189,25 +189,39 @@ public class List implements ConditionHandler {
                 ));
             }
 
-            final Set<String> aliases = includeAliases() ?
-                Commons.core().aliasesOfCommand(adaptedArgs[0].substring(1)) :
-                Set.of(adaptedArgs[0].substring(1));
-            if (debugLog) {
-                Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
-                    "Aliases for command &b%s&7 are &8[&b%s&8]&7.",
-                    adaptedArgs[0],
-                    includeAliases() ?
-                        String.join("&7, &b", aliases) :
-                        "Include-Aliases is disabled"
-                ));
-            }
-
             contentsLoop:
             for (String content : adaptedContents) {
                 final String[] cSplit = content.split(" ");
                 final int maxIteration = Math.min(adaptedArgs.length, cSplit.length);
 
+                if(debugLog) {
+                    Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "Processing content &8[&b%s]&7, maxIteration=&b%s&7.",
+                        String.join("&7, &b", cSplit),
+                        maxIteration
+                    ));
+                }
+
+                final Set<String> aliases = includeAliases() ?
+                    Commons.core().aliasesOfCommand(cSplit[0].substring(1)) :
+                    Set.of(cSplit[0].substring(1));
+                if (debugLog) {
+                    Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                        "Aliases for command &b%s&7 are &8[&b%s&8]&7.",
+                        cSplit[0],
+                        includeAliases() ?
+                            String.join("&7, &b", aliases) :
+                            "&7... Include-Aliases Disabled ..."
+                    ));
+                }
+
                 for (int i = 0; i < maxIteration; i++) {
+                    if(debugLog) {
+                        Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
+                            "Processing argument iteration &b%s&7.", i
+                        ));
+                    }
+
                     if (debugLog) {
                         if (i == 0 && includeAliases()) {
                             Commons.core().logger().debug(DebugCategory.CONDITIONS, String.format(
@@ -224,7 +238,7 @@ public class List implements ConditionHandler {
                         // only run this on the first index (i.e. base label)
                         // substring(1) is used to remove the starting slash
                         (i == 0 && includeAliases() && aliases.contains(
-                            cSplit[0].substring(1))) ||
+                            adaptedArgs[0].substring(1))) ||
 
                             // if /* is used in the list then it means to detect all commands
                             (i == 0 && cSplit[i].equals("/*")) ||
@@ -243,6 +257,11 @@ public class List implements ConditionHandler {
                         // last arg not reached,
                     } else {
                         // don't waste processing power by checking other args. skip to the next content.
+                        if(debugLog) {
+                            Commons.core().logger().debug(DebugCategory.CONDITIONS,
+                                "Skipping to next iteration of the contents loop..."
+                            );
+                        }
                         continue contentsLoop;
                     }
                 }
