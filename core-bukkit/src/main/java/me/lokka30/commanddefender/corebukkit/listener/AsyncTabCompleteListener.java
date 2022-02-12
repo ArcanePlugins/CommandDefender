@@ -34,12 +34,15 @@ public class AsyncTabCompleteListener implements ListenerExt {
         final LinkedList<String> toRemove = new LinkedList<>();
 
         for(String completion : event.getCompletions()) {
+            // we want to combine all the buffer and the completion but remove the last arg of the buffer
+            // e.g. if buffer is `/hello th` and the completion is `there`, then -> `/hello there`.
             final LinkedList<String> toCheck = new LinkedList<>();
             final String[] splitBuffer = event.getBuffer().substring(1).split(" ");
             for(int i = 0; i < splitBuffer.length; i++) {
                 if(i != 0 && i == (splitBuffer.length - 1)) break;
                 toCheck.add(splitBuffer[i]);
             }
+            toCheck.add(completion);
 
             if(!Commons.core().commandFilter().canAccess(
                 FilterContextType.COMMAND_SUGGESTION,
