@@ -20,6 +20,11 @@ public class PlayerCommandPreprocessListener implements ListenerExt {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
+        if(!Commons.core().fileHandler().advancedSettings().data()
+            .get("listeners.player-command-preprocess.enabled", true)) {
+            return;
+        }
+
         if (!Commons.core().commandFilter().canAccess(
             FilterContextType.COMMAND_EXECUTION,
             BukkitPlatformHandler.bukkitPlayerToUniversal(event.getPlayer()),

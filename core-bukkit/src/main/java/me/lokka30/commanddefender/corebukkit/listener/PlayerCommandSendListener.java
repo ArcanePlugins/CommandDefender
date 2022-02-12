@@ -21,6 +21,10 @@ public class PlayerCommandSendListener implements ListenerExt {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandSend(final PlayerCommandSendEvent event) {
+        if(!Commons.core().fileHandler().advancedSettings().data()
+            .get("listeners.player-command-send.enabled", true)) {
+            return;
+        }
 
         final boolean debugLog = DebugHandler.isDebugCategoryEnabled(DebugCategory.COMMAND_SUGGESTION_LISTENER);
         LinkedList<String> originalForDebugging = null;

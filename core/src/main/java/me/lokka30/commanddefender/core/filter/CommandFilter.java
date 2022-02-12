@@ -30,8 +30,11 @@ public final class CommandFilter {
     private final LinkedList<CommandSetPreset> presets = new LinkedList<>();
     private final LinkedList<CommandSet> commandSets = new LinkedList<>();
 
-    public boolean canAccess(final @NotNull FilterContextType contextType,
-        final @NotNull UniversalPlayer player, @NotNull final String[] args) {
+    public boolean canAccess(
+        final @NotNull FilterContextType contextType,
+        final @NotNull UniversalPlayer player,
+        final @NotNull String[] args
+    ) {
         final boolean debugLog = DebugHandler.isDebugCategoryEnabled(
             DebugCategory.COMMAND_FILTER_ACCESSIBILITY);
         if (debugLog) {

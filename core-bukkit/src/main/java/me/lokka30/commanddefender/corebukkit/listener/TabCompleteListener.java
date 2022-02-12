@@ -1,8 +1,13 @@
 package me.lokka30.commanddefender.corebukkit.listener;
 
+import java.util.LinkedList;
+import java.util.List;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.filter.FilterContextType;
 import me.lokka30.commanddefender.core.util.CoreUtils;
 import me.lokka30.commanddefender.corebukkit.listener.misc.ListenerExt;
+import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.TabCompleteEvent;
 
@@ -15,11 +20,38 @@ public class TabCompleteListener implements ListenerExt {
 
     @EventHandler
     public void onTabComplete(final TabCompleteEvent event) {
-        Commons.core().logger().warning(String.format(
-            "TabCompleteListener Debug - sender: &f%s&7, buffer: &b%s&7, completions: &8[&b%s&8]&7.",
-            event.getSender().getName(),
-            event.getBuffer(),
-            String.join("&7, &b", event.getCompletions())
-        ));
+        if(!Commons.core().fileHandler().advancedSettings().data()
+            .get("listeners.tab-complete.enabled", true)) {
+            return;
+        }
+
+        if(!(event.getSender() instanceof final Player player)) {
+            return;
+        }
+
+        if(event.getCompletions().size() == 0) return;
+
+        final LinkedList<String> toRemove = new LinkedList<>();
+
+        for(String completion : event.getCompletions()) {
+            final LinkedList<String> toCheck = new LinkedList<>();
+            final String[] splitBuffer = event.getBuffer().substring(1).split(" ");
+            for(int i = 0; i < splitBuffer.length; i++) {
+                if(i != 0 && i == (splitBuffer.length - 1)) break;
+                toCheck.add(splitBuffer[i]);
+            }
+
+            if(!Commons.core().commandFilter().canAccess(
+                FilterContextType.COMMAND_SUGGESTION,
+                BukkitPlatformHandler.bukkitPlayerToUniversal(player),
+                toCheck.toArray(new String[0])
+            )) {
+                toRemove.add(completion);
+            }
+        }
+
+        final List<String> completions = new LinkedList<>(List.copyOf(event.getCompletions()));
+        completions.removeAll(toRemove);
+        event.setCompletions(completions);
     }
 }

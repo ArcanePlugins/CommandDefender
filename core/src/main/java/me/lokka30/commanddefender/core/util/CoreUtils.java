@@ -2,6 +2,7 @@ package me.lokka30.commanddefender.core.util;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +65,13 @@ public class CoreUtils {
             }
         }
         return false;
+    }
+
+    @NotNull
+    public static LinkedList<String> collectionToClassList(Collection<?> coll) {
+        final LinkedList<String> list = new LinkedList<>();
+        coll.forEach(obj -> list.add(obj.getClass().getSimpleName()));
+        return list;
     }
 
 }

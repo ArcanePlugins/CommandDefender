@@ -48,10 +48,76 @@ operator-status-bypasses-processing: true
 # should they be configured with a starting slash? Example:
 # If below is `true`, then `/plugins` will be configured as `/plugins`.
 # If below is `false`, then `/plugins` will be configured as `plugins`.
-commands-configured-with-starting-slash: true
+commands-configured-with-starting-slash: true #TODO REMOVE
+
+# All of CommandDefender's event listeners can be configured here.
+listeners:
+
+  # This listener intercepts when players are being suggested any
+  # tab completions as they type commands.
+  # Runs on: Paper (+forks) servers, 1.7+
+  async-tab-complete:
+
+    # If you don't understand the effects of this setting, don't touch it.
+    #
+    # Should asynchronous tab completion be intercepted by CommandDefender?
+    # Disabling this can yield performance benefits, especially at higher
+    # player traffic. Although, disabling this will also prevent the plugin
+    # from filtering any asynchronous tab completions.
+    #
+    # If you have no plugins installed which utilize asynchronous tab
+    # completion, then it would be only beneficial to disable this.
+    #
+    # Note: CommandDefender will process both async & sync tab completion
+    # events, if both are enabled respectively. This is for compatibility
+    # purposes.
+    enabled: true
+
+  # This listener intercepts when players run commands, before they are
+  # executed.
+  # Runs on: Bukkit (+forks) servers, 1.7+
+  player-command-preprocess:
+
+    # If you don't understand the effects of this setting, don't touch it.
+    #
+    # Should command execution be intercepted by CommandDefender?
+    enabled: true
+
+  # This listener intercepts when the server wants to send a player a list
+  # of commands that they can run. When permissions are done properly,
+  # players won't see commands they're not meant to. Sometimes plugins
+  # are poorly programmed which can rule that out. Regardless, CommandDefender
+  # allows you to filter all of it. :)
+  # Runs on: Bukkit (+forks) servers, 1.13+
+  player-command-send:
+
+    # If you don't understand the effects of this setting, don't touch it.
+    #
+    # Should command suggestions be intercepted by CommandDefender?
+    enabled: true
+
+  # This listener intercepts when players are being suggested any
+  # tab completions as they type commands.
+  # Runs on: Bukkit (+forks) servers, 1.7+
+  tab-complete:
+
+    # If you don't understand the effects of this setting, don't touch it.
+    #
+    # Should synchronous tab completion be intercepted by CommandDefender?
+    # Disabling this can yield performance benefits, especially at higher
+    # player traffic. Although, disabling this will also prevent the plugin
+    # from filtering any synchronous tab completions.
+    #
+    # If you have no plugins installed which utilize synchronous tab
+    # completion, then it would be only beneficial to disable this.
+    #
+    # Note: CommandDefender will process both async & sync tab completion
+    # events, if both are enabled respectively. This is for compatibility
+    # purposes.
+    enabled: true
 
 # Debug categories to spy on
-debug: [ ]
+debug: []
 
 # *** Do NOT modify this section! ***
 # Extra data of this file

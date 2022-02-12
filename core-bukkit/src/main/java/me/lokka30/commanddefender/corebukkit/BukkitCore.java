@@ -10,6 +10,7 @@ import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.file.FileHandler;
 import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
 import me.lokka30.commanddefender.core.filter.CommandFilter;
+import me.lokka30.commanddefender.core.util.CoreUtils;
 import me.lokka30.commanddefender.core.util.universal.PlatformHandler;
 import me.lokka30.commanddefender.core.util.universal.UniversalCommand;
 import me.lokka30.commanddefender.core.util.universal.UniversalLogger;
@@ -17,6 +18,7 @@ import me.lokka30.commanddefender.corebukkit.listener.AsyncTabCompleteListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandPreprocessListener;
 import me.lokka30.commanddefender.corebukkit.listener.PlayerCommandSendListener;
 import me.lokka30.commanddefender.corebukkit.listener.TabCompleteListener;
+import me.lokka30.commanddefender.corebukkit.listener.misc.ListenerExt;
 import me.lokka30.commanddefender.corebukkit.util.BukkitUtils;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitLogger;
 import me.lokka30.commanddefender.corebukkit.util.universal.BukkitPlatformHandler;
@@ -59,29 +61,38 @@ public class BukkitCore extends JavaPlugin implements Core {
 
     void registerListeners() {
         logger().info("Registering listeners...");
-        Set.of(
-            new AsyncTabCompleteListener(),
-            new PlayerCommandPreprocessListener(),
-            new PlayerCommandSendListener(),
-            new TabCompleteListener()
-        ).forEach(listener -> {
-            if (listener.compatibleWithServer()) {
-                getServer().getPluginManager().registerEvents(listener, this);
-            } else {
-                logger().info(
-                    "Skipping registration of listener '&b" + listener.getClass().getSimpleName()
-                        + "&7' (ignore this).");
-            }
-        });
-        universalLogger.info("Registered listeners.");
-    }
 
-    private final Set<UniversalCommand> allCommands = Set.of(
-        new CommandDefenderCommand()
-    );
+        final HashSet<ListenerExt> toRegister = new HashSet<>();
+
+        final AsyncTabCompleteListener asyncTabCompleteListener = new AsyncTabCompleteListener();
+        final PlayerCommandPreprocessListener playerCommandPreprocessListener = new PlayerCommandPreprocessListener();
+        final PlayerCommandSendListener playerCommandSendListener = new PlayerCommandSendListener();
+        final TabCompleteListener tabCompleteListener = new TabCompleteListener();
+
+        if(asyncTabCompleteListener.compatibleWithServer()) {
+            toRegister.add(asyncTabCompleteListener);
+        } else {
+            toRegister.add(tabCompleteListener);
+        }
+
+        if(playerCommandSendListener.compatibleWithServer()) {
+            toRegister.add(playerCommandSendListener);
+        }
+
+        toRegister.addAll(Set.of(playerCommandPreprocessListener));
+
+        universalLogger.info("Registered &b" + toRegister.size() + "&7 listeners &8[&b" +
+            String.join("&7, &b", CoreUtils.collectionToClassList(toRegister)) +
+            "&8]&7.");
+    }
 
     void registerCommands() {
         logger().info("Registering commands...");
+
+        final Set<UniversalCommand> allCommands = Set.of(
+            new CommandDefenderCommand()
+        );
+
         allCommands.forEach(command -> {
             final PluginCommand pluginCommand = getCommand(command.labels()[0]);
             if (pluginCommand == null) {
@@ -92,7 +103,9 @@ public class BukkitCore extends JavaPlugin implements Core {
                 pluginCommand.setExecutor(BukkitPlatformHandler.universalCommandToBukkit(command));
             }
         });
-        logger().info("Registered commands.");
+        logger().info("Registered &b" + allCommands.size() + "&7 commands &8[&b" +
+            String.join("&7, &b", CoreUtils.collectionToClassList(allCommands)) +
+            "&8]&7.");
     }
 
     @Override
