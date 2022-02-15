@@ -25,6 +25,13 @@ public class AsyncTabCompleteListener implements ListenerExt {
             return;
         }
 
+        if(!event.isAsynchronous()) {
+            if(Commons.core().fileHandler().advancedSettings().data()
+                .get("listeners.async-tab-complete.ignore-sync", true)) {
+                return;
+            }
+        }
+
         if(!(event.getSender() instanceof final Player player)) {
             return;
         }

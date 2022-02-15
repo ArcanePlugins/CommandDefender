@@ -25,6 +25,15 @@ public class TabCompleteListener implements ListenerExt {
             return;
         }
 
+        if(event.isAsynchronous() && CoreUtils.classExists(
+            "com.destroystokyo.paper.event.server.AsyncTabCompleteEvent"
+        )) {
+            if(Commons.core().fileHandler().advancedSettings().data()
+                .get("listeners.async-tab-complete.ignore-async", true)) {
+                return;
+            }
+        }
+
         if(!(event.getSender() instanceof final Player player)) {
             return;
         }

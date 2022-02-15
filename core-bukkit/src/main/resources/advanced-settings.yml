@@ -58,20 +58,11 @@ listeners:
   # Runs on: Paper (+forks) servers, 1.7+
   async-tab-complete:
 
-    # If you don't understand the effects of this setting, don't touch it.
-    #
     # Should asynchronous tab completion be intercepted by CommandDefender?
-    # Disabling this can yield performance benefits, especially at higher
-    # player traffic. Although, disabling this will also prevent the plugin
-    # from filtering any asynchronous tab completions.
-    #
-    # If you have no plugins installed which utilize asynchronous tab
-    # completion, then it would be only beneficial to disable this.
-    #
-    # Note: CommandDefender will process both async & sync tab completion
-    # events, if both are enabled respectively. This is for compatibility
-    # purposes.
     enabled: true
+
+    # Ignore synchronous AsyncTabCompleteEvent calls?
+    ignore-sync: true
 
   # This listener intercepts when players run commands, before they are
   # executed.
@@ -115,6 +106,10 @@ listeners:
     # events, if both are enabled respectively. This is for compatibility
     # purposes.
     enabled: true
+
+    # Ignore asynchronous AsyncTabCompleteEvent calls?
+    # (Only affects Paper servers)
+    ignore-async: true
 
 # Debug categories to spy on
 debug: []
