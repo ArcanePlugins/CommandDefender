@@ -1,16 +1,16 @@
 package me.lokka30.commanddefender.listeners;
 
+import java.util.List;
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.managers.CommandManager;
 import me.lokka30.commanddefender.utils.Utils;
 import me.lokka30.microlib.messaging.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
-
-import java.util.List;
 
 public class CommandListeners implements Listener {
 
@@ -24,12 +24,12 @@ public class CommandListeners implements Listener {
         Bukkit.getPluginManager().registerEvents(this, instance);
 
         //Check if Minecraft 1.13+ is installed.
-        if (Utils.isOneThirteen()) {
+        if (Utils.classExists("org.bukkit.event.player.PlayerCommandSendEvent")) {
             Bukkit.getPluginManager().registerEvents(new NewCommandListeners(), instance);
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final String command = event.getMessage();
 
@@ -67,7 +67,7 @@ public class CommandListeners implements Listener {
     }
 
     private class NewCommandListeners implements Listener {
-        @EventHandler(ignoreCancelled = true)
+        @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
         public void onCommandSend(final PlayerCommandSendEvent event) {
             // Remove commands with colons, if enabled, such as /bukkit:help.
             if (instance.settingsFile.getConfig().getBoolean("block-colons")) {
