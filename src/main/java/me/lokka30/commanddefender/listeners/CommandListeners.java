@@ -32,6 +32,7 @@ public class CommandListeners implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final String command = event.getMessage();
+        instance.commandManager.load();
 
         final CommandManager.BlockedStatus blockedStatus = instance.commandManager.getBlockedStatus(event.getPlayer(), command.split(" "));
 
