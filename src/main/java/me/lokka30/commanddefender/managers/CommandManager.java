@@ -125,6 +125,7 @@ public class CommandManager {
         // Go in reverse so that a higher 'priority' actually has a higher priority.
         for (int priority = prioritisedListMap.size(); priority > 0; priority--) {
 
+            final String listModeStr = instance.settingsFile.getConfig().getString("priorities." + priority + ".mode");
             PrioritisedList prioritisedList = prioritisedListMap.get(priority);
             final List<String> blockMessage = prioritisedList.denyMessage;
 
@@ -132,9 +133,20 @@ public class CommandManager {
                 prioritisedList.listMode = defaultListMode;
             }
 
-            // Check for permissions that override the list mode in the setting.
-            if (player.hasPermission("commanddefender.allow." + priority)) prioritisedList.listMode = ListMode.ALLOW;
-            if (player.hasPermission("commanddefender.deny." + priority)) prioritisedList.listMode = ListMode.DENY;
+            // Check for permissions that override the list mode in the setting and make sure to re-cache modes depending on currently cached mode. 
+            if (player.hasPermission("commanddefender.allow." + priority)) {
+            	prioritisedList.listMode = ListMode.ALLOW;
+
+            } else if (prioritisedList.listMode == ListMode.ALLOW) {
+            	prioritisedList.listMode = ListMode.fromString(listModeStr);
+            }
+
+            if (player.hasPermission("commanddefender.deny." + priority)) {
+            	prioritisedList.listMode = ListMode.DENY;
+
+            } else if (prioritisedList.listMode == ListMode.DENY) {
+            	prioritisedList.listMode = ListMode.fromString(listModeStr);
+            }
 
             // For each listed command in the prioritised list,
             for (String[] listedCommand : prioritisedList.listedCommands) {
