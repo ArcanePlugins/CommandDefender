@@ -134,19 +134,10 @@ public class CommandManager {
             }
 
             // Check for permissions that override the list mode in the setting and make sure to re-cache modes depending on currently cached mode. 
-            if (player.hasPermission("commanddefender.allow." + priority)) {
-            	prioritisedList.listMode = ListMode.ALLOW;
-
-            } else if (prioritisedList.listMode == ListMode.ALLOW) {
-            	prioritisedList.listMode = ListMode.fromString(listModeStr);
-            }
-
-            if (player.hasPermission("commanddefender.deny." + priority)) {
-            	prioritisedList.listMode = ListMode.DENY;
-
-            } else if (prioritisedList.listMode == ListMode.DENY) {
-            	prioritisedList.listMode = ListMode.fromString(listModeStr);
-            }
+            if (player.hasPermission("commanddefender.allow." + priority)) { prioritisedList.listMode = ListMode.ALLOW;
+            } else if (prioritisedList.listMode == ListMode.ALLOW) { prioritisedList.listMode = ListMode.fromString(listModeStr); }
+            if (player.hasPermission("commanddefender.deny." + priority)) { prioritisedList.listMode = ListMode.DENY;
+            } else if (prioritisedList.listMode == ListMode.DENY) { prioritisedList.listMode = ListMode.fromString(listModeStr); }
 
             // For each listed command in the prioritised list,
             for (String[] listedCommand : prioritisedList.listedCommands) {
