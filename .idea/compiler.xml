@@ -9,5 +9,11 @@
         <module name="CommandDefender" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="commanddefender-core" target="17" />
+      <module name="commanddefender-core-bukkit" target="17" />
+      <module name="commanddefender-core-bungee" target="17" />
+      <module name="commanddefender-core-velocity" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
