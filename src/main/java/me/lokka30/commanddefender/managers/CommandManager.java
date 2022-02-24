@@ -1,12 +1,11 @@
 package me.lokka30.commanddefender.managers;
 
-import me.lokka30.commanddefender.CommandDefender;
-import me.lokka30.commanddefender.utils.Utils;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import me.lokka30.commanddefender.CommandDefender;
+import me.lokka30.commanddefender.utils.Utils;
+import org.bukkit.entity.Player;
 
 public class CommandManager {
 
@@ -126,15 +125,12 @@ public class CommandManager {
         for (int priority = prioritisedListMap.size(); priority > 0; priority--) {
 
             PrioritisedList prioritisedList = prioritisedListMap.get(priority);
-            final List<String> blockMessage = prioritisedList.denyMessage;
 
-            if (prioritisedList.listMode == null) {
-                prioritisedList.listMode = defaultListMode;
-            }
+            ListMode listMode = prioritisedList.listMode == null ? defaultListMode : prioritisedList.listMode;
 
             // Check for permissions that override the list mode in the setting.
-            if (player.hasPermission("commanddefender.allow." + priority)) prioritisedList.listMode = ListMode.ALLOW;
-            if (player.hasPermission("commanddefender.deny." + priority)) prioritisedList.listMode = ListMode.DENY;
+            if (player.hasPermission("commanddefender.allow." + priority)) listMode = ListMode.ALLOW;
+            if (player.hasPermission("commanddefender.deny." + priority)) listMode = ListMode.DENY;
 
             // For each listed command in the prioritised list,
             for (String[] listedCommand : prioritisedList.listedCommands) {
@@ -144,13 +140,13 @@ public class CommandManager {
 
                     // if listedCommand is '/*' then determine
                     if (arg == 0 && listedCommand[arg].equals("/*")) {
-                        return new BlockedStatus(prioritisedList.listMode == ListMode.DENY, blockMessage);
+                        return new BlockedStatus(listMode == ListMode.DENY, prioritisedList.denyMessage);
                     }
 
                     // block the last arg of the listed command or if it is the * character. go to next listedCommand if args does not match
                     if (listedCommand[arg].equals("*") || ranCommand[arg].equalsIgnoreCase(listedCommand[arg].replace("\\*", "*"))) {
                         if (arg == listedCommand.length - 1) {
-                            return new BlockedStatus(prioritisedList.listMode == ListMode.DENY, blockMessage);
+                            return new BlockedStatus(listMode == ListMode.DENY, prioritisedList.denyMessage);
                         }
                     } else {
                         break;
