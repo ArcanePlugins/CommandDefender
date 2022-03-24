@@ -13,7 +13,6 @@ commands:
     usage: /<command> [reload/backup/info]
 
 permissions:
-
   commanddefender.*:
     description: Access to all of the plugin's permissions.
     default: op
