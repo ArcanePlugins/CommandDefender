@@ -1,9 +1,5 @@
 package me.lokka30.commanddefender.commands;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.utils.Utils;
 import me.lokka30.microlib.messaging.MessageUtils;
@@ -13,6 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class CommandDefenderCommand implements TabExecutor {
 
