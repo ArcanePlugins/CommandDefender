@@ -46,7 +46,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean package install</defaultGoal>
+        <defaultGoal>clean package</defaultGoal>
         <finalName>${project.name}-${project.version}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
@@ -65,11 +65,11 @@
                     <relocations>
                         <relocation>
                             <pattern>me.lokka30.microlib</pattern>
-                            <shadedPattern>${project.groupId}.${artifactId}.microlib</shadedPattern>
+                            <shadedPattern>${project.groupId}.${artifactId}.lib.microlib</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>${project.groupId}.${artifactId}.metrics</shadedPattern>
+                            <shadedPattern>${project.groupId}.${artifactId}.lib.metrics</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

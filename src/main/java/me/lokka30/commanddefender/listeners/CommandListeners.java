@@ -46,22 +46,27 @@ public class CommandListeners implements Listener {
                 denyMessage = blockedStatus.denyMessage;
             }
 
-            denyMessage.forEach(message -> event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
-                    .replace("%prefix%", instance.getPrefix())
-                    .replace("%command%", command)
-            )));
+            denyMessage.forEach(message ->
+                    event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
+                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%command%", command)
+                    )));
 
         } else if (instance.settingsFile.getConfig().getBoolean("block-colons", true)) {
             // Check if colon is present in the first arg
             if (command.split(" ")[0].contains(":")) {
 
                 // Check bypass permission: return.
-                if (event.getPlayer().hasPermission("commanddefender.bypass-colon-blocker")) return;
+                if (event.getPlayer().hasPermission("commanddefender.bypass-colon-blocker")) {
+                    return;
+                }
 
                 event.setCancelled(true);
 
-                instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message -> event.getPlayer().sendMessage(MessageUtils.colorizeAll(message.replace("%prefix%", instance.getPrefix())
-                )));
+                instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message ->
+                        event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
+                                .replace("%prefix%", instance.getPrefix()))
+                        ));
             }
         }
     }
