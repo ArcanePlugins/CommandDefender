@@ -65,11 +65,11 @@
                     <relocations>
                         <relocation>
                             <pattern>me.lokka30.microlib</pattern>
-                            <shadedPattern>${project.groupId}.${artifactId}.lib.microlib</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.lib.microlib</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>${project.groupId}.${artifactId}.lib.metrics</shadedPattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.lib.metrics</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
