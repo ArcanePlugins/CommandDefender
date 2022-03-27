@@ -23,9 +23,16 @@ public class TabCompleteListener implements ListenerExt {
     @EventHandler
     public void onTabComplete(final TabCompleteEvent event) {
         if(
-            !Commons.core().fileHandler().advancedSettings().data()
+            Commons.core().fileHandler().advancedSettings().data()
             .get("listeners.tab-complete.enabled", true)
         ) {
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.INTERNAL_LISTENERS)) {
+                Commons.core().logger().debug(DebugCategory.INTERNAL_LISTENERS, String.format(
+                    "Event received for listener %s, processing ...",
+                    this.getClass().getSimpleName()
+                ));
+            }
+        } else {
             if(DebugHandler.isDebugCategoryEnabled(DebugCategory.INTERNAL_LISTENERS)) {
                 Commons.core().logger().debug(DebugCategory.INTERNAL_LISTENERS, String.format(
                     "Event received for listener %s was skipped; listener is disabled in adv-sett",

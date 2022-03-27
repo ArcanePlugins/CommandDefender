@@ -21,9 +21,16 @@ public class PlayerCommandPreprocessListener implements ListenerExt {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
         if(
-            !Commons.core().fileHandler().advancedSettings().data()
+            Commons.core().fileHandler().advancedSettings().data()
             .get("listeners.player-command-preprocess.enabled", true)
         ) {
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.INTERNAL_LISTENERS)) {
+                Commons.core().logger().debug(DebugCategory.INTERNAL_LISTENERS, String.format(
+                    "Event received for listener %s, processing ...",
+                    this.getClass().getSimpleName()
+                ));
+            }
+        } else {
             if(DebugHandler.isDebugCategoryEnabled(DebugCategory.INTERNAL_LISTENERS)) {
                 Commons.core().logger().debug(DebugCategory.INTERNAL_LISTENERS, String.format(
                     "Event received for listener %s was skipped; listener is disabled in adv-sett",
