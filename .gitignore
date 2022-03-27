@@ -1,3 +1,7 @@
-/target/
-/.idea/
-._.git
+# IntelliJ
+.idea/
+out/
+*.iml
+
+# Maven
+target/

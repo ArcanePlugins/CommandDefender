@@ -1,32 +1,106 @@
 package me.lokka30.commanddefender.managers;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import me.lokka30.commanddefender.CommandDefender;
 import me.lokka30.commanddefender.utils.Utils;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class CommandManager {
 
     private final CommandDefender instance;
 
+    private final HashMap<Integer, PrioritisedList> prioritisedListMap = new HashMap<>();
+
     public CommandManager(final CommandDefender instance) {
         this.instance = instance;
     }
 
-    HashMap<Integer, PrioritisedList> prioritisedListMap = new HashMap<>();
+    public void load() {
+        prioritisedListMap.clear();
 
-    private static class PrioritisedList {
-        ListMode listMode;
-        final HashSet<String[]> listedCommands;
-        List<String> denyMessage;
-
-        public PrioritisedList(ListMode listMode, HashSet<String[]> listedCommands, List<String> denyMessage) {
-            this.listMode = listMode;
-            this.listedCommands = listedCommands;
-            this.denyMessage = denyMessage;
+        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking")) {
+            return;
         }
+
+        int priority = 1;
+        while (instance.settingsFile.getConfig().contains("priorities." + priority)) {
+
+            final String listModeStr = instance.settingsFile.getConfig().getString("priorities." + priority + ".mode");
+
+            PrioritisedList prioritisedList = new PrioritisedList(
+                    listModeStr == null || listModeStr.isEmpty() ? null : ListMode.fromString(listModeStr),
+                    getSplitCommandSetFromList(instance.settingsFile.getConfig().getStringList("priorities." + priority + ".list")),
+                    instance.settingsFile.getConfig().getStringList("priorities." + priority + ".deny-message")
+            );
+
+            prioritisedListMap.put(priority, prioritisedList);
+
+            priority++;
+        }
+    }
+
+    private HashSet<String[]> getSplitCommandSetFromList(List<String> list) {
+        HashSet<String[]> set = new HashSet<>(list.size());
+        for (String listed : list) {
+            set.add(listed.toLowerCase().split(" "));
+        }
+        return set;
+    }
+
+    public BlockedStatus getBlockedStatus(Player player, String[] ranCommand) {
+
+        final ListMode defaultListMode = ListMode.fromString(instance.settingsFile.getConfig().getString("priorities.unlisted"));
+
+        if (instance.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
+            if (player.hasPermission("commanddefender.allow." + ranCommand[0].toLowerCase()))
+                return new BlockedStatus(false, null);
+            if (player.hasPermission("commanddefender.allow.*"))
+                return new BlockedStatus(false, null);
+            if (player.hasPermission("commanddefender.deny." + ranCommand[0].toLowerCase()))
+                return new BlockedStatus(true, null);
+            if (player.hasPermission("commanddefender.deny.*"))
+                return new BlockedStatus(true, null);
+        }
+
+        // Go in reverse so that a higher 'priority' actually has a higher priority.
+        for (int priority = prioritisedListMap.size(); priority > 0; priority--) {
+
+            PrioritisedList prioritisedList = prioritisedListMap.get(priority);
+
+            ListMode listMode = prioritisedList.listMode == null ? defaultListMode : prioritisedList.listMode;
+
+            // Check for permissions that override the list mode in the setting.
+            if (player.hasPermission("commanddefender.allow." + priority)) listMode = ListMode.ALLOW;
+            if (player.hasPermission("commanddefender.deny." + priority)) listMode = ListMode.DENY;
+
+            // For each listed command in the prioritised list,
+            for (String[] listedCommand : prioritisedList.listedCommands) {
+
+                // Go through each arg in the listed command, make sure it does not exceed either listed or ran command length, otherwise NPE :)
+                for (int arg = 0; arg < Math.min(listedCommand.length, ranCommand.length); arg++) {
+
+                    // If listedCommand is '/*' then determine
+                    if (arg == 0 && listedCommand[arg].equals("/*")) {
+                        return new BlockedStatus(listMode == ListMode.DENY, prioritisedList.denyMessage);
+                    }
+
+                    // Block the last arg of the listed command or if it is the * character. go to next listedCommand if args does not match
+                    if (listedCommand[arg].equals("*") || ranCommand[arg].equalsIgnoreCase(listedCommand[arg].replace("\\*", "*"))) {
+                        if (arg == listedCommand.length - 1) {
+                            return new BlockedStatus(listMode == ListMode.DENY, prioritisedList.denyMessage);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Command is not allowed/blocked in any prioritised list so return default.
+        return new BlockedStatus(defaultListMode == ListMode.DENY, null);
     }
 
     private enum ListMode {
@@ -64,36 +138,16 @@ public class CommandManager {
         }
     }
 
-    public void load() {
-        prioritisedListMap.clear();
+    private static class PrioritisedList {
+        final ListMode listMode;
+        final HashSet<String[]> listedCommands;
+        final List<String> denyMessage;
 
-        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking")) {
-            return;
+        public PrioritisedList(ListMode listMode, HashSet<String[]> listedCommands, List<String> denyMessage) {
+            this.listMode = listMode;
+            this.listedCommands = listedCommands;
+            this.denyMessage = denyMessage;
         }
-
-        int priority = 1;
-        while (instance.settingsFile.getConfig().contains("priorities." + priority)) {
-
-            final String listModeStr = instance.settingsFile.getConfig().getString("priorities." + priority + ".mode");
-
-            PrioritisedList prioritisedList = new PrioritisedList(
-                    listModeStr == null || listModeStr.isEmpty() ? null : ListMode.fromString(listModeStr),
-                    getSplitCommandSetFromList(instance.settingsFile.getConfig().getStringList("priorities." + priority + ".list")),
-                    instance.settingsFile.getConfig().getStringList("priorities." + priority + ".deny-message")
-            );
-
-            prioritisedListMap.put(priority, prioritisedList);
-
-            priority++;
-        }
-    }
-
-    private HashSet<String[]> getSplitCommandSetFromList(List<String> list) {
-        HashSet<String[]> set = new HashSet<>(list.size());
-        for (String listed : list) {
-            set.add(listed.toLowerCase().split(" "));
-        }
-        return set;
     }
 
     public static class BlockedStatus {
@@ -104,58 +158,5 @@ public class CommandManager {
             this.isBlocked = isBlocked;
             this.denyMessage = denyMessage;
         }
-    }
-
-    public BlockedStatus getBlockedStatus(Player player, String[] ranCommand) {
-
-        final ListMode defaultListMode = ListMode.fromString(instance.settingsFile.getConfig().getString("priorities.unlisted"));
-
-        if (instance.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
-            if (player.hasPermission("commanddefender.allow." + ranCommand[0].toLowerCase()))
-                return new BlockedStatus(false, null);
-            if (player.hasPermission("commanddefender.allow.*"))
-                return new BlockedStatus(false, null);
-            if (player.hasPermission("commanddefender.deny." + ranCommand[0].toLowerCase()))
-                return new BlockedStatus(true, null);
-            if (player.hasPermission("commanddefender.deny.*"))
-                return new BlockedStatus(true, null);
-        }
-
-        // Go in reverse so that a higher 'priority' actually has a higher priority.
-        for (int priority = prioritisedListMap.size(); priority > 0; priority--) {
-
-            PrioritisedList prioritisedList = prioritisedListMap.get(priority);
-
-            ListMode listMode = prioritisedList.listMode == null ? defaultListMode : prioritisedList.listMode;
-
-            // Check for permissions that override the list mode in the setting.
-            if (player.hasPermission("commanddefender.allow." + priority)) listMode = ListMode.ALLOW;
-            if (player.hasPermission("commanddefender.deny." + priority)) listMode = ListMode.DENY;
-
-            // For each listed command in the prioritised list,
-            for (String[] listedCommand : prioritisedList.listedCommands) {
-
-                // Go through each arg in the listed command, make sure it does not exceed either listed or ran command length, otherwise NPE :)
-                for (int arg = 0; arg < Math.min(listedCommand.length, ranCommand.length); arg++) {
-
-                    // if listedCommand is '/*' then determine
-                    if (arg == 0 && listedCommand[arg].equals("/*")) {
-                        return new BlockedStatus(listMode == ListMode.DENY, prioritisedList.denyMessage);
-                    }
-
-                    // block the last arg of the listed command or if it is the * character. go to next listedCommand if args does not match
-                    if (listedCommand[arg].equals("*") || ranCommand[arg].equalsIgnoreCase(listedCommand[arg].replace("\\*", "*"))) {
-                        if (arg == listedCommand.length - 1) {
-                            return new BlockedStatus(listMode == ListMode.DENY, prioritisedList.denyMessage);
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
-
-        // command is not allowed/blocked in any prioritised list so return default.
-        return new BlockedStatus(defaultListMode == ListMode.DENY, null);
     }
 }

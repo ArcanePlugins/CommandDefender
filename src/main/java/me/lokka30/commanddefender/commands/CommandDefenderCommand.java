@@ -26,56 +26,64 @@ public class CommandDefenderCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("commanddefender.command")) {
-            instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                    .replace("%prefix%", instance.getPrefix())
-            )));
+            instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                    sender.sendMessage(MessageUtils.colorizeAll(message
+                            .replace("%prefix%", instance.getPrefix())
+                    )));
             return true;
         }
 
         if (args.length == 0) {
-            instance.messagesFile.getConfig().getStringList("command.main").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                    .replace("%prefix%", instance.getPrefix())
-                    .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))
-                    .replace("%version%", instance.getDescription().getVersion())
-                    .replace("%label%", label)
-            )));
+            instance.messagesFile.getConfig().getStringList("command.main").forEach(message ->
+                    sender.sendMessage(MessageUtils.colorizeAll(message
+                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))
+                            .replace("%version%", instance.getDescription().getVersion())
+                            .replace("%label%", label)
+                    )));
 
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("commanddefender.command.reload")) {
-                    instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
 
                     instance.loadFiles();
 
-                    if (Utils.isOneThirteen()) {
+                    if (Utils.classExists("org.bukkit.event.player.PlayerCommandSendEvent")) {
                         Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
                     }
 
-                    instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
                 } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
                 }
             } else if (args[0].equalsIgnoreCase("backup")) {
                 if (sender.hasPermission("commanddefender.command.backup")) {
-                    instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
 
                     sender.sendMessage(MessageUtils.colorizeAll("&c&oThis feature is not yet implemented."));
 
-                    instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
                 } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
                 }
             } else if (args[0].equalsIgnoreCase("info")) {
                 if (sender.hasPermission("commanddefender.command.info")) {
@@ -95,21 +103,24 @@ public class CommandDefenderCommand implements TabExecutor {
                     });
 
                 } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                    )));
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
                 }
             } else {
-                instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                        .replace("%prefix%", instance.getPrefix())
-                        .replace("%label%", label)
-                )));
+                instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
+                        sender.sendMessage(MessageUtils.colorizeAll(message
+                                .replace("%prefix%", instance.getPrefix())
+                                .replace("%label%", label)
+                        )));
             }
         } else {
-            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message -> sender.sendMessage(MessageUtils.colorizeAll(message
-                    .replace("%prefix%", instance.getPrefix())
-                    .replace("%label%", label)
-            )));
+            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
+                    sender.sendMessage(MessageUtils.colorizeAll(message
+                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%label%", label)
+                    )));
         }
         return true;
     }
