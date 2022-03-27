@@ -4,6 +4,8 @@ import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
 import java.util.LinkedList;
 import java.util.List;
 import me.lokka30.commanddefender.core.Commons;
+import me.lokka30.commanddefender.core.debug.DebugCategory;
+import me.lokka30.commanddefender.core.debug.DebugHandler;
 import me.lokka30.commanddefender.core.filter.FilterContextType;
 import me.lokka30.commanddefender.core.util.CoreUtils;
 import me.lokka30.commanddefender.corebukkit.listener.misc.ListenerExt;
@@ -20,8 +22,16 @@ public class AsyncTabCompleteListener implements ListenerExt {
 
     @EventHandler
     public void onTabComplete(final AsyncTabCompleteEvent event) {
-        if(!Commons.core().fileHandler().advancedSettings().data()
-            .get("listeners.async-tab-complete.enabled", true)) {
+        if(
+            !Commons.core().fileHandler().advancedSettings().data()
+            .get("listeners.async-tab-complete.enabled", true)
+        ) {
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.INTERNAL_LISTENERS)) {
+                Commons.core().logger().debug(DebugCategory.INTERNAL_LISTENERS, String.format(
+                    "Event received for listener %s was skipped; listener is disabled in adv-sett",
+                    this.getClass().getSimpleName()
+                ));
+            }
             return;
         }
 

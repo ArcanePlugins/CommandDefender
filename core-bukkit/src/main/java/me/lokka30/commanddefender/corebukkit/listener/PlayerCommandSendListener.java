@@ -21,8 +21,16 @@ public class PlayerCommandSendListener implements ListenerExt {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandSend(final PlayerCommandSendEvent event) {
-        if(!Commons.core().fileHandler().advancedSettings().data()
-            .get("listeners.player-command-send.enabled", true)) {
+        if(
+            !Commons.core().fileHandler().advancedSettings().data()
+            .get("listeners.player-command-send.enabled", true)
+        ) {
+            if(DebugHandler.isDebugCategoryEnabled(DebugCategory.INTERNAL_LISTENERS)) {
+                Commons.core().logger().debug(DebugCategory.INTERNAL_LISTENERS, String.format(
+                    "Event received for listener %s was skipped; listener is disabled in adv-sett",
+                    this.getClass().getSimpleName()
+                ));
+            }
             return;
         }
 
