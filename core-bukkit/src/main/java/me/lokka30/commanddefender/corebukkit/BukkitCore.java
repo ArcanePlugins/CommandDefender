@@ -79,7 +79,12 @@ public class BukkitCore extends JavaPlugin implements Core {
             toRegister.add(playerCommandSendListener);
         }
 
-        toRegister.addAll(Set.of(playerCommandPreprocessListener));
+        //toRegister.addAll(Set.of(playerCommandPreprocessListener));
+        toRegister.add(playerCommandPreprocessListener);
+
+        for(var listener : toRegister) {
+            getServer().getPluginManager().registerEvents(listener, this);
+        }
 
         universalLogger.info("Registered &b" + toRegister.size() + "&7 listeners &8[&b" +
             String.join("&7, &b", CoreUtils.collectionToClassList(toRegister)) +
