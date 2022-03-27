@@ -1,4 +1,4 @@
-CommandDefender: A SpigotMC plugin for Minecraft
+CommandDefender: Command Blocking Plugin for Bukkit Servers
 Copyright (C) 2020-2022  lokka30
 
 This program is free software: you can redistribute it and/or modify
