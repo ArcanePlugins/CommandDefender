@@ -1,4 +1,4 @@
-### Eclipse ###
+### Eclipse
 .metadata
 bin/
 tmp/
@@ -12,14 +12,14 @@ local.properties
 .recommenders
 .project
 
-### IntelliJ ###
+### IntelliJ IDEA
 .idea/
 *.iml
 *.ipr
 out/
 modules.xml
 
-### Maven ###
+### Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -30,5 +30,6 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-### Mac OS X ###
+### macOS
 ._.git
+.DS_Store
