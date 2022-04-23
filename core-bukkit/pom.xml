@@ -61,12 +61,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0-SNAPSHOT</version>
+        <version>3.3.0</version>
         <configuration>
           <relocations>
             <relocation>
               <pattern>org.bstats</pattern>
-              <shadedPattern>me.lokka30.commanddefender.core-bukkit.org.bstats</shadedPattern>
+              <shadedPattern>me.lokka30.commanddefender.core-bukkit.bstats</shadedPattern>
             </relocation>
           </relocations>
         </configuration>

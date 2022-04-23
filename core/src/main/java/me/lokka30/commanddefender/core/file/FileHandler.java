@@ -5,24 +5,12 @@ import me.lokka30.commanddefender.core.Commons;
 import me.lokka30.commanddefender.core.file.external.AdvancedSettings;
 import me.lokka30.commanddefender.core.file.external.Messages;
 import me.lokka30.commanddefender.core.file.external.Settings;
-import me.lokka30.commanddefender.core.file.external.misc.License;
 import me.lokka30.commanddefender.core.file.external.type.ExternalFile;
 import org.jetbrains.annotations.NotNull;
 
 public final class FileHandler {
 
     /* External Files */
-
-    // ... misc ...
-
-    @NotNull
-    public License license() {
-        return license;
-    }
-
-    private final License license = new License();
-
-    // ... root ...
 
     @NotNull
     public AdvancedSettings advancedSettings() {
@@ -46,10 +34,6 @@ public final class FileHandler {
     private final Settings settings = new Settings();
 
     private final Set<ExternalFile> allExternalFiles = Set.of(
-        // misc
-        license,
-
-        // root
         advancedSettings,
         messages,
         settings
