@@ -21,36 +21,40 @@ public class CommandDefenderCommand implements UniversalCommand {
     @Override
     public void run(@NotNull UniversalCommandSender sender, @NotNull String[] args) {
         if (args.length == 1) {
-            sender.sendChatMessage("Invalid usage: subcommand not specified.");
-            sender.sendChatMessage("For a list of subcommands, run '/" + args[0] + " help'.");
+            sender.sendChatMessage("&cInvalid usage: subcommand not specified.");
+            sender.sendChatMessage("&7For a list of subcommands, run '/" + args[0] + " help'.");
         } else {
             switch (args[1].toUpperCase(Locale.ROOT)) {
                 case "HELP":
-                    sender.sendChatMessage("Help subcommand not implemented yet.");
+                    sender.sendChatMessage("&cHelp subcommand not implemented yet.");
                     break;
                 case "RELOAD":
-                    sender.sendChatMessage("Reloading...");
+                    if(!sender.hasPermission("commanddefender.command.commanddefender.reload")) {
+                        sender.sendChatMessage("&cNo permission");
+                        return;
+                    }
+                    sender.sendChatMessage("&7Reloading...");
                     try {
                         Commons.core().fileHandler().load(true);
                         Commons.core().debugHandler().load();
                         Commons.core().commandFilter().load();
-                        sender.sendChatMessage("Reload complete :)");
+                        sender.sendChatMessage("&aReload complete :)");
                     } catch (Exception ex) {
                         sender.sendChatMessage(
-                            "Errors occured whilst reloading - check console. >:(");
+                            "&cErrors occured whilst reloading - check console immediately. :(");
                         ex.printStackTrace();
                     }
                     break;
                 case "INFO":
                 case "BACKUP":
                 case "DEBUG":
-                    sender.sendChatMessage("Subcommand not implemented yet.");
+                    sender.sendChatMessage("&cSubcommand not implemented yet.");
                     break;
                 default:
                     sender.sendChatMessage(
-                        "Invalid usage: '" + args[1] + "' is not a valid subcommand.");
+                        "&cInvalid usage: '" + args[1] + "' is not a valid subcommand.");
                     sender.sendChatMessage(
-                        "For a list of subcommands, run '/" + args[0] + " help'.");
+                        "&7For a list of subcommands, run '/" + args[0] + " help'.");
                     break;
             }
         }
