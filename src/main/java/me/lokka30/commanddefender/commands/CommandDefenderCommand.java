@@ -97,7 +97,7 @@ public class CommandDefenderCommand implements TabExecutor {
                                 .replace("%prefix%", instance.getPrefix())
                                 .replace("%version%", instance.getDescription().getVersion())
                                 .replace("%description%", instance.getDescription().getDescription())
-                                .replace("%supportedVersions%", String.join(joiner, Utils.getSupportedServerVersions()))
+                                .replace("%supportedVersions%", "most of them!")
                                 .replace("%contributors%", String.join(joiner, Utils.getContributors()))
                         ));
                     });

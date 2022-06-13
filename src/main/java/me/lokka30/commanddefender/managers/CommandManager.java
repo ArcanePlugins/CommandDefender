@@ -21,7 +21,7 @@ public class CommandManager {
     public void load() {
         prioritisedListMap.clear();
 
-        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking")) {
+        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking", true)) {
             return;
         }
 
@@ -51,6 +51,10 @@ public class CommandManager {
     }
 
     public BlockedStatus getBlockedStatus(Player player, String[] ranCommand) {
+
+        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking", true)) {
+            return new BlockedStatus(false, null);
+        }
 
         final ListMode defaultListMode = ListMode.fromString(instance.settingsFile.getConfig().getString("priorities.unlisted"));
 

@@ -22,18 +22,15 @@ public class CommandDefender extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Utils.logger.info("&f~ Initiating start-up procedure ~");
         final QuickTimer timer = new QuickTimer();
 
         loadFiles();
         registerListeners();
         registerCommands();
-
-        Utils.logger.info("&fStart-up: &7Running misc procedures...");
         startMetrics();
         checkForUpdates();
 
-        Utils.logger.info("&f~ Start-up complete, took &b" + timer.getTimer() + "ms&f ~");
+        Utils.logger.info("Start-up complete (took " + timer.getTimer() + "ms).");
     }
 
     public void loadFiles() {
