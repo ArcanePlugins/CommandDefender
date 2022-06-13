@@ -45,11 +45,10 @@ public class CommandDefender extends JavaPlugin {
             messagesFile = new YamlConfigFile(this, new File(getDataFolder(), "messages.yml"));
             messagesFile.load();
             checkFileVersion(messagesFile.getConfig(), "messages.yml", 2);
-
-            createIfNotExists(new File(getDataFolder(), "license.txt"));
         } catch (IOException ex) {
             Utils.logger.error("&fFile Loader: &7An error occurred whilst attempting to load files. Stack trace:");
             ex.printStackTrace();
+            setEnabled(false);
         }
     }
 
