@@ -5,3 +5,6 @@ out/
 
 # Maven
 target/
+
+# macOS
+.DS_Store

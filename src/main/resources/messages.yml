@@ -34,11 +34,11 @@ command:
 
   info:
     - ' '
-    - '&7Running &bCommandDefender v%version% &7by &flokka30'
-    - '&7''%description%'''
+    - '&b&lCommandDefender&b v%version%'
     - ' '
+    - '&7Authors: &f%authors%'
+    - '&7Description: &f%description%'
     - '&7Contributors: &f%contributors%&7.'
-    - '&7Supported Versions: &fMC %supportedVersions%&7.'
     - ' '
 
   usage:
