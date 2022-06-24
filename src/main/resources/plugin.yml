@@ -50,6 +50,10 @@ permissions:
     description: Backup the plugin's configuration files.
     default: op
 
+  commanddefender.command.sudo:
+    description: Forcibly run commans as some player.
+    default: op
+
   commanddefender.command.info:
     description: View info about the plugin.
     default: true
