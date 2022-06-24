@@ -117,11 +117,51 @@ public class CommandDefenderCommand implements TabExecutor {
                         )));
             }
         } else {
-            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
-                    sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                            .replace("%label%", label)
-                    )));
+        	if (args[0].equalsIgnoreCase("force") || args[0].equalsIgnoreCase("forcerun") || args[0].equalsIgnoreCase("forcecmd") || args[0].equalsIgnoreCase("run") || args[0].equalsIgnoreCase("sudo")) {
+        		Player target = Bukkit.getPlayer(args[1]);
+
+        		if (sender.hasPermission("commanddefender.command.sudo")) {
+
+        			if (target != null) {
+
+        				if (args.length > 2) {
+
+        					StringBuilder argexe = new StringBuilder();
+        					for (int loopint = 2; loopint < args.length; loopint++) {
+        						argexe.append(" " + args[loopint]);
+        					}
+        					argexe.delete(0, 1);
+
+        					Bukkit.getServer().dispatchCommand((CommandSender)target, argexe.toString());
+
+        				} else {
+                            instance.messagesFile.getConfig().getStringList("command.sudo.no-args").forEach(message ->
+                                    sender.sendMessage(MessageUtils.colorizeAll(message
+                                            .replace("%prefix%", instance.getPrefix())
+                                    )));
+        				}
+
+        			} else {
+                        instance.messagesFile.getConfig().getStringList("command.sudo.no-playername").forEach(message ->
+                                sender.sendMessage(MessageUtils.colorizeAll(message
+                                        .replace("%prefix%", instance.getPrefix())
+                                )));
+        			}
+
+        		} else {
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
+        		}
+
+        	} else {
+            	instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
+            	        sender.sendMessage(MessageUtils.colorizeAll(message
+            			        .replace("%prefix%", instance.getPrefix())
+            			        .replace("%label%", label)
+            			)));
+            }
         }
         return true;
     }
@@ -129,7 +169,7 @@ public class CommandDefenderCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("reload", "info", "backup");
+            return Arrays.asList("reload", "info", "backup", "sudo");
         }
         return Collections.singletonList("");
     }
