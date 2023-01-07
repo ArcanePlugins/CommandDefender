@@ -6,7 +6,7 @@
 # Read the Wiki -> https://github.com/lokka30/CommandDefender/wiki
 # ----------------------------------------------------------------
 
-# Create a list of allowed/denied commands ordered by priority.
+# Create a list of allowed/denied commands ordered by priority (1 = highest).
 # Please check the Wiki on how to use this if you are not already familiar. The Wiki URL is linked at the top.
 priorities:
 
