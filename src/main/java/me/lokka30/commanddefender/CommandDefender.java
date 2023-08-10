@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class CommandDefender extends JavaPlugin {
 
@@ -22,7 +23,7 @@ public class CommandDefender extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        final QuickTimer timer = new QuickTimer();
+        final QuickTimer timer = new QuickTimer(TimeUnit.MILLISECONDS);
 
         loadFiles();
         registerListeners();
@@ -30,7 +31,7 @@ public class CommandDefender extends JavaPlugin {
         startMetrics();
         checkForUpdates();
 
-        Utils.logger.info("Start-up complete (took " + timer.getTimer() + "ms).");
+        Utils.logger.info("Start-up complete (took " + timer.getDuration() + "ms).");
     }
 
     public void loadFiles() {
@@ -81,13 +82,11 @@ public class CommandDefender extends JavaPlugin {
         });
     }
 
-    private void createIfNotExists(File file) {
-        if (!file.exists()) {
-            saveResource(file.getName(), false);
-        }
-    }
-
-    private void checkFileVersion(YamlConfiguration cfg, String cfgName, @SuppressWarnings("SameParameterValue") int recommendedVersion) {
+    private void checkFileVersion(
+        YamlConfiguration cfg,
+        String cfgName,
+        @SuppressWarnings("SameParameterValue") int recommendedVersion
+    ) {
         if (cfg.getInt("file-version") != recommendedVersion) {
             Utils.logger.error("Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are highly likely to occur!");
         }
