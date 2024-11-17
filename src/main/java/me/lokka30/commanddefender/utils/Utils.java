@@ -17,6 +17,6 @@ public class Utils {
     }
 
     public static List<String> getContributors() {
-        return Arrays.asList("TheJoshua", "JLM / ArtelGG");
+        return Arrays.asList("TheJoshua", "Artel");
     }
 }
