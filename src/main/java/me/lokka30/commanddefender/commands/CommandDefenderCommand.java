@@ -41,80 +41,86 @@ public class CommandDefenderCommand implements TabExecutor {
                             .replace("%version%", instance.getDescription().getVersion())
                             .replace("%label%", label)
                     )));
-
+            return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
-                if (sender.hasPermission("commanddefender.command.reload")) {
-                    instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message ->
-                            sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
-                            )));
-
-                    instance.loadFiles();
-
-                    if (Utils.classExists("org.bukkit.event.player.PlayerCommandSendEvent")) {
-                        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-                    }
-
-                    instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message ->
-                            sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
-                            )));
-                } else {
+                if (!sender.hasPermission("commanddefender.command.reload")) {
                     instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
                             sender.sendMessage(MessageUtils.colorizeAll(message
                                     .replace("%prefix%", instance.getPrefix())
                             )));
+                    return true;
                 }
-            } else if (args[0].equalsIgnoreCase("backup")) {
-                if (sender.hasPermission("commanddefender.command.backup")) {
-                    instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message ->
-                            sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
-                            )));
 
-                    sender.sendMessage(MessageUtils.colorizeAll("&c&oThis feature is not yet implemented."));
-
-                    instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message ->
-                            sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
-                            )));
-                } else {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
-                            sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
-                            )));
-                }
-            } else if (args[0].equalsIgnoreCase("info")) {
-                if (sender.hasPermission("commanddefender.command.info")) {
-                    final String joiner = instance.messagesFile.getConfig().getString("command.joiner");
-
-                    instance.messagesFile.getConfig().getStringList("command.info").forEach(message -> {
-                        assert joiner != null;
-                        assert instance.getDescription().getDescription() != null;
-
+                instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message ->
                         sender.sendMessage(MessageUtils.colorizeAll(message
                                 .replace("%prefix%", instance.getPrefix())
-                                .replace("%version%", instance.getDescription().getVersion())
-                                .replace("%description%", instance.getDescription().getDescription())
-                                .replace("%supportedVersions%", "Most of them!")
-                                .replace("%contributors%", String.join(joiner, Utils.getContributors()))
-                                .replace("%authors%", String.join(joiner, instance.getDescription().getAuthors()))
-                        ));
-                    });
+                        )));
 
-                } else {
+                instance.loadFiles();
+
+                if (Utils.classExists("org.bukkit.event.player.PlayerCommandSendEvent")) {
+                    Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+                }
+
+                instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message ->
+                        sender.sendMessage(MessageUtils.colorizeAll(message
+                                .replace("%prefix%", instance.getPrefix())
+                        )));
+                return true;
+            } else if (args[0].equalsIgnoreCase("backup")) {
+                if (!sender.hasPermission("commanddefender.command.backup")) {
                     instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
                             sender.sendMessage(MessageUtils.colorizeAll(message
                                     .replace("%prefix%", instance.getPrefix())
                             )));
+                    return true;
                 }
+
+                instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message ->
+                        sender.sendMessage(MessageUtils.colorizeAll(message
+                                .replace("%prefix%", instance.getPrefix())
+                        )));
+
+                sender.sendMessage(MessageUtils.colorizeAll("&c&oThis feature is not yet implemented."));
+
+                instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message ->
+                        sender.sendMessage(MessageUtils.colorizeAll(message
+                                .replace("%prefix%", instance.getPrefix())
+                        )));
+                return true;
+            } else if (args[0].equalsIgnoreCase("info")) {
+                if (!sender.hasPermission("commanddefender.command.info")) {
+                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                            sender.sendMessage(MessageUtils.colorizeAll(message
+                                    .replace("%prefix%", instance.getPrefix())
+                            )));
+                    return true;
+                }
+
+                final String joiner = instance.messagesFile.getConfig().getString("command.joiner");
+
+                instance.messagesFile.getConfig().getStringList("command.info").forEach(message -> {
+                    assert joiner != null;
+                    assert instance.getDescription().getDescription() != null;
+
+                    sender.sendMessage(MessageUtils.colorizeAll(message
+                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%version%", instance.getDescription().getVersion())
+                            .replace("%description%", instance.getDescription().getDescription())
+                            .replace("%supportedVersions%", "Most of them!")
+                            .replace("%contributors%", String.join(joiner, Utils.getContributors()))
+                            .replace("%authors%", String.join(joiner, instance.getDescription().getAuthors()))
+                    ));
+                });
+                return true;
             } else {
                 instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
                         sender.sendMessage(MessageUtils.colorizeAll(message
                                 .replace("%prefix%", instance.getPrefix())
                                 .replace("%label%", label)
                         )));
+                return true;
             }
         } else {
             instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
@@ -122,8 +128,8 @@ public class CommandDefenderCommand implements TabExecutor {
                             .replace("%prefix%", instance.getPrefix())
                             .replace("%label%", label)
                     )));
+            return true;
         }
-        return true;
     }
 
     @Override
