@@ -24,15 +24,11 @@ public class CommandDefender extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        final QuickTimer timer = new QuickTimer(TimeUnit.MILLISECONDS);
-
         loadFiles();
         registerListeners();
         registerCommands();
         startMetrics();
         checkForUpdates();
-
-        logger.info("Start-up complete (took " + timer.getDuration() + "ms).");
     }
 
     public void loadFiles() {
