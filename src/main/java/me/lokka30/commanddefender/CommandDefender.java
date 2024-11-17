@@ -1,5 +1,6 @@
 package me.lokka30.commanddefender;
 
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import me.lokka30.commanddefender.commands.CommandDefenderCommand;
 import me.lokka30.commanddefender.listeners.CommandListeners;
 import me.lokka30.commanddefender.managers.CommandManager;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static me.lokka30.commanddefender.utils.Utils.logger;
+
 public class CommandDefender extends JavaPlugin {
 
     public final CommandManager commandManager = new CommandManager(this);
@@ -31,12 +34,10 @@ public class CommandDefender extends JavaPlugin {
         startMetrics();
         checkForUpdates();
 
-        Utils.logger.info("Start-up complete (took " + timer.getDuration() + "ms).");
+        logger.info("Start-up complete (took " + timer.getDuration() + "ms).");
     }
 
     public void loadFiles() {
-        Utils.logger.info("&fFile Loader: &7Loading files...");
-
         try {
             settingsFile = new YamlConfigFile(this, new File(getDataFolder(), "settings.yml"));
             settingsFile.load();
@@ -47,21 +48,19 @@ public class CommandDefender extends JavaPlugin {
             messagesFile.load();
             checkFileVersion(messagesFile.getConfig(), "messages.yml", 2);
         } catch (IOException ex) {
-            Utils.logger.error("&fFile Loader: &7An error occurred whilst attempting to load files. Stack trace:");
+            logger.error("Unable to load files. This is usually caused when you mistakenly create syntax errors in your .yml files! Stack trace:");
             ex.printStackTrace();
             setEnabled(false);
         }
     }
 
     private void registerListeners() {
-        Utils.logger.info("&fStart-up: &7Registering listeners...");
-
         new CommandListeners(this).registerListeners();
     }
 
     private void registerCommands() {
-        Utils.logger.info("&fStart-up: &7Registering commands...");
-        Objects.requireNonNull(getCommand("commanddefender")).setExecutor(new CommandDefenderCommand(this));
+        Objects.requireNonNull(getCommand("commanddefender"))
+                .setExecutor(new CommandDefenderCommand(this));
     }
 
     private void startMetrics() {
@@ -74,11 +73,16 @@ public class CommandDefender extends JavaPlugin {
         }
 
         final UpdateChecker updateChecker = new UpdateChecker(this, 84167);
-        final String currentVersion = updateChecker.getCurrentVersion().split(" ")[0];
+        final String currentVersion = updateChecker.getCurrentVersion();
         updateChecker.getLatestVersion(latestVersion -> {
-            if (!latestVersion.equals(currentVersion)) {
-                Utils.logger.warning("&fUpdate Checker: &7A new update is available on SpigotMC! &8(&7You are running &bv" + currentVersion + "&7, but the latest version is &bv" + latestVersion + "&8)&7.");
+            if (latestVersion.equals(currentVersion)) {
+                return;
             }
+
+            logger.warning("A new update for CommandDefender is available on SpigotMC.");
+            logger.warning("You are running v" + currentVersion + ", but the latest version is v" + latestVersion + ").");
+            logger.warning("If you've just downloaded the latest version, sometimes Spigot takes a while to update; ignore this in that case.");
+            logger.warning("< https://www.spigotmc.org/resources/commanddefender.84167/ >");
         });
     }
 
@@ -88,7 +92,8 @@ public class CommandDefender extends JavaPlugin {
         @SuppressWarnings("SameParameterValue") int recommendedVersion
     ) {
         if (cfg.getInt("file-version") != recommendedVersion) {
-            Utils.logger.error("Configuration file '&b" + cfgName + "&7' does not have the correct file version. Reset or merge your current changes with the latest file or errors are highly likely to occur!");
+            logger.error("Configuration file '" + cfgName + "' does not have the correct file version.");
+            logger.error("Reset or merge your current changes with the latest file, otherwise you may encounter issues!");
         }
     }
 
