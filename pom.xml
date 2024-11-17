@@ -17,10 +17,6 @@
 
     <repositories>
         <repository>
-            <id>codemc.io</id>
-            <url>https://repo.codemc.io/repository/nms/</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -30,18 +26,20 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.21.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.lokka30</groupId>
             <artifactId>MicroLib</artifactId>
             <version>3.2.1</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
