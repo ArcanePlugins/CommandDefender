@@ -1,7 +1,6 @@
 package me.lokka30.commanddefender.managers;
 
 import me.lokka30.commanddefender.CommandDefender;
-import me.lokka30.commanddefender.utils.Utils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class CommandManager {
             final String listModeStr = plugin.settingsFile.getConfig().getString("priorities." + priority + ".mode");
 
             PrioritisedList prioritisedList = new PrioritisedList(
-                    listModeStr == null || listModeStr.isEmpty() ? null : ListMode.fromString(listModeStr),
+                    listModeStr == null || listModeStr.isEmpty() ? null : ListMode.fromString(plugin, listModeStr),
                     getSplitCommandSetFromList(plugin.settingsFile.getConfig().getStringList("priorities." + priority + ".list")),
                     plugin.settingsFile.getConfig().getStringList("priorities." + priority + ".deny-message")
             );
@@ -56,7 +55,10 @@ public class CommandManager {
             return new BlockedStatus(false, null);
         }
 
-        final ListMode defaultListMode = ListMode.fromString(plugin.settingsFile.getConfig().getString("priorities.unlisted"));
+        final ListMode defaultListMode = ListMode.fromString(
+                plugin,
+                plugin.settingsFile.getConfig().getString("priorities.unlisted")
+        );
 
         if (plugin.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
             if (player.hasPermission("commanddefender.allow." + ranCommand[0].toLowerCase()))
@@ -110,9 +112,9 @@ public class CommandManager {
     private enum ListMode {
         ALLOW, DENY;
 
-        public static ListMode fromString(String str) {
+        public static ListMode fromString(CommandDefender plugin, String str) {
             if (str == null || str.isEmpty()) {
-                warnInvalid(str);
+                warnInvalid(plugin, str);
                 return DENY; // Safest bet to use 'DENY' as a default.
             }
 
@@ -130,15 +132,15 @@ public class CommandManager {
                     return DENY;
 
                 default:
-                    warnInvalid(str);
+                    warnInvalid(plugin, str);
                     return DENY; // Safest bet to use 'DENY' as a default.
             }
         }
 
-        private static void warnInvalid(String str) {
-            Utils.logger.error("CommandManager encountered an invalid ListMode in your configuration:");
-            Utils.logger.error("Invalid ListMode specified somewhere in your settings file. You set '&r" + str + "&7', but was expecting &bALLOW&7 or &bDENY&7. Try CTRL+F the file for it.");
-            Utils.logger.error("The plugin will force-deny commands in this list as a safety measure until you fix it. (Please do so as soon as possible!)");
+        private static void warnInvalid(CommandDefender plugin, String str) {
+            plugin.getLogger().severe("CommandManager encountered an invalid ListMode in your configuration:");
+            plugin.getLogger().severe("Invalid ListMode specified somewhere in your settings file. You set '&r" + str + "&7', but was expecting &bALLOW&7 or &bDENY&7. Try CTRL+F the file for it.");
+            plugin.getLogger().severe("The plugin will force-deny commands in this list as a safety measure until you fix it. (Please do so as soon as possible!)");
         }
     }
 

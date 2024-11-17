@@ -4,7 +4,6 @@ import me.lokka30.commanddefender.commands.CommandDefenderCommand;
 import me.lokka30.commanddefender.listeners.CommandListeners;
 import me.lokka30.commanddefender.managers.CommandManager;
 import me.lokka30.microlib.files.YamlConfigFile;
-import me.lokka30.microlib.maths.QuickTimer;
 import me.lokka30.microlib.other.UpdateChecker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,9 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import static me.lokka30.commanddefender.utils.Utils.logger;
 
 public class CommandDefender extends JavaPlugin {
 
@@ -42,7 +38,7 @@ public class CommandDefender extends JavaPlugin {
             messagesFile.load();
             checkFileVersion(messagesFile.getConfig(), "messages.yml", 2);
         } catch (IOException ex) {
-            logger.error("Unable to load files. This is usually caused when you mistakenly create syntax errors in your .yml files! Stack trace:");
+            getLogger().severe("Unable to load files. This is usually caused when you mistakenly create syntax errors in your .yml files! Stack trace:");
             ex.printStackTrace();
             setEnabled(false);
         }
@@ -73,10 +69,10 @@ public class CommandDefender extends JavaPlugin {
                 return;
             }
 
-            logger.warning("A new update for CommandDefender is available on SpigotMC.");
-            logger.warning("You are running v" + currentVersion + ", but the latest version is v" + latestVersion + ").");
-            logger.warning("If you've just downloaded the latest version, sometimes Spigot takes a while to update; ignore this in that case.");
-            logger.warning("< https://www.spigotmc.org/resources/commanddefender.84167/ >");
+            getLogger().warning("A new update for CommandDefender is available on SpigotMC.");
+            getLogger().warning("You are running v" + currentVersion + ", but the latest version is v" + latestVersion + ").");
+            getLogger().warning("If you've just downloaded the latest version, sometimes Spigot takes a while to update; ignore this in that case.");
+            getLogger().warning("< https://www.spigotmc.org/resources/commanddefender.84167/ >");
         });
     }
 
@@ -86,8 +82,8 @@ public class CommandDefender extends JavaPlugin {
             @SuppressWarnings("SameParameterValue") int recommendedVersion
     ) {
         if (cfg.getInt("file-version") != recommendedVersion) {
-            logger.error("Configuration file '" + cfgName + "' does not have the correct file version.");
-            logger.error("Reset or merge your current changes with the latest file, otherwise you may encounter issues!");
+            getLogger().severe("Configuration file '" + cfgName + "' does not have the correct file version.");
+            getLogger().severe("Reset or merge your current changes with the latest file, otherwise you may encounter issues!");
         }
     }
 
