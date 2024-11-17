@@ -17,94 +17,94 @@ import java.util.Objects;
 
 public class CommandDefenderCommand implements TabExecutor {
 
-    private final CommandDefender instance;
+    private final CommandDefender plugin;
 
-    public CommandDefenderCommand(CommandDefender instance) {
-        this.instance = instance;
+    public CommandDefenderCommand(CommandDefender plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("commanddefender.command")) {
-            instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+            plugin.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
                     sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%prefix%", plugin.getPrefix())
                     )));
             return true;
         }
 
         if (args.length == 0) {
-            instance.messagesFile.getConfig().getStringList("command.main").forEach(message ->
+            plugin.messagesFile.getConfig().getStringList("command.main").forEach(message ->
                     sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                            .replace("%prefix%", Objects.requireNonNull(instance.messagesFile.getConfig().getString("prefix")))
-                            .replace("%version%", instance.getDescription().getVersion())
+                            .replace("%prefix%", plugin.getPrefix())
+                            .replace("%prefix%", Objects.requireNonNull(plugin.messagesFile.getConfig().getString("prefix")))
+                            .replace("%version%", plugin.getDescription().getVersion())
                             .replace("%label%", label)
                     )));
             return true;
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (!sender.hasPermission("commanddefender.command.reload")) {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                    plugin.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
                             sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
+                                    .replace("%prefix%", plugin.getPrefix())
                             )));
                     return true;
                 }
 
-                instance.messagesFile.getConfig().getStringList("command.reload.start").forEach(message ->
+                plugin.messagesFile.getConfig().getStringList("command.reload.start").forEach(message ->
                         sender.sendMessage(MessageUtils.colorizeAll(message
-                                .replace("%prefix%", instance.getPrefix())
+                                .replace("%prefix%", plugin.getPrefix())
                         )));
 
-                instance.loadFiles();
+                plugin.loadFiles();
 
                 if (Utils.classExists("org.bukkit.event.player.PlayerCommandSendEvent")) {
                     Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
                 }
 
-                instance.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message ->
+                plugin.messagesFile.getConfig().getStringList("command.reload.complete").forEach(message ->
                         sender.sendMessage(MessageUtils.colorizeAll(message
-                                .replace("%prefix%", instance.getPrefix())
+                                .replace("%prefix%", plugin.getPrefix())
                         )));
                 return true;
             } else if (args[0].equalsIgnoreCase("info")) {
                 if (!sender.hasPermission("commanddefender.command.info")) {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
+                    plugin.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
                             sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
+                                    .replace("%prefix%", plugin.getPrefix())
                             )));
                     return true;
                 }
 
-                final String joiner = instance.messagesFile.getConfig().getString("command.joiner");
+                final String joiner = plugin.messagesFile.getConfig().getString("command.joiner");
 
-                instance.messagesFile.getConfig().getStringList("command.info").forEach(message -> {
+                plugin.messagesFile.getConfig().getStringList("command.info").forEach(message -> {
                     assert joiner != null;
-                    assert instance.getDescription().getDescription() != null;
+                    assert plugin.getDescription().getDescription() != null;
 
                     sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
-                            .replace("%version%", instance.getDescription().getVersion())
-                            .replace("%description%", instance.getDescription().getDescription())
+                            .replace("%prefix%", plugin.getPrefix())
+                            .replace("%version%", plugin.getDescription().getVersion())
+                            .replace("%description%", plugin.getDescription().getDescription())
                             .replace("%supportedVersions%", "Most of them!")
                             .replace("%contributors%", String.join(joiner, Utils.getContributors()))
-                            .replace("%authors%", String.join(joiner, instance.getDescription().getAuthors()))
+                            .replace("%authors%", String.join(joiner, plugin.getDescription().getAuthors()))
                     ));
                 });
                 return true;
             } else {
-                instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
+                plugin.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
                         sender.sendMessage(MessageUtils.colorizeAll(message
-                                .replace("%prefix%", instance.getPrefix())
+                                .replace("%prefix%", plugin.getPrefix())
                                 .replace("%label%", label)
                         )));
                 return true;
             }
         } else {
-            instance.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
+            plugin.messagesFile.getConfig().getStringList("command.usage").forEach(message ->
                     sender.sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%prefix%", plugin.getPrefix())
                             .replace("%label%", label)
                     )));
             return true;

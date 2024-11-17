@@ -15,18 +15,18 @@ import java.util.List;
 
 public class CommandListeners implements Listener {
 
-    private final CommandDefender instance;
+    private final CommandDefender plugin;
 
-    public CommandListeners(CommandDefender instance) {
-        this.instance = instance;
+    public CommandListeners(CommandDefender plugin) {
+        this.plugin = plugin;
     }
 
     public void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(this, instance);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
 
         // Check if Minecraft 1.13+ is installed.
         if (Utils.classExists("org.bukkit.event.player.PlayerCommandSendEvent")) {
-            Bukkit.getPluginManager().registerEvents(new NewCommandListeners(), instance);
+            Bukkit.getPluginManager().registerEvents(new NewCommandListeners(), plugin);
         }
     }
 
@@ -34,25 +34,25 @@ public class CommandListeners implements Listener {
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final String command = event.getMessage();
 
-        final CommandManager.BlockedStatus blockedStatus = instance.commandManager.getBlockedStatus(event.getPlayer(), command.split(" "));
+        final CommandManager.BlockedStatus blockedStatus = plugin.commandManager.getBlockedStatus(event.getPlayer(), command.split(" "));
 
         if (blockedStatus.isBlocked) {
             event.setCancelled(true);
 
             List<String> denyMessage;
             if (blockedStatus.denyMessage == null || blockedStatus.denyMessage.isEmpty()) {
-                denyMessage = instance.messagesFile.getConfig().getStringList("cancelled-blocked");
+                denyMessage = plugin.messagesFile.getConfig().getStringList("cancelled-blocked");
             } else {
                 denyMessage = blockedStatus.denyMessage;
             }
 
             denyMessage.forEach(message ->
                     event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
-                            .replace("%prefix%", instance.getPrefix())
+                            .replace("%prefix%", plugin.getPrefix())
                             .replace("%command%", command)
                     )));
 
-        } else if (instance.settingsFile.getConfig().getBoolean("block-colons", true)) {
+        } else if (plugin.settingsFile.getConfig().getBoolean("block-colons", true)) {
             // Check if colon is present in the first arg
             if (command.split(" ")[0].contains(":")) {
 
@@ -63,9 +63,9 @@ public class CommandListeners implements Listener {
 
                 event.setCancelled(true);
 
-                instance.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message ->
+                plugin.messagesFile.getConfig().getStringList("cancelled-colon").forEach(message ->
                         event.getPlayer().sendMessage(MessageUtils.colorizeAll(message
-                                .replace("%prefix%", instance.getPrefix()))
+                                .replace("%prefix%", plugin.getPrefix()))
                         ));
             }
         }
@@ -76,17 +76,17 @@ public class CommandListeners implements Listener {
         @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
         public void onCommandSend(final PlayerCommandSendEvent event) {
             // Remove commands with colons, if enabled, such as /bukkit:help.
-            if (instance.settingsFile.getConfig().getBoolean("block-colons")) {
+            if (plugin.settingsFile.getConfig().getBoolean("block-colons")) {
                 event.getCommands().removeIf(command -> command.contains(":"));
             }
 
             // Make sure filter tab completion is enabled to continue with the next operation.
-            if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-suggestion-filtering", true)) {
+            if (!plugin.settingsFile.getConfig().getBoolean("priorities.enable-command-suggestion-filtering", true)) {
                 return;
             }
 
             // Remove blocked commands from the suggestions list.
-            event.getCommands().removeIf(command -> instance.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);
+            event.getCommands().removeIf(command -> plugin.commandManager.getBlockedStatus(event.getPlayer(), ("/" + command).split(" ")).isBlocked);
         }
     }
 }

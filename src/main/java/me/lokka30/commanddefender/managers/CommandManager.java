@@ -10,30 +10,30 @@ import java.util.List;
 
 public class CommandManager {
 
-    private final CommandDefender instance;
+    private final CommandDefender plugin;
 
     private final HashMap<Integer, PrioritisedList> prioritisedListMap = new HashMap<>();
 
-    public CommandManager(final CommandDefender instance) {
-        this.instance = instance;
+    public CommandManager(final CommandDefender plugin) {
+        this.plugin = plugin;
     }
 
     public void load() {
         prioritisedListMap.clear();
 
-        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking", true)) {
+        if (!plugin.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking", true)) {
             return;
         }
 
         int priority = 1;
-        while (instance.settingsFile.getConfig().contains("priorities." + priority)) {
+        while (plugin.settingsFile.getConfig().contains("priorities." + priority)) {
 
-            final String listModeStr = instance.settingsFile.getConfig().getString("priorities." + priority + ".mode");
+            final String listModeStr = plugin.settingsFile.getConfig().getString("priorities." + priority + ".mode");
 
             PrioritisedList prioritisedList = new PrioritisedList(
                     listModeStr == null || listModeStr.isEmpty() ? null : ListMode.fromString(listModeStr),
-                    getSplitCommandSetFromList(instance.settingsFile.getConfig().getStringList("priorities." + priority + ".list")),
-                    instance.settingsFile.getConfig().getStringList("priorities." + priority + ".deny-message")
+                    getSplitCommandSetFromList(plugin.settingsFile.getConfig().getStringList("priorities." + priority + ".list")),
+                    plugin.settingsFile.getConfig().getStringList("priorities." + priority + ".deny-message")
             );
 
             prioritisedListMap.put(priority, prioritisedList);
@@ -52,13 +52,13 @@ public class CommandManager {
 
     public BlockedStatus getBlockedStatus(Player player, String[] ranCommand) {
 
-        if (!instance.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking", true)) {
+        if (!plugin.settingsFile.getConfig().getBoolean("priorities.enable-command-blocking", true)) {
             return new BlockedStatus(false, null);
         }
 
-        final ListMode defaultListMode = ListMode.fromString(instance.settingsFile.getConfig().getString("priorities.unlisted"));
+        final ListMode defaultListMode = ListMode.fromString(plugin.settingsFile.getConfig().getString("priorities.unlisted"));
 
-        if (instance.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
+        if (plugin.settingsFile.getConfig().getBoolean("enable-allow-deny-permissions")) {
             if (player.hasPermission("commanddefender.allow." + ranCommand[0].toLowerCase()))
                 return new BlockedStatus(false, null);
             if (player.hasPermission("commanddefender.allow.*"))
