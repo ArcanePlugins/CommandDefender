@@ -68,27 +68,6 @@ public class CommandDefenderCommand implements TabExecutor {
                                 .replace("%prefix%", instance.getPrefix())
                         )));
                 return true;
-            } else if (args[0].equalsIgnoreCase("backup")) {
-                if (!sender.hasPermission("commanddefender.command.backup")) {
-                    instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
-                            sender.sendMessage(MessageUtils.colorizeAll(message
-                                    .replace("%prefix%", instance.getPrefix())
-                            )));
-                    return true;
-                }
-
-                instance.messagesFile.getConfig().getStringList("command.backup.start").forEach(message ->
-                        sender.sendMessage(MessageUtils.colorizeAll(message
-                                .replace("%prefix%", instance.getPrefix())
-                        )));
-
-                sender.sendMessage(MessageUtils.colorizeAll("&c&oThis feature is not yet implemented."));
-
-                instance.messagesFile.getConfig().getStringList("command.backup.complete").forEach(message ->
-                        sender.sendMessage(MessageUtils.colorizeAll(message
-                                .replace("%prefix%", instance.getPrefix())
-                        )));
-                return true;
             } else if (args[0].equalsIgnoreCase("info")) {
                 if (!sender.hasPermission("commanddefender.command.info")) {
                     instance.messagesFile.getConfig().getStringList("command.no-permission").forEach(message ->
@@ -135,7 +114,7 @@ public class CommandDefenderCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
-            return Arrays.asList("reload", "info", "backup");
+            return Arrays.asList("reload", "info");
         }
         return Collections.emptyList();
     }

@@ -9,17 +9,9 @@ cancelled-colon:
   - '%prefix% You are not allowed to use the colon character &8(&b:&8) &7in the first argument of your commands.'
 
 command:
-  backup:
-    start:
-      - '%prefix% Backup started ...'
-
-    complete:
-      - '%prefix% ... Backup complete, check the ''&b/plugins/CommandDefender/backups/&7'' folder.'
-
   main:
     - '%prefix% Available commands:'
     - '&8 &m->&b /%label% reload &8- &7reload config files'
-    - '&8 &m->&b /%label% backup &8- &7backup config files'
     - '&8 &m->&b /%label% info &8- &7view info about the plugin'
 
   no-permission:
@@ -42,7 +34,7 @@ command:
     - ' '
 
   usage:
-    - '%prefix% Usage: &b/%label% [reload/backup/info]'
+    - '%prefix% Usage: &b/%label% [reload/info]'
 
   joiner: '&7, &f'
 
