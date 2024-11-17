@@ -131,6 +131,6 @@ public class CommandDefenderCommand implements TabExecutor {
         if (args.length == 1) {
             return Arrays.asList("reload", "info", "backup");
         }
-        return Collections.singletonList("");
+        return Collections.emptyList();
     }
 }
