@@ -17,6 +17,9 @@ priorities:
 
   # Setting this to 'false' makes CommandDefender not filter through the command suggestions system in 1.13+ servers.
   # For 1.7-1.12 servers this option does not do anything because 1.13 added such system.
+  #
+  # Note, that if you have 'block-colons' enabled, CommandDefender will still remove '/<plugin>:<command>'-type
+  # suggestions, thus overriding this setting for that type of command suggestion.
   enable-command-suggestion-filtering: true
 
   1:
