@@ -1,8 +1,9 @@
 package me.lokka30.commanddefender.utils;
 
+import me.lokka30.microlib.messaging.MicroLogger;
+
 import java.util.Arrays;
 import java.util.List;
-import me.lokka30.microlib.messaging.MicroLogger;
 
 public class Utils {
     public static final MicroLogger logger = new MicroLogger("&b&lCommandDefender:&7 ");

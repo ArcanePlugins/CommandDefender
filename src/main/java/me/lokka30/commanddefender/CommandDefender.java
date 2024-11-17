@@ -1,10 +1,8 @@
 package me.lokka30.commanddefender;
 
-import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import me.lokka30.commanddefender.commands.CommandDefenderCommand;
 import me.lokka30.commanddefender.listeners.CommandListeners;
 import me.lokka30.commanddefender.managers.CommandManager;
-import me.lokka30.commanddefender.utils.Utils;
 import me.lokka30.microlib.files.YamlConfigFile;
 import me.lokka30.microlib.maths.QuickTimer;
 import me.lokka30.microlib.other.UpdateChecker;
@@ -87,9 +85,9 @@ public class CommandDefender extends JavaPlugin {
     }
 
     private void checkFileVersion(
-        YamlConfiguration cfg,
-        String cfgName,
-        @SuppressWarnings("SameParameterValue") int recommendedVersion
+            YamlConfiguration cfg,
+            String cfgName,
+            @SuppressWarnings("SameParameterValue") int recommendedVersion
     ) {
         if (cfg.getInt("file-version") != recommendedVersion) {
             logger.error("Configuration file '" + cfgName + "' does not have the correct file version.");
